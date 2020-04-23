@@ -1,34 +1,37 @@
 package com.company;
 
 import java.util.ArrayList;
-import java.util.Objects;
+
+
 
 public class Voluntario {
-    private int id;
+    private String id;
     private int rating;
     private int n_encomendas;
-    private int range;
-    private int localizacao;
+    private double range;
+    private double localizacao;
     private boolean disponivel;
 
     private String tipo;
+    private String nome;
 
     private ArrayList<String> registos;
 
 
     public Voluntario (){
-        this.id = 0;
+        this.id = "";
         this.disponivel = true;
         this.localizacao = 0;
         this.n_encomendas = 0;
         this.range = 0;
         this.rating = 0;
         this.tipo= "";
+        this.nome = "";
         this.registos = new ArrayList<>();
 
     }
 
-    public Voluntario (int id, int rating, int n_encomendas, int range, int localizacao, boolean disponivel, String tipo, ArrayList<String> registos){
+    public Voluntario (String id, int rating, int n_encomendas, double range, double localizacao, boolean disponivel, String tipo, String nome, ArrayList<String> registos){
         this.id = id;
         this.tipo = tipo;
         this.rating = rating;
@@ -37,6 +40,7 @@ public class Voluntario {
         this.localizacao = localizacao;
         this.disponivel = disponivel;
         this.registos = registos;
+        this.nome = nome;
 
     }
 
@@ -44,11 +48,11 @@ public class Voluntario {
 
 
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public int getLocalizacao() {
+    public double getLocalizacao() {
         return localizacao;
     }
 
@@ -56,7 +60,7 @@ public class Voluntario {
         return n_encomendas;
     }
 
-    public int getRange() {
+    public double getRange() {
         return range;
     }
 
@@ -68,6 +72,9 @@ public class Voluntario {
         return rating;
     }
 
+    public String getNome() {
+        return nome;
+    }
 
     public boolean isDisponivel() {
         return disponivel;
@@ -85,7 +92,8 @@ public class Voluntario {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Voluntario that = (Voluntario) o;
-        return id == that.id &&
+        return id.equals(that.id) &&
+                nome.equals(that.nome) &&
                 rating == that.rating &&
                 n_encomendas == that.n_encomendas &&
                 range == that.range &&
@@ -99,6 +107,7 @@ public class Voluntario {
     public String toString() {
         return "Voluntario{" +
                 "id=" + id +
+                ", nome=" + nome +
                 ", rating=" + rating +
                 ", n_encomendas=" + n_encomendas +
                 ", range=" + range +
@@ -114,11 +123,11 @@ public class Voluntario {
         this.disponivel = disponivel;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public void setLocalizacao(int localizacao) {
+    public void setLocalizacao(double localizacao) {
         this.localizacao = localizacao;
     }
 
@@ -126,7 +135,7 @@ public class Voluntario {
         this.n_encomendas = n_encomendas;
     }
 
-    public void setRange(int range) {
+    public void setRange(double range) {
         this.range = range;
     }
 
@@ -134,6 +143,9 @@ public class Voluntario {
         this.rating = rating;
     }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
@@ -144,11 +156,15 @@ public class Voluntario {
         return super.clone();
     }
 
+
+
+    public boolean valida(String cod){
+        return cod.startsWith("v");
+    }
+
     public boolean aceitoTransporteMedicamentos(){
 
-        if(this.tipo.equals("Med")) return  true;
-
-        return false;
+        return this.tipo.equals("Med");
     }
 
     public void aceitaMedicamentos(boolean state){

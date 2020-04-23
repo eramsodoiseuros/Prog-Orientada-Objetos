@@ -32,6 +32,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="preferences.JavaFX" />
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
@@ -44,6 +45,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -73,10 +79,38 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="860" y="501" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1587563134233" />
-    <state x="770" y="282" key="com.intellij.ide.util.TipDialog" timestamp="1587563086657">
+    <state x="740" y="281" key="FileChooserDialogImpl" timestamp="1587656026086">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="740" y="281" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1587656026086" />
+    <state width="1877" height="295" key="GridCell.Tab.0.bottom" timestamp="1587662492993">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1877" height="295" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1587662492993" />
+    <state width="1877" height="295" key="GridCell.Tab.0.center" timestamp="1587662492993">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1877" height="295" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1587662492993" />
+    <state width="1877" height="295" key="GridCell.Tab.0.left" timestamp="1587662492993">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1877" height="295" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1587662492993" />
+    <state width="1877" height="295" key="GridCell.Tab.0.right" timestamp="1587662492993">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1877" height="295" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1587662492993" />
+    <state x="461" y="182" key="SettingsEditor" timestamp="1587656079003">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="461" y="182" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1587656079003" />
+    <state x="770" y="282" key="com.intellij.ide.util.TipDialog" timestamp="1587654780522">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="1148" y="347" key="com.intellij.ide.util.TipDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1587487699122" />
-    <state x="770" y="282" key="com.intellij.ide.util.TipDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1587563086657" />
+    <state x="770" y="282" key="com.intellij.ide.util.TipDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1587654780522" />
+    <state x="769" y="457" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1587662841745">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="769" y="457" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1080@0.0.1920.1080" timestamp="1587662841745" />
   </component>
 </project>
