@@ -1,14 +1,15 @@
 package com.company;
 
+import javax.xml.stream.Location;
 import java.sql.Array;
 import java.util.*;
 
 public class Empresa {
-    private int id;
+    private String id;
     private int rating;
     private int n_encomendas;
     private int range;
-    private double localizacao;
+    private Location localizacao;
     private boolean disponivel;
     private int nif;
 
@@ -18,27 +19,25 @@ public class Empresa {
     private double preco_transporte;
     private int n_max;
 
-    private ArrayList<String> registos;
+    private Set<Encomenda> registos;
     private double faturacao[];
 
-    public Empresa (){
-        this.id = 0;
+    public Empresa (String id, String nome, String tipo){
+        this.id = id;
         this.disponivel = true;
-        this.localizacao = 0;
         this.n_encomendas = 0;
         this.range = 0;
         this.rating = 0;
         this.nif = 0;
-        this.tipo= "";
+        this.tipo= tipo;
         this.preco_transporte = 0;
         this.n_max = 0;
-        this.nome = "";
+        this.nome = nome;
         this.faturacao = new  double[12];
-        this.registos = new ArrayList<>();
-
+        this.registos = new HashSet<Encomenda>();
     }
 
-    public  Empresa (int id, int rating, int n_encomendas, int range, int localizacao, int nif, boolean disponivel, String tipo, String nome, double preco_transporte, int n_max, ArrayList<String> registos, double faturacao[]){
+    public  Empresa (String id, int rating, int n_encomendas, int range, Location localizacao, int nif, boolean disponivel, String tipo, String nome, double preco_transporte, int n_max, Set<Encomenda> registos, double faturacao[]){
         this.id = id;
         this.disponivel = disponivel;
         this.localizacao = localizacao;
@@ -79,11 +78,11 @@ public class Empresa {
         return n_encomendas;
     }
 
-    public double getLocalizacao() {
+    public Location getLocalizacao() {
         return localizacao;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -95,7 +94,7 @@ public class Empresa {
         return n_max;
     }
 
-    public ArrayList<String> getRegistos() {
+    public Set<Encomenda> getRegistos() {
         return registos;
     }
 
@@ -119,11 +118,11 @@ public class Empresa {
         this.n_encomendas = n_encomendas;
     }
 
-    public void setLocalizacao(double localizacao) {
+    public void setLocalizacao(Location localizacao) {
         this.localizacao = localizacao;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -143,7 +142,7 @@ public class Empresa {
         this.preco_transporte = preco_transporte;
     }
 
-    public void setRegistos(ArrayList<String> registos) {
+    public void setRegistos(Set<Encomenda> registos) {
         this.registos = registos;
     }
 
@@ -161,19 +160,20 @@ public class Empresa {
 
     @Override
     public String toString() {
-        return "Empresa{" +
-                "id=" + id +
-                ", rating=" + rating +
-                ", n_encomendas=" + n_encomendas +
-                ", range=" + range +
-                ", localizacao=" + localizacao +
-                ", disponivel=" + disponivel +
-                ", tipo='" + tipo + '\'' +
-                ", preco_transporte=" + preco_transporte +
-                ", n_max=" + n_max +
-                ", registos=" + registos +
-                ", faturacao=" + Arrays.toString(faturacao) +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Empresa{").append("id =").append(id)
+                .append(", rating = ").append(rating)
+                .append(", número encomendas = ").append(n_encomendas)
+                .append(", range = ").append(range)
+                .append(", localização = ").append(localizacao)
+                .append(", disponivel = ").append(disponivel)
+                .append(", tipo = ").append(tipo)
+                .append(", preço dos transportes = ").append(preco_transporte)
+                .append(", número max = ").append(n_max)
+                .append(", faturacao = ").append(Arrays.toString(faturacao))
+                .append(", registos = ").append(registos)
+                .append("}; \n");
+        return sb.toString();
     }
 
     @Override
@@ -186,19 +186,7 @@ public class Empresa {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Empresa empresa = (Empresa) o;
-        return id == empresa.id &&
-                rating == empresa.rating &&
-                n_encomendas == empresa.n_encomendas &&
-                range == empresa.range &&
-                Double.compare(empresa.localizacao, localizacao) == 0 &&
-                disponivel == empresa.disponivel &&
-                Double.compare(empresa.preco_transporte, preco_transporte) == 0 &&
-                nif == empresa.nif &&
-                n_max == empresa.n_max &&
-                Objects.equals(tipo, empresa.tipo) &&
-                Objects.equals(nome, empresa.nome) &&
-                Objects.equals(registos, empresa.registos) &&
-                Arrays.equals(faturacao, empresa.faturacao);
+        return Objects.equals(id, empresa.id);
     }
 
     @Override

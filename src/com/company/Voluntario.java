@@ -1,32 +1,21 @@
 package com.company;
 
+import javax.xml.stream.Location;
 import java.util.*;
 
 public class Voluntario {
-    private int id;
+    private String id;
     private int rating;
     private int n_encomendas;
     private double range;
-    private double localizacao;
+    private Location localizacao;
     private boolean disponivel;
 
     private String tipo;
     private String nome;
-    private ArrayList<String> registos;
+    private Set<Encomenda> registos;
 
-    public Voluntario() {
-        this.id = 0;
-        this.disponivel = true;
-        this.localizacao = 0;
-        this.n_encomendas = 0;
-        this.range = 0;
-        this.rating = 0;
-        this.tipo = "";
-        this.nome = "";
-        this.registos = new ArrayList<>();
-    }
-
-    public Voluntario(int id, int rating, int n_encomendas, int range, int localizacao, boolean disponivel, String tipo, String nome, ArrayList<String> registos) {
+    public Voluntario(String id, int rating, int n_encomendas, int range, Location localizacao, boolean disponivel, String tipo, String nome, Set<Encomenda> registos) {
         this.id = id;
         this.tipo = tipo;
         this.nome = nome;
@@ -38,11 +27,22 @@ public class Voluntario {
         this.registos = registos;
     }
 
-    public int getId() {
+    public Voluntario(String id, String tipo, String nome) {
+        this.id = id;
+        this.tipo = tipo;
+        this.nome = nome;
+        this.rating = 0;
+        this.n_encomendas = 0;
+        this.disponivel = true;
+
+        this.registos = new HashSet<Encomenda>();
+    }
+
+    public String getId() {
         return id;
     }
 
-    public double getLocalizacao() {
+    public Location getLocalizacao() {
         return localizacao;
     }
 
@@ -66,7 +66,7 @@ public class Voluntario {
         return disponivel;
     }
 
-    public ArrayList<String> getRegistos() {
+    public Set<Encomenda> getRegistos() {
         return registos;
     }
 
@@ -74,7 +74,7 @@ public class Voluntario {
         this.disponivel = disponivel;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -82,7 +82,7 @@ public class Voluntario {
         this.nome = nome;
     }
 
-    public void setLocalizacao(double localizacao) {
+    public void setLocalizacao(Location localizacao) {
         this.localizacao = localizacao;
     }
 
@@ -102,7 +102,7 @@ public class Voluntario {
         this.tipo = tipo;
     }
 
-    public void setRegistos(ArrayList<String> registos) {
+    public void setRegistos(Set<Encomenda> registos) {
         this.registos = registos;
     }
 
@@ -116,28 +116,22 @@ public class Voluntario {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Voluntario that = (Voluntario) o;
-        return id == that.id &&
-                rating == that.rating &&
-                n_encomendas == that.n_encomendas &&
-                range == that.range &&
-                localizacao == that.localizacao &&
-                disponivel == that.disponivel &&
-                registos == that.registos &&
-                tipo.equals(that.tipo);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public String toString() {
-        return "Voluntario{" +
-                "id=" + id +
-                ", rating=" + rating +
-                ", n_encomendas=" + n_encomendas +
-                ", range=" + range +
-                ", localizacao=" + localizacao +
-                ", disponivel=" + disponivel +
-                ", tipo='" + tipo + '\'' +
-                ", registos=" + registos +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Voluntario{").append("id =").append(id)
+                .append(", rating = ").append(rating)
+                .append(", número encomendas = ").append(n_encomendas)
+                .append(", range = ").append(range)
+                .append(", localização = ").append(localizacao)
+                .append(", disponivel = ").append(disponivel)
+                .append(", tipo = ").append(tipo)
+                .append(", registos = ").append(registos)
+                .append("}; \n");
+        return sb.toString();
     }
 
 

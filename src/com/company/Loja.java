@@ -1,13 +1,16 @@
 package com.company;
 
-public class Loja {
-    private int id;
-    private int localizacao;
-    private Fila fila;
-    private int lista_encomendas;
-    private int historico;
+import javax.xml.stream.Location;
+import java.util.Set;
 
-    public Loja(int id, int localizacao, Fila fila, int lista_encomendas, int historico) {
+public class Loja {
+    private String id;
+    private Location localizacao;
+    private Fila fila;
+    private Set<Encomenda> lista_encomendas;
+    private Set<Encomenda> historico;
+
+    public Loja(String id, Location localizacao, Fila fila, Set<Encomenda> lista_encomendas, Set<Encomenda> historico) {
         this.id = id;
         this.localizacao = localizacao;
         this.fila = fila;
@@ -15,11 +18,11 @@ public class Loja {
         this.historico = historico;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public int getLocalizacao() {
+    public Location getLocalizacao() {
         return localizacao;
     }
 
@@ -27,19 +30,19 @@ public class Loja {
         return fila;
     }
 
-    public int getLista_encomendas() {
+    public Set<Encomenda> getLista_encomendas() {
         return lista_encomendas;
     }
 
-    public int getHistorico() {
+    public Set<Encomenda> getHistorico() {
         return historico;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public void setLocalizacao(int localizacao) {
+    public void setLocalizacao(Location localizacao) {
         this.localizacao = localizacao;
     }
 
@@ -47,11 +50,11 @@ public class Loja {
         this.fila = fila;
     }
 
-    public void setLista_encomendas(int lista_encomendas) {
+    public void setLista_encomendas(Set<Encomenda> lista_encomendas) {
         this.lista_encomendas = lista_encomendas;
     }
 
-    public void setHistorico(int historico) {
+    public void setHistorico(Set<Encomenda> historico) {
         this.historico = historico;
     }
 }

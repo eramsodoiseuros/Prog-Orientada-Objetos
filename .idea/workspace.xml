@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0261f097-eec6-44ba-8713-551dea7ad2e5" name="Default Changelist" comment="" />
+    <list default="true" id="0261f097-eec6-44ba-8713-551dea7ad2e5" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Empresa.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Empresa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Encomenda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Encomenda.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Loja.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Loja.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Utilizador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Utilizador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Voluntario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Voluntario.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,13 +81,17 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="765" y="220" key="#com.intellij.ide.util.MemberChooser" timestamp="1588083240970">
+    <state x="765" y="220" key="#com.intellij.ide.util.MemberChooser" timestamp="1588088452550">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="765" y="220" key="#com.intellij.ide.util.MemberChooser/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1588083240970" />
+    <state x="765" y="220" key="#com.intellij.ide.util.MemberChooser/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1588088452550" />
     <state x="1148" y="347" key="com.intellij.ide.util.TipDialog" timestamp="1587487699122">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1148" y="347" key="com.intellij.ide.util.TipDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1587487699122" />
+    <state x="1096" y="244" key="run.anything.popup" timestamp="1588087756767">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1096" y="244" key="run.anything.popup/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1588087756767" />
   </component>
 </project>
