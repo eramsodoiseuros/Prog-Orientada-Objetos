@@ -1,8 +1,12 @@
 package com.company;
 
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import java.io.*;
+
 import java.util.Scanner;
 
 public class Main {
@@ -71,12 +75,11 @@ public class Main {
     }
 
 
-
     public static void main(String[] args) {
         // write your code here
 
         File file = new File("C:\\Users\\ramg2\\Documents\\GitHub\\POO\\teste.txt");
-        Voluntario v1 = new Voluntario();
+       // Voluntario v1 = new Voluntario();
 /*
         try {
         String st;
