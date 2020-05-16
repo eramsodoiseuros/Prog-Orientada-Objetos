@@ -1,6 +1,7 @@
 package com.company;
 
 import javax.xml.stream.Location;
+import java.io.*;
 import java.util.*;
 
 public class Voluntario {
@@ -27,14 +28,18 @@ public class Voluntario {
         this.registos = registos;
     }
 
-    public Voluntario(String id, String tipo, String nome) {
-        this.id = id;
-        this.tipo = tipo;
-        this.nome = nome;
+    public Voluntario() {
+        this.id = "";
+        this.tipo = "";
+        this.nome = "";
         this.rating = 0;
         this.n_encomendas = 0;
         this.disponivel = true;
-
+        this.range = 0;
+        this.localizacao = null;
+        this.n_encomendas = 0;
+        this.disponivel = false;
+        this.rating = 0;
         this.registos = new HashSet<Encomenda>();
     }
 
@@ -69,6 +74,7 @@ public class Voluntario {
     public Set<Encomenda> getRegistos() {
         return registos;
     }
+
 
     public void setDisponivel(boolean disponivel) {
         this.disponivel = disponivel;
@@ -123,6 +129,7 @@ public class Voluntario {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Voluntario{").append("id =").append(id)
+                .append(", nome = ").append(nome)
                 .append(", rating = ").append(rating)
                 .append(", número encomendas = ").append(n_encomendas)
                 .append(", range = ").append(range)
@@ -146,4 +153,6 @@ public class Voluntario {
     public boolean aceitoTransporteMedicamentos(){
         return this.tipo.equals("Med");
     }
+
+
 }

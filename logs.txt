@@ -1,0 +1,9 @@
+u1, Renato
+t1, trans, 123456789, 50, 5
+v1, vol, 20
+l1, loja, caixa
+u2, user
+l2, l, caixas
+u3, Abc
+t2, trans2, 741852963, 50, 8
+v2, vol2, 10

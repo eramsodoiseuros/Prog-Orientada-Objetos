@@ -40,6 +40,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="settings.github" />
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
@@ -52,6 +53,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -73,17 +79,47 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="765" y="220" key="#com.intellij.ide.util.MemberChooser" timestamp="1588083240970">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="552" y="198" width="816" height="729" key="#Intentions" timestamp="1589562969721">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="552" y="198" width="816" height="729" key="#Intentions/0.0.1920.1080@0.0.1920.1080" timestamp="1589562969721" />
+    <state x="765" y="228" key="#com.intellij.ide.util.MemberChooser" timestamp="1589648055632">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="765" y="220" key="#com.intellij.ide.util.MemberChooser/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1588083240970" />
+    <state x="765" y="228" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1080@0.0.1920.1080" timestamp="1589648055632" />
     <state x="808" y="429" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1588085313329">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="808" y="429" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1588085313329" />
-    <state x="1148" y="347" key="com.intellij.ide.util.TipDialog" timestamp="1587487699122">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="740" y="294" key="FileChooserDialogImpl" timestamp="1589561910664">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="740" y="294" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1589561910664" />
+    <state width="1877" height="295" key="GridCell.Tab.0.bottom" timestamp="1589664537810">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1877" height="295" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1589664537810" />
+    <state width="1877" height="295" key="GridCell.Tab.0.center" timestamp="1589664537810">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1877" height="295" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1589664537810" />
+    <state width="1877" height="295" key="GridCell.Tab.0.left" timestamp="1589664537810">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1877" height="295" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1589664537810" />
+    <state width="1877" height="295" key="GridCell.Tab.0.right" timestamp="1589664537810">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1877" height="295" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1589664537810" />
+    <state x="461" y="182" key="SettingsEditor" timestamp="1589561964245">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="461" y="182" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1589561964245" />
+    <state x="1148" y="360" key="com.intellij.ide.util.TipDialog" timestamp="1589637939966">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="1148" y="347" key="com.intellij.ide.util.TipDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1587487699122" />
+    <state x="1148" y="360" key="com.intellij.ide.util.TipDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1589637939966" />
   </component>
 </project>

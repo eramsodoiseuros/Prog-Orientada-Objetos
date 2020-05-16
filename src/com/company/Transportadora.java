@@ -4,14 +4,14 @@ import javax.xml.stream.Location;
 import java.sql.Array;
 import java.util.*;
 
-public class Empresa {
+public class Transportadora {
     private String id;
     private int rating;
     private int n_encomendas;
-    private int range;
+    private double range;
     private Location localizacao;
     private boolean disponivel;
-    private int nif;
+    private String nif;
 
     private String tipo;
     private String nome;
@@ -20,24 +20,24 @@ public class Empresa {
     private int n_max;
 
     private Set<Encomenda> registos;
-    private double faturacao[];
+    private double[] faturacao;
 
-    public Empresa (String id, String nome, String tipo){
-        this.id = id;
+    public Transportadora (){
+        this.id = "";
         this.disponivel = true;
         this.n_encomendas = 0;
         this.range = 0;
         this.rating = 0;
-        this.nif = 0;
-        this.tipo= tipo;
+        this.nif = "";
+        this.tipo= "";
         this.preco_transporte = 0;
         this.n_max = 0;
-        this.nome = nome;
+        this.nome = "";
         this.faturacao = new  double[12];
         this.registos = new HashSet<Encomenda>();
     }
 
-    public  Empresa (String id, int rating, int n_encomendas, int range, Location localizacao, int nif, boolean disponivel, String tipo, String nome, double preco_transporte, int n_max, Set<Encomenda> registos, double faturacao[]){
+    public  Transportadora (String id, int rating, int n_encomendas, int range, Location localizacao, String nif, boolean disponivel, String tipo, String nome, double preco_transporte, int n_max, Set<Encomenda> registos, double[] faturacao){
         this.id = id;
         this.disponivel = disponivel;
         this.localizacao = localizacao;
@@ -54,7 +54,7 @@ public class Empresa {
 
     }
 
-    public int getNif() {
+    public String getNif() {
         return nif;
     }
 
@@ -70,7 +70,7 @@ public class Empresa {
         return tipo;
     }
 
-    public int getRange() {
+    public double getRange() {
         return range;
     }
 
@@ -110,7 +110,7 @@ public class Empresa {
         this.rating = rating;
     }
 
-    public void setRange(int range) {
+    public void setRange(double range) {
         this.range = range;
     }
 
@@ -146,7 +146,7 @@ public class Empresa {
         this.registos = registos;
     }
 
-    public void setNif(int nif) {
+    public void setNif(String nif) {
         this.nif = nif;
     }
 
@@ -162,6 +162,8 @@ public class Empresa {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Empresa{").append("id =").append(id)
+                .append(", NIF =").append(nif)
+                .append(", nome =").append(nome)
                 .append(", rating = ").append(rating)
                 .append(", número encomendas = ").append(n_encomendas)
                 .append(", range = ").append(range)
@@ -185,7 +187,7 @@ public class Empresa {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Empresa empresa = (Empresa) o;
+        Transportadora empresa = (Transportadora) o;
         return Objects.equals(id, empresa.id);
     }
 
