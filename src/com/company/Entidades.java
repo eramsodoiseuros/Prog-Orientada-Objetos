@@ -1,21 +1,19 @@
 package com.company;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Objects;
 
 public class Entidades {
 
-    private HashMap<String,Transportadora> dadosTrans;
-    private HashMap<String,Utilizador> dadosUser;
-    private HashMap<String,Voluntario> dadosVol;
-    private HashMap<String,Loja> dadosLoja;
+    private HashMap<String, Transportadora> dadosTrans;
+    private HashMap<String, Utilizador> dadosUser;
+    private HashMap<String, Voluntario> dadosVol;
+    private HashMap<String, Loja> dadosLoja;
+    private HashMap<String, Encomenda> dadosEnc;
 
 
-    public Entidades (){
+    public Entidades() {
         this.dadosLoja = new HashMap<>();
         this.dadosTrans = new HashMap<>();
         this.dadosUser = new HashMap<>();
@@ -30,182 +28,101 @@ public class Entidades {
         return dadosUser;
     }
 
-    public HashMap<String,Transportadora> getDadosTrans() {
+    public HashMap<String, Transportadora> getDadosTrans() {
         return dadosTrans;
     }
 
-    public HashMap<String,Loja>  getDadosLoja() {
+    public HashMap<String, Loja> getDadosLoja() {
         return dadosLoja;
     }
 
 
-    public HashMap<String,Voluntario> fileToVol () {
+    public HashMap<String, Voluntario> fileToVol() throws IOException {
 
-        String line = "Erro";
-        String line2 = "Erro";
-        int count = 0;
         BufferedReader reader = null;
-        BufferedReader reader2 = null;
+        reader = new BufferedReader(new FileReader("C:\\Users\\ramg2\\Documents\\GitHub\\POO\\logs_20200416.txt"));
 
-        try {
-            reader = new BufferedReader(new FileReader("logs.txt"));
-            reader2 = new BufferedReader(new FileReader("Voluntarios_Credenciais.txt"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        while (reader != null) {
+            String line;
+            if (!((line = reader.readLine()) != null)) break;
+            if (line.startsWith("v")) {
 
-        while (true) {
-            try {
-                if (!((line2 = reader2.readLine()) != null)) break;
-            } catch (IOException o) {
-                o.printStackTrace();
+                String[] parts = line.split(",", 5);
+
+                Voluntario voluntario = new Voluntario();
+
+                voluntario.setId(parts[0]);
+                voluntario.setNome(parts[1]);
+                voluntario.setLocalizacaoX(Double.parseDouble(parts[2]));
+                voluntario.setLocalizacaoY(Double.parseDouble(parts[3]));
+                voluntario.setRange(Double.parseDouble(parts[4]));
+
+                dadosVol.putIfAbsent(parts[0], voluntario);
             }
-            count++;
-
-            while (!line.startsWith("v"+count) && reader!=null) {
-                try {
-                    if (!((line = reader.readLine()) != null)) break;
-                } catch (IOException o) {
-                    o.printStackTrace();
-                }
-
-            }
-
-            String[] parts = line.split(",", 3);
-            String[] parts2 = line2.split("=", 2);
-
-            Voluntario voluntario = new Voluntario();
-
-            voluntario.setId(parts[0]);
-            voluntario.setNome(parts[1]);
-            voluntario.setRange(Double.parseDouble(parts[2]));
-
-
-            dadosVol.putIfAbsent(parts2[0], voluntario);
-
         }
-
-        try {
-            reader2.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        reader.close();
         return dadosVol;
     }
 
-    public HashMap<String, Utilizador> fileToUser () {
 
-        String line = "Erro";
-        String line2 = "Erro";
-        int count = 0;
+    public HashMap<String, Utilizador> fileToUser() throws IOException {
+
         BufferedReader reader = null;
-        BufferedReader reader2 = null;
+        reader = new BufferedReader(new FileReader("C:\\Users\\ramg2\\Documents\\GitHub\\POO\\logs_20200416.txt"));
 
-        try {
-            reader = new BufferedReader(new FileReader("logs.txt"));
-            reader2 = new BufferedReader(new FileReader("Utilizador_Credenciais.txt"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        while (reader != null) {
+            String line;
+            if (!((line = reader.readLine()) != null)) break;
+            if (line.startsWith("u")) {
 
-        while (true) {
-            try {
-                if (!((line2 = reader2.readLine()) != null)) break;
-            } catch (IOException o) {
-                o.printStackTrace();
+                String[] parts = line.split(",", 4);
+
+                Utilizador utilizador = new Utilizador();
+
+                utilizador.setId(parts[0]);
+                utilizador.setNome(parts[1]);
+                utilizador.setLocalizacaoX(Double.parseDouble(parts[2]));
+                utilizador.setLocalizacaoY(Double.parseDouble(parts[3]));
+
+
+                dadosUser.putIfAbsent(parts[0], utilizador);
             }
-            count++;
-
-            while (!line.startsWith("u"+count) && reader!=null) {
-                try {
-                    if (!((line = reader.readLine()) != null)) break;
-                } catch (IOException o) {
-                    o.printStackTrace();
-                }
-
-            }
-
-            String[] parts = line.split(",", 3);
-            String[] parts2 = line2.split("=", 2);
-
-            Utilizador utilizador = new Utilizador();
-
-            utilizador.setId(parts[0]);
-            utilizador.setNome(parts[1]);
-
-
-            dadosUser.putIfAbsent(parts2[0], utilizador);
-
         }
+        reader.close();
 
-        try {
-            reader2.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         return dadosUser;
     }
 
-    public HashMap<String,Transportadora> fileToTrans () {
+    public HashMap<String, Transportadora> fileToTrans() throws IOException {
 
-        String line = "Erro";
-        String line2 = "Erro";
-        int count = 0;
         BufferedReader reader = null;
-        BufferedReader reader2 = null;
+        reader = new BufferedReader(new FileReader("C:\\Users\\ramg2\\Documents\\GitHub\\POO\\logs_20200416.txt"));
 
-        try {
-            reader = new BufferedReader(new FileReader("logs.txt"));
-            reader2 = new BufferedReader(new FileReader("Transportadoras_Credenciais.txt"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        while (reader != null) {
+            String line;
+            if (!((line = reader.readLine()) != null)) break;
+            if (line.startsWith("t")) {
 
-        while (true) {
-            try {
-                if (!((line2 = reader2.readLine()) != null)) break;
-            } catch (IOException o) {
-                o.printStackTrace();
+                String[] parts = line.split(",", 7);
+
+                Transportadora transportadora = new Transportadora();
+
+                transportadora.setId(parts[0]);
+                transportadora.setNome(parts[1]);
+                transportadora.setLocalizacaoX(Double.parseDouble(parts[2]));
+                transportadora.setLocalizacaoY(Double.parseDouble(parts[3]));
+                transportadora.setNif(parts[4]);
+                transportadora.setRange(Double.parseDouble(parts[5]));
+                transportadora.setPreco_km(Double.parseDouble(parts[6]));
+
+                dadosTrans.putIfAbsent(parts[0], transportadora);
             }
-            count++;
-
-            while (!line.startsWith("t"+count) && reader!=null) {
-                try {
-                    if (!((line = reader.readLine()) != null)) break;
-                } catch (IOException o) {
-                    o.printStackTrace();
-                }
-
-            }
-
-            String[] parts = line.split(",", 7);
-            String[] parts2 = line2.split("=", 2);
-
-            Transportadora transportadora = new Transportadora();
-
-            transportadora.setId(parts[0]);
-            transportadora.setNome(parts[1]);
-            transportadora.setNif(parts[2]);
-            transportadora.setRange(Double.parseDouble(parts[3]));
-            transportadora.setPreco_transporte(Double.parseDouble(parts[4]));
-
-
-            dadosTrans.putIfAbsent(parts2[0], transportadora);
-
         }
-
-        try {
-            reader2.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        reader.close();
 
         return dadosTrans;
     }
-
-
 
 
     @Override
@@ -225,60 +142,79 @@ public class Entidades {
     }
 
 
+    public HashMap<String, Loja> filetoLoja() throws IOException {
 
-
-    public HashMap<String, Loja> filetoLoja () {
-
-        String line = "Erro";
-        String line2 = "Erro";
-        int count = 0;
         BufferedReader reader = null;
-        BufferedReader reader2 = null;
+        reader = new BufferedReader(new FileReader("C:\\Users\\ramg2\\Documents\\GitHub\\POO\\logs_20200416.txt"));
 
-        try {
-            reader = new BufferedReader(new FileReader("logs.txt"));
-            reader2 = new BufferedReader(new FileReader("Lojas_Credenciais.txt"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        while (reader != null) {
+            String line;
+            if (!((line = reader.readLine()) != null)) break;
+            if (line.startsWith("l")) {
 
-        while (true) {
-            try {
-                if (!((line2 = reader2.readLine()) != null)) break;
-            } catch (IOException o) {
-                o.printStackTrace();
+                String[] parts = line.split(",", 4);
+
+                Loja loja = new Loja();
+
+                loja.setId(parts[0]);
+                loja.setNome(parts[1]);
+                loja.setLocalizacaoX(Double.parseDouble(parts[2]));
+                loja.setLocalizacaoY(Double.parseDouble(parts[3]));
+
+
+                dadosLoja.putIfAbsent(parts[0], loja);
             }
-            count++;
-
-            while (!line.startsWith("l"+count) && reader!=null) {
-                try {
-                    if (!((line = reader.readLine()) != null)) break;
-                } catch (IOException o) {
-                    o.printStackTrace();
-                }
-
-            }
-
-            String[] parts = line.split(",", 3);
-            String[] parts2 = line2.split("=", 2);
-
-            Loja loja = new Loja();
-
-            loja.setId(parts[0]);
-            loja.setNome(parts[1]);
-
-
-            dadosLoja.putIfAbsent(parts2[0], loja);
-
         }
-
-        try {
-            reader2.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        reader.close();
 
         return dadosLoja;
     }
+
+    public HashMap<String, Encomenda> fileToEnc() throws IOException {
+
+        BufferedReader reader = null;
+        reader = new BufferedReader(new FileReader("C:\\Users\\ramg2\\Documents\\GitHub\\POO\\logs_20200416.txt"));
+        int i = 4;
+        int r = 0;
+
+        HashMap<String,Encomenda> enc = new HashMap<>();
+
+        while (reader != null) {
+            String line;
+            if (!((line = reader.readLine()) != null)) break;
+            if (line.startsWith("e")) {
+
+                String[] parts = line.split(",", 5);
+
+                Encomenda encomenda = new Encomenda();
+
+                encomenda.setId(parts[0]);
+                encomenda.setUserId(parts[1]);
+                encomenda.setLoja(parts[2]);
+                encomenda.setPeso(Double.parseDouble(parts[3]));
+
+                String[] parts2 = parts[4].split(",", 100);
+
+                    for (i = 4; i<parts2.length ; i += 4) {
+                        LinhaEncomenda le = new LinhaEncomenda();
+                        le.setCodProd(parts2[i]);
+                        le.setDescricao(parts2[i+1]);
+                        le.setQuantidade(Double.parseDouble(parts2[i+2]));
+                        le.setPreco(Double.parseDouble(parts2[i+3]));
+
+                        encomenda.addProdutos(le);
+
+
+                    }
+
+                enc.putIfAbsent(parts[0], encomenda);
+            }
+        }
+        reader.close();
+
+        return enc;
+    }
+
+
 
 }

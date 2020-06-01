@@ -4,51 +4,88 @@ import javax.xml.stream.Location;
 import java.io.*;
 import java.util.*;
 
-public class Voluntario {
+public class Voluntario implements Serializable {
     private String id;
+    private String pwd;
+    private String email;
     private int rating;
     private int n_encomendas;
     private double range;
-    private Location localizacao;
+    private double localizacaoX;
+    private double localizacaoY;
     private boolean disponivel;
+
 
     private String tipo;
     private String nome;
     private Set<Encomenda> registos;
+    private Encomenda ativa;
 
-    public Voluntario(String id, int rating, int n_encomendas, int range, Location localizacao, boolean disponivel, String tipo, String nome, Set<Encomenda> registos) {
+    public Voluntario(String id, String email, String pwd, int rating, int n_encomendas, int range, double localizacaoX, double localizacaoY, boolean disponivel, String tipo, String nome, Set<Encomenda> registos, Encomenda ativa) {
         this.id = id;
         this.tipo = tipo;
         this.nome = nome;
+        this.nome = nome;
+        this.email = email;
         this.rating = rating;
         this.n_encomendas = n_encomendas;
         this.range = range;
-        this.localizacao = localizacao;
+        this.localizacaoX = localizacaoX;
+        this.localizacaoY = localizacaoY;
         this.disponivel = disponivel;
         this.registos = registos;
+        this.ativa = ativa;
     }
 
     public Voluntario() {
-        this.id = "";
-        this.tipo = "";
-        this.nome = "";
+        this.id = null;
+        this.tipo = null;
+        this.nome = null;
         this.rating = 0;
+        this.nome = null;
+        this.email = null;
         this.n_encomendas = 0;
         this.disponivel = true;
         this.range = 0;
-        this.localizacao = null;
+        this.localizacaoX = 0;
+        this.localizacaoY = 0;
         this.n_encomendas = 0;
         this.disponivel = false;
         this.rating = 0;
         this.registos = new HashSet<Encomenda>();
+        this.ativa = new Encomenda();
     }
 
     public String getId() {
         return id;
     }
 
-    public Location getLocalizacao() {
-        return localizacao;
+    public double getLocalizacaoX() {
+        return localizacaoX;
+    }
+
+    public double getLocalizacaoY() {
+        return localizacaoY;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNome() {
+        return nome;
     }
 
     public int getN_encomendas() {
@@ -88,12 +125,24 @@ public class Voluntario {
         this.nome = nome;
     }
 
-    public void setLocalizacao(Location localizacao) {
-        this.localizacao = localizacao;
+    public void setLocalizacaoX(double localizacaoX) {
+        this.localizacaoX = localizacaoX;
+    }
+
+    public void setLocalizacaoY(double localizacaoY) {
+        this.localizacaoY = localizacaoY;
     }
 
     public void setN_encomendas(int n_encomendas) {
         this.n_encomendas = n_encomendas;
+    }
+
+    public Encomenda getAtiva() {
+        return ativa;
+    }
+
+    public void setAtiva(Encomenda ativa) {
+        this.ativa = ativa;
     }
 
     public void setRange(double range) {
@@ -133,10 +182,12 @@ public class Voluntario {
                 .append(", rating = ").append(rating)
                 .append(", número encomendas = ").append(n_encomendas)
                 .append(", range = ").append(range)
-                .append(", localização = ").append(localizacao)
+                .append(", X = ").append(localizacaoX)
+                .append(", Y = ").append(localizacaoY)
                 .append(", disponivel = ").append(disponivel)
                 .append(", tipo = ").append(tipo)
                 .append(", registos = ").append(registos)
+                .append(", Ativa = ").append(ativa)
                 .append("}; \n");
         return sb.toString();
     }

@@ -1,56 +1,90 @@
 package com.company;
 
 import javax.xml.stream.Location;
+import java.io.Serializable;
 import java.sql.Array;
 import java.util.*;
 
-public class Transportadora {
+public class Transportadora implements Serializable {
     private String id;
     private int rating;
     private int n_encomendas;
     private double range;
-    private Location localizacao;
+    private double localizacaoX;
+    private double localizacaoY;
     private boolean disponivel;
     private String nif;
+    private String email;
+    private String pwd;
 
     private String tipo;
     private String nome;
 
+    private double preco_km;
     private double preco_transporte;
     private int n_max;
 
-    private Set<Encomenda> registos;
-    private double[] faturacao;
+    private Set<Encomenda> ativas;
+    private Set<Encomenda> historico;
+    private double faturacao;
+
+    public boolean isDisponivel() {
+        return disponivel;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
 
     public Transportadora (){
-        this.id = "";
+        this.id = null;
         this.disponivel = true;
         this.n_encomendas = 0;
         this.range = 0;
         this.rating = 0;
-        this.nif = "";
-        this.tipo= "";
-        this.preco_transporte = 0;
+        this.nif = null;
+        this.tipo= null;
+        this.preco_km = 0;
         this.n_max = 0;
-        this.nome = "";
-        this.faturacao = new  double[12];
-        this.registos = new HashSet<Encomenda>();
+        this.nome = null;
+        this.localizacaoX =0;
+        this.localizacaoY = 0;
+        this.faturacao =0;
+        this.ativas = new HashSet<Encomenda>();
+        this.historico = new HashSet<Encomenda>();
+        this.pwd = null;
+        this.email = null;
+        this.preco_transporte = 0;
     }
 
-    public  Transportadora (String id, int rating, int n_encomendas, int range, Location localizacao, String nif, boolean disponivel, String tipo, String nome, double preco_transporte, int n_max, Set<Encomenda> registos, double[] faturacao){
+    public  Transportadora (String id, int rating, int n_encomendas, int range, double localizacaoX, double localizacaoY, String nif, boolean disponivel, String tipo, String nome, double preco_km, int n_max, Set<Encomenda> historico, Set<Encomenda> ativas, double faturacao){
         this.id = id;
         this.disponivel = disponivel;
-        this.localizacao = localizacao;
+        this.localizacaoX = localizacaoX;
+        this.localizacaoY = localizacaoY;
         this.n_encomendas = n_encomendas;
         this.range = range;
         this.rating = rating;
         this.tipo= tipo;
         this.nome = nome;
         this.nif = nif;
-        this.preco_transporte = preco_transporte;
+        this.preco_km = preco_km;
         this.n_max = n_max;
         this.faturacao = faturacao;
-        this.registos = registos;
+        this.historico = historico;
+        this.ativas = ativas;
 
     }
 
@@ -78,32 +112,52 @@ public class Transportadora {
         return n_encomendas;
     }
 
-    public Location getLocalizacao() {
-        return localizacao;
+    public double getLocalizacaoX() {
+        return localizacaoX;
+    }
+
+    public double getLocalizacaoY() {
+        return localizacaoY;
+    }
+
+    public void setLocalizacaoY(double localizacaoY) {
+        this.localizacaoY = localizacaoY;
+    }
+
+    public void setLocalizacaoX(double localizacaoX) {
+        this.localizacaoX = localizacaoX;
     }
 
     public String getId() {
         return id;
     }
 
-    public double getPreco_transporte() {
-        return preco_transporte;
+    public double getPreco_km() {
+        return preco_km;
     }
 
     public int getN_max() {
         return n_max;
     }
 
-    public Set<Encomenda> getRegistos() {
-        return registos;
+    public Set<Encomenda> getHistorico() {
+        return historico;
     }
 
-    public double[] getFaturacao() {
+    public double getFaturacao() {
         return faturacao;
     }
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public double getPreco_transporte() {
+        return preco_transporte;
+    }
+
+    public void setPreco_transporte(double preco_transporte) {
+        this.preco_transporte = preco_transporte;
     }
 
     public void setRating(int rating) {
@@ -118,9 +172,6 @@ public class Transportadora {
         this.n_encomendas = n_encomendas;
     }
 
-    public void setLocalizacao(Location localizacao) {
-        this.localizacao = localizacao;
-    }
 
     public void setId(String id) {
         this.id = id;
@@ -130,7 +181,7 @@ public class Transportadora {
         this.disponivel = disponivel;
     }
 
-    public void setFaturacao(double[] faturacao) {
+    public void setFaturacao(double faturacao) {
         this.faturacao = faturacao;
     }
 
@@ -138,12 +189,12 @@ public class Transportadora {
         this.n_max = n_max;
     }
 
-    public void setPreco_transporte(double preco_transporte) {
-        this.preco_transporte = preco_transporte;
+    public void setPreco_km(double preco_km) {
+        this.preco_km = preco_km;
     }
 
-    public void setRegistos(Set<Encomenda> registos) {
-        this.registos = registos;
+    public void setAtivas(Set<Encomenda> ativas) {
+        this.ativas = ativas;
     }
 
     public void setNif(String nif) {
@@ -158,24 +209,33 @@ public class Transportadora {
         return cod.startsWith("t");
     }
 
+    public Set<Encomenda> getAtivas() {
+        return ativas;
+    }
+
+    public void setHistorico(Set<Encomenda> historico) {
+        this.historico = historico;
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Empresa{").append("id =").append(id)
-                .append(", NIF =").append(nif)
-                .append(", nome =").append(nome)
-                .append(", rating = ").append(rating)
-                .append(", número encomendas = ").append(n_encomendas)
-                .append(", range = ").append(range)
-                .append(", localização = ").append(localizacao)
-                .append(", disponivel = ").append(disponivel)
-                .append(", tipo = ").append(tipo)
-                .append(", preço dos transportes = ").append(preco_transporte)
-                .append(", número max = ").append(n_max)
-                .append(", faturacao = ").append(Arrays.toString(faturacao))
-                .append(", registos = ").append(registos)
-                .append("}; \n");
-        return sb.toString();
+        return "Transportadora{" +
+                "id='" + id + '\'' +
+                ", rating=" + rating +
+                ", n_encomendas=" + n_encomendas +
+                ", range=" + range +
+                ", localizacaoX=" + localizacaoX +
+                ", localizacaoY=" + localizacaoY +
+                ", disponivel=" + disponivel +
+                ", nif='" + nif + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", nome='" + nome + '\'' +
+                ", preco_km=" + preco_km +
+                ", n_max=" + n_max +
+                ", historico=" + historico +
+                ", Ativas=" + ativas +
+                ", faturacao=" + faturacao +
+                '}';
     }
 
     @Override
@@ -187,16 +247,45 @@ public class Transportadora {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Transportadora empresa = (Transportadora) o;
-        return Objects.equals(id, empresa.id);
+        Transportadora that = (Transportadora) o;
+        return rating == that.rating &&
+                n_encomendas == that.n_encomendas &&
+                Double.compare(that.range, range) == 0 &&
+                Double.compare(that.localizacaoX, localizacaoX) == 0 &&
+                Double.compare(that.localizacaoY, localizacaoY) == 0 &&
+                disponivel == that.disponivel &&
+                Double.compare(that.preco_km, preco_km) == 0 &&
+                n_max == that.n_max &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(nif, that.nif) &&
+                Objects.equals(tipo, that.tipo) &&
+                Objects.equals(nome, that.nome) &&
+                Objects.equals(historico, that.historico) &&
+                Objects.equals(ativas, that.ativas) &&
+                faturacao == faturacao;
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(id, rating, n_encomendas, range, localizacao, disponivel, nif, tipo, nome, preco_transporte, n_max, registos);
-        result = 31 * result + Arrays.hashCode(faturacao);
-        return result;
+        return Objects.hash(id, rating, n_encomendas, range, localizacaoX, localizacaoY, disponivel, nif, email, pwd, tipo, nome, preco_km, n_max, ativas, historico, faturacao);
     }
 
+/*
+
+    public double fazFat(){
+        double r;
+        double p;
+        double peso;
+
+        for (Encomenda e: this.ativas) {
+
+            p=+e.getPreco();
+            peso = e.getPesoTot()
+        }
+
+        r=this.faturacao + p + this.getPreco_transporte() * this.distancia + 0.2*peso;
+
+        return r;
+    }*/
 
 }

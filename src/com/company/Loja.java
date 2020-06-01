@@ -1,33 +1,55 @@
 package com.company;
 
 import javax.xml.stream.Location;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Loja {
+public class Loja implements Serializable {
     private String id;
     private String nome;
-    private Location localizacao;
+    private String pwd;
+    private String email;
+    private double localizacaoX;
+    private double localizacaoY;
     private Fila fila;
-    private Set<Encomenda> lista_encomendas;
-    private Set<Encomenda> historico;
+    private HashSet<Encomenda> lista_encomendas;
+    private HashSet<Encomenda> historico;
+    private Set<LinhaEncomenda> inventario;
 
-    public Loja(String id, String nome, Location localizacao, Fila fila, Set<Encomenda> lista_encomendas, Set<Encomenda> historico) {
+    public Set<LinhaEncomenda> getInventario() {
+        return inventario;
+    }
+
+    public void setInventario(Set<LinhaEncomenda> inventario) {
+        this.inventario = inventario;
+    }
+
+    public Loja(String id, String nome, String email, String pwd, double localizacaoX, double localizacaoY, Fila fila, HashSet<Encomenda> lista_encomendas, HashSet<Encomenda> historico, Set<LinhaEncomenda> inventario) {
         this.id = id;
         this.nome = nome;
-        this.localizacao = localizacao;
+        this.pwd = pwd;
+        this.email = email;
+        this.localizacaoX = localizacaoX;
+        this.localizacaoY = localizacaoY;
         this.fila = fila;
         this.lista_encomendas = lista_encomendas;
         this.historico = historico;
+        this.inventario = inventario;
     }
 
     public Loja() {
-        this.id = "";
-        this.localizacao = null;
+        this.id = null;
+        this.localizacaoX = 0;
+        this.localizacaoY = 0;
         this.fila = null;
-        this.lista_encomendas = null;
-        this.historico = null;
-        this.nome = "";
+        this.pwd = null;
+        this.email = null;
+        this.lista_encomendas = new HashSet<>();
+        this.historico = new HashSet<>();
+        this.nome = null;
+        this.inventario = new HashSet<>();
     }
 
     public String getId() {
@@ -38,23 +60,43 @@ public class Loja {
         return nome;
     }
 
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public Location getLocalizacao() {
-        return localizacao;
+    public double getLocalizacaoY() {
+        return localizacaoY;
+    }
+
+    public double getLocalizacaoX() {
+        return localizacaoX;
     }
 
     public Fila getFila() {
         return fila;
     }
 
-    public Set<Encomenda> getLista_encomendas() {
+    public HashSet<Encomenda> getLista_encomendas() {
         return lista_encomendas;
     }
 
-    public Set<Encomenda> getHistorico() {
+    public HashSet<Encomenda> getHistorico() {
         return historico;
     }
 
@@ -62,19 +104,23 @@ public class Loja {
         this.id = id;
     }
 
-    public void setLocalizacao(Location localizacao) {
-        this.localizacao = localizacao;
+    public void setLocalizacaoX(double localizacaoX) {
+        this.localizacaoX = localizacaoX;
+    }
+
+    public void setLocalizacaoY(double localizacaoY) {
+        this.localizacaoY = localizacaoY;
     }
 
     public void setFila(Fila fila) {
         this.fila = fila;
     }
 
-    public void setLista_encomendas(Set<Encomenda> lista_encomendas) {
+    public void setLista_encomendas(HashSet<Encomenda> lista_encomendas) {
         this.lista_encomendas = lista_encomendas;
     }
 
-    public void setHistorico(Set<Encomenda> historico) {
+    public void setHistorico(HashSet<Encomenda> historico) {
         this.historico = historico;
     }
 
@@ -83,9 +129,10 @@ public class Loja {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Loja loja = (Loja) o;
-        return Objects.equals(id, loja.id) &&
+        return Double.compare(loja.localizacaoX, localizacaoX) == 0 &&
+                Double.compare(loja.localizacaoY, localizacaoY) == 0 &&
+                Objects.equals(id, loja.id) &&
                 Objects.equals(nome, loja.nome) &&
-                Objects.equals(localizacao, loja.localizacao) &&
                 Objects.equals(fila, loja.fila) &&
                 Objects.equals(lista_encomendas, loja.lista_encomendas) &&
                 Objects.equals(historico, loja.historico);
@@ -93,7 +140,7 @@ public class Loja {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, localizacao, fila, lista_encomendas, historico);
+        return Objects.hash(id, nome, localizacaoX, localizacaoY, fila, lista_encomendas, historico);
     }
 
     @Override
@@ -106,10 +153,14 @@ public class Loja {
         return "Loja{" +
                 "id='" + id + '\'' +
                 ", nome='" + nome + '\'' +
-                ", localizacao=" + localizacao +
+                ", pwd='" + pwd + '\'' +
+                ", email='" + email + '\'' +
+                ", localizacaoX=" + localizacaoX +
+                ", localizacaoY=" + localizacaoY +
                 ", fila=" + fila +
                 ", lista_encomendas=" + lista_encomendas +
                 ", historico=" + historico +
+                ", inventario=" + inventario +
                 '}';
     }
 
@@ -118,8 +169,10 @@ public class Loja {
     }
 
     public void addHistorico (Encomenda e){
-        lista_encomendas.add(e);
+        historico.add(e);
     }
+
+
 }
 
 class Fila{

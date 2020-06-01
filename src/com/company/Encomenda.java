@@ -1,27 +1,56 @@
 package com.company;
 
 import javax.xml.stream.Location;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.PrimitiveIterator;
 
-public class Encomenda {
+public class Encomenda implements Serializable {
     private String id;
     private String loja;
+    private String userId;
     private Location destino;
+
+    public double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
+
+    private double peso;
     private String estafeta;
+    private double preco;
     private ArrayList<LinhaEncomenda> produtos;
 
 
-    public Encomenda(String id, String loja, Location destino, String estafeta, ArrayList<LinhaEncomenda> produtos) {
+    public Encomenda(String id, String loja, String userId, double preco, Location destino, double peso, String estafeta, ArrayList<LinhaEncomenda> produtos) {
         this.id = id;
         this.loja = loja;
+        this.userId = userId;
+        this.peso = peso;
         this.destino = destino;
         this.estafeta = estafeta;
         this.produtos = produtos;
+        this.preco = preco;
 
     }
+    public Encomenda() {
+        this.id = null;
+        this.loja = null;
+        this.userId = null;
+        this.peso = 0;
+        this.destino = null;
+        this.estafeta = null;
+        this.produtos = new ArrayList<>();
+        this.preco = 0;
+
+    }
+
+
 
     public String getId() {
         return id;
@@ -29,6 +58,18 @@ public class Encomenda {
 
     public String getLoja() {
         return loja;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setPeso(double peso) {
+        this.peso = peso;
+    }
+
+    public double getPeso() {
+        return peso;
     }
 
     public Location getDestino() {
@@ -59,13 +100,19 @@ public class Encomenda {
         this.estafeta = estafeta;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Encomenda encomenda = (Encomenda) o;
-        return  Objects.equals(id, encomenda.id) &&
+        return Double.compare(encomenda.peso, peso) == 0 &&
+                Objects.equals(id, encomenda.id) &&
                 Objects.equals(loja, encomenda.loja) &&
+                Objects.equals(userId, encomenda.userId) &&
                 Objects.equals(destino, encomenda.destino) &&
                 Objects.equals(estafeta, encomenda.estafeta) &&
                 Objects.equals(produtos, encomenda.produtos);
@@ -73,7 +120,7 @@ public class Encomenda {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, loja, destino, estafeta, produtos);
+        return Objects.hash(id, loja, userId, destino, peso, estafeta, produtos);
     }
 
     @Override
@@ -81,7 +128,9 @@ public class Encomenda {
         return "Encomenda{" +
                 "id='" + id + '\'' +
                 ", loja='" + loja + '\'' +
+                ", userId='" + userId + '\'' +
                 ", destino=" + destino +
+                ", peso=" + peso +
                 ", estafeta='" + estafeta + '\'' +
                 ", produtos=" + produtos +
                 '}';
@@ -102,6 +151,29 @@ public class Encomenda {
         return produtos;
     }
 
+    public ArrayList<LinhaEncomenda> addProdutosFromString (String s){
+
+
+        ArrayList<LinhaEncomenda> l = new ArrayList<>();
+        int i =0;
+        int r = 0;
+        String[] parts = s.split(",", 20);
+        while (r<20) {
+
+         LinhaEncomenda le = new LinhaEncomenda();
+
+         le.setCodProd(parts[r]);
+         le.setDescricao(parts[r+1]);
+         le.setQuantidade(Integer.parseInt(parts[r+2]));
+         le.setPreco(Double.parseDouble(parts[r+3]));
+
+         l.add(le);
+
+            r++;
+        }
+        return l;
+    }
+
     public boolean existeProduto(String codProd) {
 
         for (LinhaEncomenda f : produtos) {
@@ -115,7 +187,7 @@ public class Encomenda {
     public double getPrecoTot () {
         double i = 0;
         for (LinhaEncomenda f : produtos) {
-           i += f.precoTot(f);
+           i += f.precoTot();
 
         }
 
@@ -125,7 +197,7 @@ public class Encomenda {
     public double getPesoTot () {
         double i = 0;
         for (LinhaEncomenda f : produtos) {
-            i += f.pesoTot(f);
+            i += f.pesoTot();
 
         }
 
@@ -135,16 +207,16 @@ public class Encomenda {
 
 }
 
-class LinhaEncomenda {
+class LinhaEncomenda implements  Serializable {
 
     private String codProd;
     private String descricao;
-    private int quantidade;
+    private double quantidade;
     private double preco;
     private  double peso;
     private String tipo;
 
-    public LinhaEncomenda(String codProd, String discricao, int quantidade, double preco, double peso, String tipo){
+    public LinhaEncomenda(String codProd, String discricao, double quantidade, double preco, double peso, String tipo){
 
         this.codProd = codProd;
         this.descricao = discricao;
@@ -154,6 +226,15 @@ class LinhaEncomenda {
         this.tipo = tipo;
     }
 
+    public LinhaEncomenda(){
+
+        this.codProd = null;
+        this.descricao = null;
+        this.quantidade = 0;
+        this.preco = 0;
+        this.peso = 0;
+        this.tipo = null;
+    }
 
     public String getCodProd() {
         return codProd;
@@ -179,7 +260,7 @@ class LinhaEncomenda {
                 '}';
     }
 
-    public int getQuantidade() {
+    public double getQuantidade() {
         return quantidade;
     }
 
@@ -225,7 +306,7 @@ class LinhaEncomenda {
         this.preco = preco;
     }
 
-    public void setQuantidade(int quantidade) {
+    public void setQuantidade(double quantidade) {
         this.quantidade = quantidade;
     }
 
@@ -238,13 +319,13 @@ class LinhaEncomenda {
         return super.clone();
     }
 
-    public double precoTot(LinhaEncomenda e){
+    public double precoTot(){
 
-        return (e.getPreco()*e.getQuantidade());
+        return (this.preco*this.quantidade);
     }
 
-    public double pesoTot(LinhaEncomenda e){
+    public double pesoTot(){
 
-        return (e.getPeso()*e.getQuantidade());
+        return (this.peso*this.quantidade);
     }
 }
