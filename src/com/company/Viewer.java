@@ -29,7 +29,7 @@ public class Viewer {
         this.e = e;
     }
 
-    public Viewer() throws IOException, ClassNotFoundException {
+    public void menu() throws IOException, ClassNotFoundException {
 
         int escolha = 0, entidade,navega;
         this.controler=new Controler();
@@ -42,7 +42,7 @@ public class Viewer {
         String nome;
         double range;
 
-        inicia();
+        //inicia();
 
         Scanner scanner = new Scanner(System.in);
         this.controler.setModel(this.controler.getModel().loadEstado());
@@ -61,10 +61,13 @@ public class Viewer {
             switch (escolha) {
                 case 1:
                     regista();
+                    menu();
+                    break;
 
 
                 case 2:
                     log_In();
+                    menu();
                     break;
             }
         }
@@ -157,26 +160,22 @@ public class Viewer {
             scanner.nextLine();
 
 
-           // while (entidade != 0) {
+            //while (entidade != 0) {
                 switch (entidade) {
                     case 1:
-                        System.out.println("Email:\n");
+                        System.out.println("Email:");
                         email = scanner.nextLine();
-                        //scanner.nextLine();
 
-                        System.out.println("Password:\n");
+                        System.out.println("Password:");
                         p = scanner.nextLine();
-                        //scanner.nextLine();
 
                         System.out.println("Nome:");
                         nome = scanner.nextLine();
 
                         if (this.controler.validaRegUser(email)) {
                             this.controler.registaUtilizador(nome, email, p);
-
-                        } else System.out.println("Email já em uso. Tente novamente com um novo email.");
-
-
+                        }
+                        else System.out.println("Email já em uso. Tente novamente com um novo email.");
                         break;
                     case 2:
                         System.out.println("Email:");
@@ -231,8 +230,10 @@ public class Viewer {
 
                         break;
 
+
+
                 }
-            //}
+           // }
 
         }
 
@@ -296,7 +297,7 @@ public class Viewer {
                         //int i = 0;
                         int i = transEscolheLoja(e, p);
                         Loja loja = selecionaLojaTrans(i);
-                        //navega = scanner.nextInt();
+                        navega = scanner.nextInt();
                         transEscolheEnc(i, e, p, loja);
                         System.out.println("A esperar resposta do utilizador");
 
@@ -392,16 +393,16 @@ public class Viewer {
         for (Encomenda enc: loja.getLista_encomendas()) {
             userid = enc.getUserId();
 
-            for (Encomenda transenc: trans.getAtivas()) {
 
-                if(this.controler.dentroRange(userid,loja.getId(),transid) &&  !(transenc.equals(enc)) ){
+
+                if(this.controler.dentroRange(userid,loja.getId(),transid)  ){
                     out.println(k+ ". " + enc.getId() + " ----> " + enc.getProdutos().toString());
-                }
+
             }
             //else out.println("Não existem encomendas disponiveis para o alcance da empresa");
         k++;
         }
-        int r = scanner.nextInt();
+
 
         return i;
 
@@ -425,7 +426,7 @@ public class Viewer {
                   out.println("Encomenda aceite");
                   Transportadora t = this.controler.getModel().getTransMap().get(transid);
                   t.getAtivas().add(enc);
-                  t.setPreco_transporte(t.getPreco_km()*this.controler.distancia(userid,loja.getId(),transid)+(0.2*t.getPreco_transporte()*enc.getPesoTot()));
+                  t.setPreco_transporte(t.getPreco_km()*this.controler.distancia(userid,loja.getId(),transid)+(0.2*t.getPreco_transporte()*enc.getPesoTot()) + enc.getPrecoTot());
                   controler.getModel().guardaEstado();
               }
             }

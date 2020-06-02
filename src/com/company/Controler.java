@@ -80,6 +80,7 @@ public class Controler implements IControler {
         utilizador.setEmail(email);
         utilizador.setPwd(pwd);
         utilizador.setNome(nome);
+        utilizador.setEstado(0);
 
         model.getUserMap().putIfAbsent(email, utilizador);
         model.guardaEstado();

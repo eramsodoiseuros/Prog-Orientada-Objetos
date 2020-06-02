@@ -36,6 +36,7 @@ public class Main {
 
         try {
         Viewer v =new Viewer();
+        v.menu();
 
 
 

@@ -2,35 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0261f097-eec6-44ba-8713-551dea7ad2e5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/company/Controler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/company/IControler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/company/IModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/company/Viewer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Transportadoras_Credenciais.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Transportadoras_Credenciais.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/logs.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs_20200416.txt" beforeDir="false" afterPath="$PROJECT_DIR$/logs_20200416.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/Encomenda.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/POO_2020/com/company/Encomenda.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/Entidades.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/POO_2020/com/company/Entidades.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/Fila.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/POO_2020/com/company/Fila.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/Interface.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/LinhaEncomenda.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/POO_2020/com/company/LinhaEncomenda.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/Loja.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/POO_2020/com/company/Loja.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logsO.obj" beforeDir="false" afterPath="$PROJECT_DIR$/logsO.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/POO_2020/META-INF/POO_2020.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/Controler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/POO_2020/com/company/Controler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/POO_2020/com/company/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/Registos.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/Transportadora.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/POO_2020/com/company/Transportadora.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/Utilizador.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/POO_2020/com/company/Utilizador.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/Voluntario.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/POO_2020/com/company/Voluntario.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Encomenda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Encomenda.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Entidades.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Entidades.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Interface.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Loja.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Loja.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/Viewer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/POO_2020/com/company/Viewer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Controler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Controler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Registos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Model.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Transportadora.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Transportadora.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Utilizador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Utilizador.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Voluntario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Voluntario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Viewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Viewer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,10 +95,10 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="552" y="198" width="816" height="729" key="#Intentions/0.0.1920.1080@0.0.1920.1080" timestamp="1589562969721" />
-    <state x="721" y="343" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1590071256899">
+    <state x="721" y="343" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1591121216053">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="721" y="343" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1080@0.0.1920.1080" timestamp="1590071256899" />
+    <state x="721" y="343" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1080@0.0.1920.1080" timestamp="1591121216053" />
     <state x="765" y="228" key="#com.intellij.ide.util.MemberChooser" timestamp="1590268197485">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -132,22 +112,22 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="740" y="294" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1590773497051" />
-    <state width="1877" height="326" key="GridCell.Tab.0.bottom" timestamp="1590434046409">
+    <state width="1877" height="326" key="GridCell.Tab.0.bottom" timestamp="1591120969369">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1877" height="326" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1590434046409" />
-    <state width="1877" height="326" key="GridCell.Tab.0.center" timestamp="1590434046409">
+    <state width="1877" height="326" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1591120969369" />
+    <state width="1877" height="326" key="GridCell.Tab.0.center" timestamp="1591120969369">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1877" height="326" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1590434046409" />
-    <state width="1877" height="326" key="GridCell.Tab.0.left" timestamp="1590434046409">
+    <state width="1877" height="326" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1591120969369" />
+    <state width="1877" height="326" key="GridCell.Tab.0.left" timestamp="1591120969369">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1877" height="326" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1590434046409" />
-    <state width="1877" height="326" key="GridCell.Tab.0.right" timestamp="1590434046409">
+    <state width="1877" height="326" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1591120969369" />
+    <state width="1877" height="326" key="GridCell.Tab.0.right" timestamp="1591120969369">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1877" height="326" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1590434046409" />
+    <state width="1877" height="326" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1591120969369" />
     <state x="461" y="182" key="SettingsEditor" timestamp="1589727924633">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
