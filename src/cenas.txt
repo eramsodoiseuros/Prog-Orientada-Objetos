@@ -17,7 +17,7 @@ o utilizador que solicitou o serviço terá de aprovar que aceita o preço. Tant
 empresas apenas podem fazer transporte de encomendas de acordo com o raio de acção que
 tiverem definido; - mais/menos
 
-classificar, por parte do utilizador, o serviço de entrega; - n esta
+classificar, por parte do utilizador, o serviço de entrega; - instancias feitas falta implementar
 
 ter acesso no perfil de cada uma das entidades à informação sobre as encomendas transportadas
 (em função de data/hora de transporte); - implementar um modulo de data
@@ -25,10 +25,10 @@ ter acesso no perfil de cada uma das entidades à informação sobre as encomend
 indicar o total facturado por uma empresa transportadora num determinado período - n esta feito
 
 determinar a listagens dos 10 utilizadores que mais utilizam o sistema (em número de encomendas
-transportadas); - criar instancia int acessos
+transportadas); - instancia criada e implementada quando o log_in e feito
 
 determinar a listagens das 10 empresas transportadoras que mais utilizam o sistema (em
-número de kms percorridos); - inserir instancia para a distancia
+número de kms percorridos); - instancia criada e implementada quando transportadora escolhe uma encomenda
 
 gravar o estado da aplicação em ficheiro, para que seja possível retomar mais tarde a execução. - ObjectStream no controller
 

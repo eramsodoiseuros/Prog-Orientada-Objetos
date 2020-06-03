@@ -8,7 +8,7 @@ public class Voluntario implements Serializable {
     private String id;
     private String pwd;
     private String email;
-    private int rating;
+    private ArrayList<Integer> rating;
     private int n_encomendas;
     private double range;
     private double localizacaoX;
@@ -21,7 +21,7 @@ public class Voluntario implements Serializable {
     private Set<Encomenda> registos;
     private Encomenda ativa;
 
-    public Voluntario(String id, String email, String pwd, int rating, int n_encomendas, int range, double localizacaoX, double localizacaoY, boolean disponivel, String tipo, String nome, Set<Encomenda> registos, Encomenda ativa) {
+    public Voluntario(String id, String email, String pwd, ArrayList<Integer> rating, int n_encomendas, int range, double localizacaoX, double localizacaoY, boolean disponivel, String tipo, String nome, Set<Encomenda> registos, Encomenda ativa) {
         this.id = id;
         this.tipo = tipo;
         this.nome = nome;
@@ -41,7 +41,7 @@ public class Voluntario implements Serializable {
         this.id = null;
         this.tipo = null;
         this.nome = null;
-        this.rating = 0;
+        this.rating = new ArrayList<>();
         this.nome = null;
         this.email = null;
         this.n_encomendas = 0;
@@ -51,7 +51,6 @@ public class Voluntario implements Serializable {
         this.localizacaoY = 0;
         this.n_encomendas = 0;
         this.disponivel = false;
-        this.rating = 0;
         this.registos = new HashSet<Encomenda>();
         this.ativa = new Encomenda();
     }
@@ -100,7 +99,7 @@ public class Voluntario implements Serializable {
         return tipo;
     }
 
-    public int getRating() {
+    public ArrayList<Integer> getRating() {
         return rating;
     }
 
@@ -149,7 +148,7 @@ public class Voluntario implements Serializable {
         this.range = range;
     }
 
-    public void setRating(int rating) {
+    public void setRating(ArrayList<Integer> rating) {
         this.rating = rating;
     }
 
@@ -190,6 +189,18 @@ public class Voluntario implements Serializable {
                 .append(", Ativa = ").append(ativa)
                 .append("}; \n");
         return sb.toString();
+    }
+
+
+    public double estrela(){
+        double sum = 0;
+        if(!this.rating.isEmpty()) {
+            for (int mark : this.rating) {
+                sum += mark;
+            }
+            return sum / this.rating.size();
+        }
+        return sum;
     }
 
 

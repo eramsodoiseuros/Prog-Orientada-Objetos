@@ -9,19 +9,19 @@ public class Utilizador implements Serializable {
     private String nome;
     private String email;
     private String pwd;
-    private int rating;
+    private int acessos;
     private double localizacaoX;
     private double localizacaoY;
     private int estado;
 
     private Set<Encomenda> historico;
 
-    public Utilizador(String id,String email, String pwd, String nome, int rating, double localizacaoX, double localizacaoY, Set<Encomenda> historico, int estado) {
+    public Utilizador(String id,String email, String pwd, String nome, int acessos, double localizacaoX, double localizacaoY, Set<Encomenda> historico, int estado) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.pwd = pwd;
-        this.rating = rating;
+        this.acessos = acessos;
         this.localizacaoX = localizacaoX;
         this.localizacaoY = localizacaoY;
         this.historico = historico;
@@ -49,7 +49,7 @@ public class Utilizador implements Serializable {
         this.nome = null;
         this.email = null;
         this.pwd = null;
-        this.rating = 0;
+        this.acessos = 0;
         this.localizacaoX = 0;
         this.localizacaoY = 0;
         this.historico = new HashSet<>() ;
@@ -72,8 +72,8 @@ public class Utilizador implements Serializable {
         this.id = id;
     }
 
-    public int getRating() {
-        return rating;
+    public int getAcessos() {
+        return acessos;
     }
 
     public int getEstado() {
@@ -88,8 +88,8 @@ public class Utilizador implements Serializable {
         this.historico = historico;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void setAcessos(int acessos) {
+        this.acessos = acessos;
     }
 
     public double getLocalizacaoX() {
@@ -128,7 +128,7 @@ public class Utilizador implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Utilizador that = (Utilizador) o;
-        return rating == that.rating &&
+        return acessos == that.acessos &&
                 Double.compare(that.localizacaoX, localizacaoX) == 0 &&
                 Double.compare(that.localizacaoY, localizacaoY) == 0 &&
                 Objects.equals(id, that.id) &&
@@ -138,7 +138,7 @@ public class Utilizador implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, rating, localizacaoX, localizacaoY, historico);
+        return Objects.hash(id, nome, acessos, localizacaoX, localizacaoY, historico);
     }
 
     @Override
@@ -146,7 +146,7 @@ public class Utilizador implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append("Utilizador{").append("id =").append(id)
                 .append(", nome = ").append(nome)
-                .append(", rating = ").append(rating)
+                .append(", rating = ").append(acessos)
                 .append(", localizaçãoX = ").append(localizacaoX)
                 .append(", localizaçãoY = ").append(localizacaoY)
                 .append(", historico = ").append(historico)

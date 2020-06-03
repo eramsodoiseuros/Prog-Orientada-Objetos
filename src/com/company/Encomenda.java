@@ -12,20 +12,10 @@ public class Encomenda implements Serializable {
     private String loja;
     private String userId;
     private Location destino;
-
-    public double getPreco() {
-        return preco;
-    }
-
-    public void setPreco(double preco) {
-        this.preco = preco;
-    }
-
     private double peso;
     private String estafeta;
     private double preco;
     private ArrayList<LinhaEncomenda> produtos;
-
 
     public Encomenda(String id, String loja, String userId, double preco, Location destino, double peso, String estafeta, ArrayList<LinhaEncomenda> produtos) {
         this.id = id;
@@ -38,6 +28,7 @@ public class Encomenda implements Serializable {
         this.preco = preco;
 
     }
+
     public Encomenda() {
         this.id = null;
         this.loja = null;
@@ -49,8 +40,13 @@ public class Encomenda implements Serializable {
         this.preco = 0;
 
     }
+    public double getPreco() {
+        return preco;
+    }
 
-
+    public void setPreco(double preco) {
+        this.preco = preco;
+    }
 
     public String getId() {
         return id;

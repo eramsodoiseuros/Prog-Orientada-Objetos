@@ -7,12 +7,14 @@ import java.util.*;
 
 public class Transportadora implements Serializable {
     private String id;
-    private int rating;
+    private ArrayList<Double> rating;
     private int n_encomendas;
     private double range;
     private double localizacaoX;
     private double localizacaoY;
+    private double distancia;
     private boolean disponivel;
+
     private String nif;
     private String email;
     private String pwd;
@@ -48,12 +50,22 @@ public class Transportadora implements Serializable {
         this.pwd = pwd;
     }
 
+    public double getDistancia() {
+        return distancia;
+    }
+
+    public void setDistancia(double distancia) {
+        this.distancia = distancia;
+    }
+
     public Transportadora (){
         this.id = null;
         this.disponivel = true;
         this.n_encomendas = 0;
         this.range = 0;
-        this.rating = 0;
+        this.distancia = 0;
+        this.rating = new ArrayList<>();
+
         this.nif = null;
         this.tipo= null;
         this.preco_km = 0;
@@ -69,12 +81,13 @@ public class Transportadora implements Serializable {
         this.preco_transporte = 0;
     }
 
-    public  Transportadora (String id, int rating, int n_encomendas, int range, double localizacaoX, double localizacaoY, String nif, boolean disponivel, String tipo, String nome, double preco_km, int n_max, Set<Encomenda> historico, Set<Encomenda> ativas, double faturacao){
+    public  Transportadora (String id, ArrayList<Double> rating, double distancia, int n_encomendas, int range, double localizacaoX, double localizacaoY, String nif, boolean disponivel, String tipo, String nome, double preco_km, int n_max, Set<Encomenda> historico, Set<Encomenda> ativas, double faturacao){
         this.id = id;
         this.disponivel = disponivel;
         this.localizacaoX = localizacaoX;
         this.localizacaoY = localizacaoY;
         this.n_encomendas = n_encomendas;
+        this.distancia = distancia;
         this.range = range;
         this.rating = rating;
         this.tipo= tipo;
@@ -96,7 +109,7 @@ public class Transportadora implements Serializable {
         return nome;
     }
 
-    public int getRating() {
+    public ArrayList<Double> getRating() {
         return rating;
     }
 
@@ -160,7 +173,7 @@ public class Transportadora implements Serializable {
         this.preco_transporte = preco_transporte;
     }
 
-    public void setRating(int rating) {
+    public void setRating(ArrayList<Double> rating) {
         this.rating = rating;
     }
 
@@ -269,6 +282,22 @@ public class Transportadora implements Serializable {
     public int hashCode() {
         return Objects.hash(id, rating, n_encomendas, range, localizacaoX, localizacaoY, disponivel, nif, email, pwd, tipo, nome, preco_km, n_max, ativas, historico, faturacao);
     }
+
+    public double estrela(){
+        double sum = 0;
+        if(!this.rating.isEmpty()) {
+            for (double mark : this.rating) {
+                sum += mark;
+            }
+            return sum / this.rating.size();
+        }
+        return sum;
+    }
+
+
+
+
+
 
 /*
 

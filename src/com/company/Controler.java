@@ -204,6 +204,7 @@ public class Controler implements IControler {
         encomenda.setPeso(produto.pesoTot());
         encomenda.setPreco(produto.precoTot());
 
+
         model.getEncMap().putIfAbsent(id, encomenda);
         loja.getLista_encomendas().add(encomenda);
         //model.guardaEstado();
@@ -277,6 +278,11 @@ public class Controler implements IControler {
         }
 
         return userId;
+    }
+
+    public Utilizador getUser (String userID){
+        return model.getUserMap().get(userID);
+
     }
 
     public boolean dentroRange(String userid, String lojaid, String transid) {

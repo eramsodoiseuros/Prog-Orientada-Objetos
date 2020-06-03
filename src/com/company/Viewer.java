@@ -268,6 +268,8 @@ public class Viewer {
                     p = scanner.nextLine();
                     if (this.controler.validaLogInUser(e, p)) {
                         System.out.println("Log in bem sucedido\n");
+                        Utilizador u = this.controler.getUser(controler.getUserid(e, p));
+                        u.setAcessos(u.getAcessos()+1);
                         int estado = verificaEstado(e, p);
                         if (estado == 0) {
                             encomendar(e, p);
@@ -426,6 +428,7 @@ public class Viewer {
                   out.println("Encomenda aceite");
                   Transportadora t = this.controler.getModel().getTransMap().get(transid);
                   t.getAtivas().add(enc);
+                  t.setDistancia(controler.distancia(userid,loja.getId(),transid)+t.getDistancia());
                   t.setPreco_transporte(t.getPreco_km()*this.controler.distancia(userid,loja.getId(),transid)+(0.2*t.getPreco_transporte()*enc.getPesoTot()) + enc.getPrecoTot());
                   controler.getModel().guardaEstado();
               }
@@ -471,6 +474,14 @@ public class Viewer {
         controler.getModel().getUserMap().get(userId).setEstado(2);
         System.out.println("Encomenda vai ser processada e enviada.");
     }
+
+
+    public void classifica(){
+
+
+    }
+
+
 
 }
 
