@@ -81,6 +81,7 @@ public class Controler implements IControler {
         utilizador.setPwd(pwd);
         utilizador.setNome(nome);
         utilizador.setEstado(0);
+        utilizador.setAcessos(0);
 
         model.getUserMap().putIfAbsent(email, utilizador);
         model.guardaEstado();
@@ -280,8 +281,8 @@ public class Controler implements IControler {
         return userId;
     }
 
-    public Utilizador getUser (String userID){
-        return model.getUserMap().get(userID);
+    public Utilizador getUser (String userID) throws CloneNotSupportedException {
+        return model.getUserMap().get(userID).clone();
 
     }
 

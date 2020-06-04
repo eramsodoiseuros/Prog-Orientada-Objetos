@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Loja implements Serializable {
+public class Loja implements Serializable, ILoja {
     private String id;
     private String nome;
     private String pwd;

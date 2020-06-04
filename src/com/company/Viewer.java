@@ -29,7 +29,7 @@ public class Viewer {
         this.e = e;
     }
 
-    public void menu() throws IOException, ClassNotFoundException {
+    public void menu() throws IOException, ClassNotFoundException, CloneNotSupportedException {
 
         int escolha = 0, entidade,navega;
         this.controler=new Controler();
@@ -237,7 +237,7 @@ public class Viewer {
 
         }
 
-    public void log_In() throws IOException {
+    public void log_In() throws IOException, CloneNotSupportedException {
 
         Scanner scanner = new Scanner(System.in);
         int entidade, navega,prod;
@@ -269,7 +269,8 @@ public class Viewer {
                     if (this.controler.validaLogInUser(e, p)) {
                         System.out.println("Log in bem sucedido\n");
                         Utilizador u = this.controler.getUser(controler.getUserid(e, p));
-                        u.setAcessos(u.getAcessos()+1);
+                        int a = u.getAcessos()+1;
+                        u.setAcessos(a);
                         int estado = verificaEstado(e, p);
                         if (estado == 0) {
                             encomendar(e, p);

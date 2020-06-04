@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.sql.Array;
 import java.util.*;
 
-public class Transportadora implements Serializable {
+public class Transportadora implements Serializable, ITransportadora {
     private String id;
     private ArrayList<Double> rating;
     private int n_encomendas;

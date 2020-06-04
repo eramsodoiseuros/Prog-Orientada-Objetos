@@ -4,7 +4,7 @@ import javax.xml.stream.Location;
 import java.io.*;
 import java.util.*;
 
-public class Voluntario implements Serializable {
+public class Voluntario implements Serializable, IVoluntario {
     private String id;
     private String pwd;
     private String email;

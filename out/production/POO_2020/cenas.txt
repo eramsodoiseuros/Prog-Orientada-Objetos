@@ -1,0 +1,40 @@
+
+FIX MVC
+
+o estado da aplicação deverá estar pré-carregado com um conjunto de dados significativos,
+que permita testar toda a aplicação no dia da entrega. - done
+
+egistar um utilizador, um voluntário, uma empresa transportadora e uma loja; - utilizador precisa de fix
+
+validar o acesso à aplicação utilizando as credenciais (email e password); - done
+
+nserir pedidos de encomendas a uma loja, por parte de um utilizador; - done
+
+inserir informação de encomenda pronta a ser entregue, por parte das lojas; - ????
+
+indicar que se pretende transportar a encomenda. No caso de ser uma empresa transportadora
+o utilizador que solicitou o serviço terá de aprovar que aceita o preço. Tanto voluntários como
+empresas apenas podem fazer transporte de encomendas de acordo com o raio de acção que
+tiverem definido; - mais/menos
+
+classificar, por parte do utilizador, o serviço de entrega; - instancias feitas falta implementar
+
+ter acesso no perfil de cada uma das entidades à informação sobre as encomendas transportadas
+(em função de data/hora de transporte); - implementar um modulo de data
+
+indicar o total facturado por uma empresa transportadora num determinado período - n esta feito
+
+determinar a listagens dos 10 utilizadores que mais utilizam o sistema (em número de encomendas
+transportadas); - instancia criada e implementada quando o log_in e feito
+
+determinar a listagens das 10 empresas transportadoras que mais utilizam o sistema (em
+número de kms percorridos); - instancia criada e implementada quando transportadora escolhe uma encomenda
+
+gravar o estado da aplicação em ficheiro, para que seja possível retomar mais tarde a execução. - ObjectStream no controller
+
+*************************************************************************************************************************************************************
+
+Itens anteriores mais gestão de factores de aleatoriedade, na duração da viagem e tempo de
+espera, e gestão dos diferentes tipos de encomendas: nota máxima 20 valores
+
+

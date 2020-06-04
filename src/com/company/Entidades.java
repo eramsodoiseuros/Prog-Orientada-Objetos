@@ -78,7 +78,8 @@ public class Entidades {
                 String[] parts = line.split(",", 4);
 
                 Utilizador utilizador = new Utilizador();
-
+                utilizador.setEstado(0);
+                utilizador.setAcessos(0);
                 utilizador.setId(parts[0]);
                 utilizador.setNome(parts[1]);
                 utilizador.setLocalizacaoX(Double.parseDouble(parts[2]));

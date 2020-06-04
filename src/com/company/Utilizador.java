@@ -1,10 +1,9 @@
 package com.company;
 
-import javax.xml.stream.Location;
 import java.io.Serializable;
 import java.util.*;
 
-public class Utilizador implements Serializable {
+public class Utilizador implements Serializable, IUtilizador {
     private String id;
     private String nome;
     private String email;
@@ -26,6 +25,19 @@ public class Utilizador implements Serializable {
         this.localizacaoY = localizacaoY;
         this.historico = historico;
         this.estado = estado;
+    }
+
+    public Utilizador(Utilizador utilizador) {
+        this.id = utilizador.id;
+        this.nome = utilizador.nome;
+        this.email = utilizador.email;
+        this.pwd = utilizador.pwd;
+        this.acessos = utilizador.acessos;
+        this.localizacaoX = utilizador.localizacaoX;
+        this.localizacaoY = utilizador.localizacaoY;
+        this.historico = utilizador.historico;
+        this.estado = utilizador.estado;
+
     }
 
     public String getEmail() {
@@ -55,6 +67,7 @@ public class Utilizador implements Serializable {
         this.historico = new HashSet<>() ;
         this.estado = 0;
     }
+
 
     public String getId() {
         return id;
@@ -119,8 +132,8 @@ public class Utilizador implements Serializable {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public Utilizador clone() throws CloneNotSupportedException {
+        return new Utilizador(this);
     }
 
     @Override
@@ -129,6 +142,7 @@ public class Utilizador implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Utilizador that = (Utilizador) o;
         return acessos == that.acessos &&
+                estado == that.estado &&
                 Double.compare(that.localizacaoX, localizacaoX) == 0 &&
                 Double.compare(that.localizacaoY, localizacaoY) == 0 &&
                 Objects.equals(id, that.id) &&
@@ -138,7 +152,7 @@ public class Utilizador implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, acessos, localizacaoX, localizacaoY, historico);
+        return Objects.hash(id, nome, acessos, localizacaoX, localizacaoY, historico, estado);
     }
 
     @Override
@@ -146,7 +160,7 @@ public class Utilizador implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append("Utilizador{").append("id =").append(id)
                 .append(", nome = ").append(nome)
-                .append(", rating = ").append(acessos)
+                .append(", acessos = ").append(acessos)
                 .append(", localizaçãoX = ").append(localizacaoX)
                 .append(", localizaçãoY = ").append(localizacaoY)
                 .append(", historico = ").append(historico)

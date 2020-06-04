@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.PrimitiveIterator;
 
-public class Encomenda implements Serializable {
+public class Encomenda implements Serializable, IEncomenda {
     private String id;
     private String loja;
     private String userId;

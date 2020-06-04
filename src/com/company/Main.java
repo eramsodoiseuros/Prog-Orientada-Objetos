@@ -41,7 +41,7 @@ public class Main {
 
 
 
-        } catch (IOException | ClassNotFoundException i) {
+        } catch (IOException | ClassNotFoundException | CloneNotSupportedException i) {
             i.printStackTrace();
         }
 
