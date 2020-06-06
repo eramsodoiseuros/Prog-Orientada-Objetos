@@ -16,8 +16,9 @@ public class Encomenda implements Serializable, IEncomenda {
     private String estafeta;
     private double preco;
     private ArrayList<LinhaEncomenda> produtos;
+    private String tipo;
 
-    public Encomenda(String id, String loja, String userId, double preco, Location destino, double peso, String estafeta, ArrayList<LinhaEncomenda> produtos) {
+    public Encomenda(String id, String loja, String userId, String tipo, double preco, Location destino, double peso, String estafeta, ArrayList<LinhaEncomenda> produtos) {
         this.id = id;
         this.loja = loja;
         this.userId = userId;
@@ -26,6 +27,7 @@ public class Encomenda implements Serializable, IEncomenda {
         this.estafeta = estafeta;
         this.produtos = produtos;
         this.preco = preco;
+        this.tipo = tipo;
 
     }
 
@@ -36,6 +38,7 @@ public class Encomenda implements Serializable, IEncomenda {
         this.peso = 0;
         this.destino = null;
         this.estafeta = null;
+        this.tipo = null;
         this.produtos = new ArrayList<>();
         this.preco = 0;
 
@@ -62,6 +65,14 @@ public class Encomenda implements Serializable, IEncomenda {
 
     public void setPeso(double peso) {
         this.peso = peso;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public double getPeso() {
@@ -107,6 +118,7 @@ public class Encomenda implements Serializable, IEncomenda {
         Encomenda encomenda = (Encomenda) o;
         return Double.compare(encomenda.peso, peso) == 0 &&
                 Objects.equals(id, encomenda.id) &&
+                Objects.equals(tipo, encomenda.tipo) &&
                 Objects.equals(loja, encomenda.loja) &&
                 Objects.equals(userId, encomenda.userId) &&
                 Objects.equals(destino, encomenda.destino) &&
@@ -116,7 +128,7 @@ public class Encomenda implements Serializable, IEncomenda {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, loja, userId, destino, peso, estafeta, produtos);
+        return Objects.hash(id, loja, userId, destino, peso, estafeta, produtos, tipo);
     }
 
     @Override
@@ -129,6 +141,7 @@ public class Encomenda implements Serializable, IEncomenda {
                 ", peso=" + peso +
                 ", estafeta='" + estafeta + '\'' +
                 ", produtos=" + produtos +
+                ", tipo=" + tipo +
                 '}';
     }
 

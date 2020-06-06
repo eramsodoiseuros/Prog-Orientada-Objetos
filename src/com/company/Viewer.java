@@ -482,6 +482,56 @@ public class Viewer {
 
     }
 
+    void menuUser(){
+
+        out.println("1. Encomendar");
+        out.println("2. Verificar historico de encomendas");
+
+    }
+
+    void menuUserEnc(){
+
+        out.println("Escolha uma loja:");
+        imprimeLoja();
+
+    }
+
+    void menuTrans(){
+
+        out.println("1. Encontrar uma encomenda:");
+        out.println("2. Verificar historico/faturação");
+    }
+
+    void menuTransEnc(){
+
+        out.println("Escolha uma loja:");
+        imprimeLoja();
+
+    }
+
+
+    void menuVol(){
+
+        out.println("1. Encontrar uma encomenda:");
+        out.println("2. Verificar historico");
+    }
+
+    void menuVolEnc(){
+
+        out.println("Escolha uma loja:");
+        imprimeLoja();
+
+    }
+
+    void menuLoja(){ //not sure
+
+        out.println("1. Verificar Inventario");
+        out.println("2. Verificar Encomendas");
+
+    }
+
+
+
 
 
 }

@@ -205,15 +205,12 @@ public class Voluntario implements Serializable, IVoluntario {
 
 
     public void aceitaMedicamentos(boolean state) {
-        setTipo("Med");
-    }
 
-    public boolean valida(String cod){
-        return cod.startsWith("v");
+        state = true;
     }
 
     public boolean aceitoTransporteMedicamentos(){
-        return this.tipo.equals("Med");
+        return this.tipo.equals("M");
     }
 
 

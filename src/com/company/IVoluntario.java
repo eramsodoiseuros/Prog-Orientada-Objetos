@@ -36,7 +36,6 @@ public interface IVoluntario extends Serializable {
 
     public Set<Encomenda> getRegistos();
 
-
     public void setDisponivel(boolean disponivel);
 
     public void setId(String id);
