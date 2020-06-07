@@ -1,5 +1,3 @@
-package com.company;
-
 import com.sun.jdi.Location;
 
 import java.io.IOException;

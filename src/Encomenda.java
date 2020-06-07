@@ -1,11 +1,7 @@
-package com.company;
-
 import javax.xml.stream.Location;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.PrimitiveIterator;
 
 public class Encomenda implements Serializable, IEncomenda {
     private String id;

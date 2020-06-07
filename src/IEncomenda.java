@@ -1,5 +1,3 @@
-package com.company;
-
 import javax.xml.stream.Location;
 import java.io.Serializable;
 import java.util.ArrayList;
