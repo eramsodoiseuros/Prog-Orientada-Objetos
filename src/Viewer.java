@@ -9,7 +9,7 @@ import static java.lang.System.*;
 public class Viewer {
 
     private Controler controler;
-    private Entidades e;
+
 
     public Controler getControler() {
         return controler;
@@ -19,19 +19,13 @@ public class Viewer {
         this.controler = controler;
     }
 
-    public Entidades getE() {
-        return e;
-    }
 
-    public void setE(Entidades e) {
-        this.e = e;
-    }
 
     public void menu() throws IOException, ClassNotFoundException, CloneNotSupportedException {
 
         int escolha = 0, entidade,navega;
         this.controler=new Controler();
-        this.e= new Entidades();
+
 
 
         String p ;
@@ -124,19 +118,6 @@ public class Viewer {
     return prod;
     }
 
-
-    public void inicia () throws IOException {
-        controler.getModel().setTransMap(e.fileToTrans());
-        controler.getModel().setLojaMap(e.filetoLoja());
-        controler.getModel().setUserMap(e.fileToUser());
-        controler.getModel().setVolMap(e.fileToVol());
-        controler.getModel().setEncMap(e.fileToEnc());
-        controler.getModel().loadInventLoja();
-        controler.getModel().guardaEstado();
-    }
-
-
-
         public void regista() throws IOException {
 
         Scanner scanner = new Scanner(System.in);
@@ -171,7 +152,8 @@ public class Viewer {
                         nome = scanner.nextLine();
 
                         if (this.controler.validaRegUser(email)) {
-                            this.controler.registaUtilizador(nome, email, p);
+
+                            this.controler.registaUtilizador("u" + controler.getModel().contaNCodUser(),nome, email, p);
                         }
                         else System.out.println("Email já em uso. Tente novamente com um novo email.");
                         break;

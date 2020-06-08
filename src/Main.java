@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args)  {
 
        // Model m = new Model() ;
-        Entidades e = new Entidades();
+
         Controler c = new Controler();
 
   /*     try {
@@ -33,7 +33,9 @@ public class Main {
 
         try {
         Viewer v =new Viewer();
+        c.inicia();
         v.menu();
+        System.out.println(v.getControler().getModel().getUserMap().toString());
 
 
 

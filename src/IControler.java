@@ -64,7 +64,7 @@ public interface IControler {
      */
 
 
-    public void registaUtilizador(String nome, String email, String pwd) throws IOException;
+    public void registaUtilizador(String id, String nome, String email, String pwd) throws IOException;
 
 
     /**
