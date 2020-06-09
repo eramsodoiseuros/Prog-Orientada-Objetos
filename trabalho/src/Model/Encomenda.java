@@ -3,7 +3,9 @@ package Model;
 import javax.xml.stream.Location;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Vector;
 
 public class Encomenda implements Serializable, IEncomenda {
     private String id;
@@ -11,12 +13,12 @@ public class Encomenda implements Serializable, IEncomenda {
     private String userId;
     private Location destino;
     private double peso;
-    private String estafeta;
+    private List<String> estafeta;
     private double preco;
     private ArrayList<LinhaEncomenda> produtos;
     private String tipo;
 
-    public Encomenda(String id, String loja, String userId, String tipo, double preco, Location destino, double peso, String estafeta, ArrayList<LinhaEncomenda> produtos) {
+    public Encomenda(String id, String loja, String userId, String tipo, double preco, Location destino, double peso, List<String> estafeta, ArrayList<LinhaEncomenda> produtos) {
         this.id = id;
         this.loja = loja;
         this.userId = userId;
@@ -35,7 +37,7 @@ public class Encomenda implements Serializable, IEncomenda {
         this.userId = null;
         this.peso = 0;
         this.destino = null;
-        this.estafeta = null;
+        this.estafeta = new Vector<>();
         this.tipo = null;
         this.produtos = new ArrayList<>();
         this.preco = 0;
@@ -81,7 +83,7 @@ public class Encomenda implements Serializable, IEncomenda {
         return destino;
     }
 
-    public String getEstafeta() {
+    public List<String> getEstafeta() {
         return estafeta;
     }
 
@@ -101,7 +103,7 @@ public class Encomenda implements Serializable, IEncomenda {
         this.destino = destino;
     }
 
-    public void setEstafeta(String estafeta) {
+    public void setEstafeta(List<String> estafeta) {
         this.estafeta = estafeta;
     }
 

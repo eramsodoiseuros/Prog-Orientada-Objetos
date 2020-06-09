@@ -16,24 +16,31 @@ public class Controler implements IControler {
 
     public Controler() {
         model = new Model();
-
         try {
+            //inicia(); // TO BE RUNNED IF S* HITS THE FAN
             this.model = model.loadEstado();
         } catch (IOException | ClassNotFoundException e) {
             view.alert("Erro", "O controler falhou a dar load do estado.");
         }
-
         view = new View(this);
     }
-
+                
+    public void setModel(IModel model) {
+        this.model = model;
+    }
+    public void save() {
+        try {
+            model.guardaEstado();
+        } catch (IOException e) {
+            view.alert("Erro", "O controller falhou a guardar o estado.");
+        }
+    }
     public IView getView(){
         return view;
     }
-
     public IModel getModel(){
         return model;
     }
-
     public void end_scene(ActionEvent e) {
         final Node source = (Node) e.getSource();
         final Stage stage = (Stage) source.getScene().getWindow();
@@ -41,7 +48,7 @@ public class Controler implements IControler {
     }
 
     public void update_user(Utilizador u){
-        view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, lojas(), historico(u)));
+        view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, lojas(), historico(u), encomendas(u)));
     }
     public void update_transportadora(Transportadora t){
         view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, lojas(), faturacao(t)));
@@ -51,9 +58,6 @@ public class Controler implements IControler {
     }
     public void update_loja(Loja l){
         view.make_window("Menu de Loja " + l.getNome(), view.menu_loja(l));
-    }
-
-    public void fazer_encomenda(Utilizador u, ListView<String> listView) {
     }
 
     public void loja_selecionada(Utilizador u, String nome) {
@@ -70,7 +74,9 @@ public class Controler implements IControler {
             if(l.getNome().equals(nome))
                 loja = l;
         }
-        view.make_window("Lista de produtos da Loja '" + loja.getNome() + "'", view.encomendas_ativas(t, precisa_recolha(loja)));
+        if(precisa_recolha(loja).size() > 0){
+            view.make_window("Lista de produtos da Loja '" + loja.getNome() + "'", view.encomendas_ativas(t, precisa_recolha(loja)));
+        } else view.alert("Não há mais encomendas.","A loja escolhida não têm encomendas ativas de momento");
     }
     public void loja_selecionada(Voluntario v, String nome) {
         Loja loja = new Loja();
@@ -81,18 +87,45 @@ public class Controler implements IControler {
         view.make_window("Lista de produtos da Loja '" + loja.getNome() + "'", view.encomendas_ativas(v, precisa_recolha(loja)));
     }
 
-    public void setModel(IModel model) {
-        this.model = model;
-    }
-
-    public void save() {
-        try {
-            model.guardaEstado();
-        } catch (IOException e) {
-            view.alert("Erro", "O controller falhou a guardar o estado.");
+    private Encomenda encomendas(Utilizador u) {
+        Encomenda e;
+        for(Encomenda enc : model.getEncMap().values()){
+            if(enc.getUserId().equals(u.getId())){
+                e = enc;
+                return e;
+            }
         }
+        return null;
     }
+    public void pedir_recolha(Transportadora t, String value){
+        model.getEncMap().get(value).getEstafeta().add("T " + t.getId() + " - " + t.getPreco_transporte() + "€ - " + t.estrela());
+    }
+    public void finalizar_encomenda(Utilizador u, String value, char type){
+        for(Encomenda enc : model.getEncMap().values()){
+            if(enc.getEstafeta().contains(value)){
+                u.getHistorico().add(enc);
+                model.getLojaMap().get(enc.getLoja()).addHistorico(enc);
+                if(type == 'T'){
+                    model.getTransMap().get(value).getHistorico().add(enc);
+                }
+                if(type == 'V'){
+                    model.getVolMap().get(value).getRegistos().add(enc);
+                }
+                model.getEncMap().remove(enc.getId());
+                return;
+            }
+        }
+    } //done
+    public void rating(Utilizador u, String s, char type){
+        if(type == 'T'){
+            model.getTransMap().get(s).getRating().add(5);
+        }
+        if(type == 'V'){
+            model.getVolMap().get(s).getRating().add(5);
+        }
+    } // not done, add prompt
 
+    // done
     public void registaTransportadora(String id, String nome, String email, String pwd, String nif, double range, double preco) throws IOException {
 
         Transportadora transportadora = new Transportadora();
@@ -157,6 +190,7 @@ public class Controler implements IControler {
         model.guardaEstado();
     }
 
+    // done
     public void validaRegUser(String email, String pwd, String nome) {
         if(email == null) return;
         if(pwd == null) return;
@@ -235,10 +269,11 @@ public class Controler implements IControler {
         }
     }
 
+    // done
     public void validaLogInUser(String email, String pwd) {
         for (Utilizador u : model.getUserMap().values()) {
             if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) {
-                view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, lojas(), historico(u)));
+                view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, lojas(), historico(u),encomendas(u)));
                 u.setAcessos(u.getAcessos()+1);
                 return;
             }
@@ -291,18 +326,80 @@ public class Controler implements IControler {
         loja.getLista_encomendas().add(encomenda);
         return encomenda;
     }
+    public boolean dentroRange(String userid, String lojaid, String transid) {
+        Utilizador user = this.model.getUserMap().get(userid);
+        Loja loja = this.model.getLojaMap().get(lojaid);
+        Transportadora tras = this.model.getTransMap().get(transid);
+        boolean r = true;
 
-    public void infoEnc(String idEnc) {
-        Encomenda e = this.model.getEncMap().get(idEnc);
+        if (Math.sqrt(Math.pow((loja.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - tras.getLocalizacaoY()), 2)) < tras.getRange() && Math.sqrt(Math.pow((user.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((user.getLocalizacaoY() - tras.getLocalizacaoY()), 2)) < tras.getRange()) {
+            r = true;
+        } else r = false;
 
-        Utilizador u = this.model.getUserMap().get(e.getUserId());
+        return r;
+    } // NEEDS TO BE ADDED
+    public double distancia(String userid, String lojaid, String transid) { //0-distancia tras-loja 1-user-trans
+        Utilizador user = this.model.getUserMap().get(userid);
+        Loja loja = this.model.getLojaMap().get(lojaid);
+        Transportadora tras = this.model.getTransMap().get(transid);
+        double r = 0;
 
-        Loja l = this.model.getLojaMap().get(e.getLoja());
+        r = Math.sqrt(Math.pow((loja.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - tras.getLocalizacaoY()), 2)) + Math.sqrt(Math.pow((user.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((user.getLocalizacaoY() - tras.getLocalizacaoY()), 2));
 
-        u.getHistorico().add(e);
-        l.getHistorico().add(e);
+
+        return r;
+    }
+    public double[] localizacao (){
+        double [] loc = new double[2];
+
+        Random r = new Random();
+        double low = -100;
+        double high = 100;
+        double resultX = r.nextDouble();
+        loc[0] = low + (resultX * (high - low));
+        double resultY = r.nextDouble();
+        loc[1] = low + (resultY * (high - low));
+
+        return loc;
     }
 
+    public List<String> lojas() {
+        List<String> s = new Vector<>();
+        for (Loja loja: model.getLojaMap().values()) {
+            s.add(loja.getNome());
+        }
+        return s;
+    }
+    private List<String> historico(Utilizador u) {
+        List<String> s = new Vector<>();
+        for (Encomenda e: u.getHistorico()) {
+            s.add(e.getId());
+        }
+        return s;
+    }
+    public List<String> produtos(Loja loja) {
+        List<String> s = new Vector<>();
+        for (LinhaEncomenda e : loja.getInventario()) {
+            s.add(e.getDescricao());
+        }
+        return s;
+    }
+    private List<String> faturacao(Transportadora t) {
+        List<String> s = new ArrayList<>();
+        for (Double d: t.getFaturacao()) {
+            s.add(d.toString());
+        };
+        return s;
+    }
+    private List<String> precisa_recolha(Loja l){
+        List<String> s = new ArrayList<>();
+        for(Encomenda enc : l.getLista_encomendas()){
+            s.add(enc.getId());
+        }
+        return s;
+    }
+
+    // not to be used ever again, emergencies only
     public void escreveMail() {
 
         int i = 1;
@@ -330,129 +427,6 @@ public class Controler implements IControler {
             i++;
         }
     }
-
-    public void avisaEstafeta(Encomenda e, String estafetaid) {
-
-        for (Transportadora t : this.model.getTransMap().values()) {
-            if (t.getId().equals(estafetaid)) t.getAtivas().add(e);
-
-        }
-
-        for (Voluntario v : this.model.getVolMap().values()) {
-            if (v.getId().equals(estafetaid)) v.getRegistos().add(e);
-        }
-
-    }
-
-    public String getUserid(String email, String pwd) {
-        String userId = null;
-        for (Utilizador u : model.getUserMap().values()) {
-            if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) {
-                userId = u.getId();
-
-            }
-
-
-        }
-
-        return userId;
-    }
-
-    public Utilizador getUser (String userID) throws CloneNotSupportedException {
-        return model.getUserMap().get(userID).clone();
-    }
-
-    public boolean dentroRange(String userid, String lojaid, String transid) {
-        Utilizador user = this.model.getUserMap().get(userid);
-        Loja loja = this.model.getLojaMap().get(lojaid);
-        Transportadora tras = this.model.getTransMap().get(transid);
-        boolean r = true;
-
-        if (Math.sqrt(Math.pow((loja.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - tras.getLocalizacaoY()), 2)) < tras.getRange() && Math.sqrt(Math.pow((user.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((user.getLocalizacaoY() - tras.getLocalizacaoY()), 2)) < tras.getRange()) {
-            r = true;
-        } else r = false;
-
-        return r;
-    }
-
-    public double distancia(String userid, String lojaid, String transid) { //0-distancia tras-loja 1-user-trans
-        Utilizador user = this.model.getUserMap().get(userid);
-        Loja loja = this.model.getLojaMap().get(lojaid);
-        Transportadora tras = this.model.getTransMap().get(transid);
-        double r = 0;
-
-        r = Math.sqrt(Math.pow((loja.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - tras.getLocalizacaoY()), 2)) + Math.sqrt(Math.pow((user.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((user.getLocalizacaoY() - tras.getLocalizacaoY()), 2));
-
-
-        return r;
-    }
-
-    public String getTransId(String email, String pwd) {
-        String transId = null;
-        for (Transportadora u : model.getTransMap().values()) {
-            if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) {
-                transId = u.getId();
-            }
-        }
-
-        return transId;
-    }
-
-    public double[] localizacao (){
-        double [] loc = new double[2];
-
-        Random r = new Random();
-        double low = -100;
-        double high = 100;
-        double resultX = r.nextDouble();
-        loc[0] = low + (resultX * (high - low));
-        double resultY = r.nextDouble();
-        loc[1] = low + (resultY * (high - low));
-
-        return loc;
-    }
-
-    public List<String> lojas() {
-        List<String> s = new Vector<>();
-        for (Loja loja: model.getLojaMap().values()) {
-            s.add(loja.getNome());
-        }
-        return s;
-    }
-
-    private List<String> historico(Utilizador u) {
-        List<String> s = new Vector<>();
-        for (Encomenda e: u.getHistorico()) {
-            s.add(e.getId());
-        }
-        return s;
-    }
-
-    public List<String> produtos(Loja loja) {
-        List<String> s = new Vector<>();
-        for (LinhaEncomenda e : loja.getInventario()) {
-            s.add(e.getDescricao());
-        }
-        return s;
-    }
-
-    private List<String> faturacao(Transportadora t) {
-        List<String> s = new ArrayList<>();
-        for (Double d: t.getFaturacao()) {
-            s.add(d.toString());
-        };
-        return s;
-    }
-
-    private List<String> precisa_recolha(Loja l){
-        List<String> s = new ArrayList<>();
-        for(Encomenda enc : l.getLista_encomendas()){
-            s.add(enc.getId());
-        }
-        return s;
-    }
-
-    // not to be used again
     public void inicia () throws IOException {
         model.fileToTrans();
         model.filetoLoja();
@@ -462,7 +436,6 @@ public class Controler implements IControler {
         model.loadInventLoja();
         escreveMail();
         model.guardaEstado();
-        System.out.println("iniciou");
     }
 }
 

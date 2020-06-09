@@ -10,7 +10,7 @@ public interface ITransportadora extends Serializable {
 
     public String getNome();
 
-    public ArrayList<Double> getRating();
+    public ArrayList<Integer> getRating();
 
     public String getTipo();
 
@@ -42,7 +42,7 @@ public interface ITransportadora extends Serializable {
 
     public void setPreco_transporte(double preco_transporte);
 
-    public void setRating(ArrayList<Double> rating);
+    public void setRating(ArrayList<Integer> rating);
 
     public void setRange(double range);
 

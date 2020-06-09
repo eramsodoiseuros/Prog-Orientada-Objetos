@@ -2,7 +2,7 @@ package Model;
 import javax.xml.stream.Location;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.List;
 
 public interface IEncomenda extends Serializable {
 
@@ -22,7 +22,7 @@ public interface IEncomenda extends Serializable {
 
     public Location getDestino();
 
-    public String getEstafeta();
+    public List<String> getEstafeta();
 
     public ArrayList<LinhaEncomenda> getProdutos();
 
@@ -32,7 +32,7 @@ public interface IEncomenda extends Serializable {
 
     public void setDestino(Location destino);
 
-    public void setEstafeta(String estafeta);
+    public void setEstafeta(List<String> estafeta);
 
     public void setUserId(String userId);
 

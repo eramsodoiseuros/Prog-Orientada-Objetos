@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Transportadora implements Serializable, ITransportadora {
     private String id;
-    private ArrayList<Double> rating;
+    private ArrayList<Integer> rating;
     private int n_encomendas;
     private double range;
     private double localizacaoX;
@@ -79,7 +79,7 @@ public class Transportadora implements Serializable, ITransportadora {
         this.preco_transporte = 0;
     }
 
-    public  Transportadora (String id, ArrayList<Double> rating, double distancia, int n_encomendas, int range, double localizacaoX, double localizacaoY, String nif, boolean disponivel, String tipo, String nome, double preco_km, int n_max, Set<Encomenda> historico, Set<Encomenda> ativas, List<Double> faturacao){
+    public  Transportadora (String id, ArrayList<Integer> rating, double distancia, int n_encomendas, int range, double localizacaoX, double localizacaoY, String nif, boolean disponivel, String tipo, String nome, double preco_km, int n_max, Set<Encomenda> historico, Set<Encomenda> ativas, List<Double> faturacao){
         this.id = id;
         this.disponivel = disponivel;
         this.localizacaoX = localizacaoX;
@@ -107,7 +107,7 @@ public class Transportadora implements Serializable, ITransportadora {
         return nome;
     }
 
-    public ArrayList<Double> getRating() {
+    public ArrayList<Integer> getRating() {
         return rating;
     }
 
@@ -171,7 +171,7 @@ public class Transportadora implements Serializable, ITransportadora {
         this.preco_transporte = preco_transporte;
     }
 
-    public void setRating(ArrayList<Double> rating) {
+    public void setRating(ArrayList<Integer> rating) {
         this.rating = rating;
     }
 

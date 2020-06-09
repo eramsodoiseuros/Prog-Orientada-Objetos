@@ -21,7 +21,7 @@ public interface IView {
     Scene login_transportadora();
     Scene login_loja();
 
-    Scene menu_user(Utilizador u, List<String> lojas, List<String> historico);
+    Scene menu_user(Utilizador u, List<String> lojas, List<String> historico, Encomenda encomenda);
     Scene menu_transportadora(Transportadora t, List<String> lojas, List<String> faturacao  );
     Scene menu_voluntario(Voluntario v, List<String> lojas);
     Scene menu_loja(Loja l);

@@ -125,32 +125,6 @@ public interface IControler {
 
     /**
      *
-     * @param idEnc
-     */
-    public void infoEnc(String idEnc);
-
-    /**
-     * adiciona mail e pwd a todas a entidades q n possuam ao ser carregadas pelo file do professor
-     */
-    public void escreveMail ();
-
-    /**
-     *
-     * @param e
-     * @param estafetaid
-     */
-    public void avisaEstafeta (Encomenda e, String estafetaid);
-
-    /**
-     *
-     * @param email do user
-     * @param pwd do user
-     * @return o ID do user a q essas credenciais pertencem
-     */
-    public String getUserid (String email, String pwd);
-
-    /**
-     *
      * @param userid Id do user
      * @param lojaid Id da loja
      * @param transid Id da transportadora
@@ -167,13 +141,6 @@ public interface IControler {
      */
     public double distancia (String userid, String lojaid, String transid);
 
-    /**
-     *
-     * @param email do trans
-     * @param pwd do trasn
-     * @return o ID do trans a q essas credenciais pertencem
-     */
-    public String getTransId (String email, String pwd);
 
     void save();
 
@@ -183,7 +150,16 @@ public interface IControler {
 
     void update_user(Utilizador u);
     void update_transportadora(Transportadora t);
+    void update_voluntario(Voluntario v);
+    void update_loja(Loja l);
 
     void loja_selecionada(Transportadora t, String nome);
+    void loja_selecionada(Voluntario v, String nome);
     void loja_selecionada(Utilizador u, String value);
+
+    void pedir_recolha(Transportadora t, String value);
+
+    void finalizar_encomenda(Utilizador u, String value, char type);
+
+    void rating(Utilizador u, String s, char type);
 }
