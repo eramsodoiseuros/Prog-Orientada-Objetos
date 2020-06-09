@@ -56,7 +56,6 @@ public class Controler implements IControler {
     }
 
     public void registaLoja(String id, String nome, String email, String pwd) throws IOException {
-
         Loja loja = new Loja();
 
         loja.setId(id);
@@ -66,127 +65,80 @@ public class Controler implements IControler {
 
         model.getLojaMap().putIfAbsent(email, loja);
         model.guardaEstado();
-
-
     }
 
 
-    public void registaUtilizador(String nome, String email, String pwd) throws IOException {
-
+    public void registaUtilizador(String id, String nome, String email, String pwd) throws IOException {
         Utilizador utilizador = new Utilizador();
 
+        utilizador.setId(id);
         utilizador.setEmail(email);
         utilizador.setPwd(pwd);
         utilizador.setNome(nome);
         utilizador.setEstado(0);
         utilizador.setAcessos(0);
 
-        model.getUserMap().putIfAbsent(email, utilizador);
+        model.getUserMap().putIfAbsent(id, utilizador);
         model.guardaEstado();
-
-
     }
 
     public boolean validaRegUser(String email) {
-
-        boolean r = false;
         for (Utilizador u : this.model.getUserMap().values()) {
-            if (!u.getEmail().equals(email) || u.getEmail() == null) r = true;
-
-            else r = false;
-
+            if (u.getEmail().equals(email) || u.getEmail() == null) return false;
         }
-        return r;
-
+        return true;
     }
 
     public boolean validaRegTrans(String email) {
-
         for (Transportadora u : model.getTransMap().values()) {
             if (u.getEmail().equals(email)) return false;
-
-
         }
-
         return true;
-
     }
 
     public boolean validaRegVol(String email) {
-
         for (Voluntario u : model.getVolMap().values()) {
             if (u.getEmail().equals(email)) return false;
-
-
         }
-
         return true;
-
     }
 
     public boolean validaRegLoja(String email) {
-
         for (Loja u : model.getLojaMap().values()) {
             if (u.getEmail().equals(email)) return false;
-
-
         }
-
         return true;
-
     }
 
     public boolean validaLogInUser(String email, String pwd) {
-
         for (Utilizador u : model.getUserMap().values()) {
             if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) {
-
                 return true;
             }
-
-
         }
-
         return false;
-
     }
 
     public boolean validaLogInTrans(String email, String pwd) {
-
         for (Transportadora u : model.getTransMap().values()) {
             if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) return true;
-
-
         }
-
         return false;
-
     }
 
     public boolean validaLogInVol(String email, String pwd) {
-
         for (Voluntario u : model.getVolMap().values()) {
             if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) return true;
-
-
         }
-
         return false;
-
     }
 
     public boolean validaLogInLoja(String email, String pwd) {
-
         for (Loja u : model.getLojaMap().values()) {
             if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) return true;
-
-
         }
-
         return false;
-
     }
-
 
     public Encomenda pedidoUser(LinhaEncomenda produto, String idLoja, String userId) throws IOException {
 
@@ -281,7 +233,6 @@ public class Controler implements IControler {
 
     public Utilizador getUser (String userID) throws CloneNotSupportedException {
         return model.getUserMap().get(userID).clone();
-
     }
 
     public boolean dentroRange(String userid, String lojaid, String transid) {

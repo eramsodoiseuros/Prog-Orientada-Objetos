@@ -4,7 +4,9 @@ import java.util.*;
 public class Model implements Serializable, IModel {
 
 
-
+    private File root = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+    private File inventario = new File(root, "Files\\Inventario.txt");
+    private File logsO = new File(root, "Files\\logsO.obj");
     private HashMap<String, Transportadora> transMap;
     private HashMap<String,Voluntario> volMap;
     private HashMap<String,Utilizador> userMap;
@@ -15,13 +17,11 @@ public class Model implements Serializable, IModel {
 
 
     public Model(){
-
-       this.transMap = new HashMap<>();
+        this.transMap = new HashMap<>();
         this.volMap = new HashMap<>();
         this.userMap = new HashMap<>();
         this.lojaMap = new HashMap<>();
         this.encMap = new HashMap<>();
-
     }
 
 
@@ -34,7 +34,7 @@ public class Model implements Serializable, IModel {
     }
 
     @Override
-    public String toString() {
+    public String toString(){
         return "Model{" +
                 "transMap=" + transMap + "\n"+
                 ", volMap=" + volMap + "\n"+
@@ -46,73 +46,58 @@ public class Model implements Serializable, IModel {
 
 
 
-    public void guardaEstado () throws IOException {
-
-        FileOutputStream fos = new FileOutputStream("C:\\Users\\ramg2\\Documents\\GitHub\\POO\\logsO.obj");
+    public void guardaEstado() throws IOException{
+        FileOutputStream fos = new FileOutputStream(logsO);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
 
         oos.writeObject(this);
 
         oos.close();
         fos.close();
-
     }
 
-    public Model loadEstado () throws IOException, ClassNotFoundException {
-        FileInputStream fis = new FileInputStream("C:\\Users\\ramg2\\Documents\\GitHub\\POO\\logsO.obj");
+    public Model loadEstado() throws IOException, ClassNotFoundException {
+        FileInputStream fis = new FileInputStream(logsO);
         ObjectInputStream ois = new ObjectInputStream(fis);
-
 
         return (Model) ois.readObject();
     }
 
-    public  int contaNCodEnc () {
-
-
+    public  int contaNCodEnc(){
         Set<String> set  = this.encMap.keySet();
         int i =1;
 
-        for (String s: set) {
+        for (String s: set){
             String[] parts = s.split("(?<=\\D)(?=\\d)",2);
             if(i == Integer.parseInt(parts[1])) i++;
 
         }
         return i;
-
     }
 
 
-    public  int contaNCodProd () {
-
-
+    public  int contaNCodProd(){
         Collection<Encomenda> set  = this.encMap.values();
         int i =1;
 
-        for (Encomenda enc: set) {
-            for (LinhaEncomenda le: enc.getProdutos()) {
+        for (Encomenda enc: set){
+            for (LinhaEncomenda le: enc.getProdutos()){
                 String[] parts = le.getCodProd().split("(?<=\\D)(?=\\d)",2);
                 if(le.getCodProd()==null || i==Integer.parseInt(parts[1])) i++;
-
             }
-
         }
         return i;
-
     }
 
     public  int contaNCodUser () {
-
-
         Set<String> set  = this.userMap.keySet();
         int i =1;
 
-        for (String s: set) {
+        for (String s: set){
             String[] parts = s.split("(?<=\\D)(?=\\d)",2);
             if(i == Integer.parseInt(parts[1])) i++;
-
         }
         return i;
-
     }
 
     public  int contaNCodTrans () {
@@ -127,12 +112,9 @@ public class Model implements Serializable, IModel {
 
         }
         return i;
-
     }
 
     public  int contaNCodLoja () {
-
-
         Set<String> set  = this.lojaMap.keySet();
         int i =1;
 
@@ -142,22 +124,17 @@ public class Model implements Serializable, IModel {
 
         }
         return i;
-
     }
 
     public  int contaNCodVol () {
-
-
         Set<String> set  = this.volMap.keySet();
         int i =1;
 
         for (String s: set) {
             String[] parts = s.split("(?<=\\D)(?=\\d)",2);
             if(i == Integer.parseInt(parts[1])) i++;
-
         }
         return i;
-
     }
 
 
@@ -197,27 +174,22 @@ public class Model implements Serializable, IModel {
     }
 
 
-
     public void registaEncomenda(String id, String userId, String lojaId, double peso,ArrayList<LinhaEncomenda> produtos){
+        Encomenda encomenda = new Encomenda();
 
-    Encomenda encomenda = new Encomenda();
+        encomenda.setId(id);
+        encomenda.setUserId(userId);
+        encomenda.setPeso(peso);
+        encomenda.setLoja(lojaId);
+        encomenda.setProdutos(produtos);
 
-    encomenda.setId(id);
-    encomenda.setUserId(userId);
-    encomenda.setPeso(peso);
-    encomenda.setLoja(lojaId);
-    encomenda.setProdutos(produtos);
-
-   this.encMap.putIfAbsent(id,encomenda);
-
-
+       this.encMap.putIfAbsent(id,encomenda);
     }
 
 
     public void loadInventLoja() throws IOException {
-
         BufferedReader reader = null;
-        reader = new BufferedReader(new FileReader("C:\\Users\\ramg2\\Documents\\GitHub\\POO\\Inventario.txt"));
+        reader = new BufferedReader(new FileReader(inventario));
 
         while (reader != null) {
             String line;
@@ -235,16 +207,7 @@ public class Model implements Serializable, IModel {
                 le.setPeso(Double.parseDouble(parts[4]));
 
                 loja.getInventario().add(le);
-
-
-
-
         }
         reader.close();
-
-
     }
-
-
-
 }

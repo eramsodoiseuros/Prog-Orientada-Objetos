@@ -33,9 +33,6 @@ public interface IControler {
      * @return Um voluntario para ser usada mais tarde
      * @throws IOException
      */
-
-
-
     public void registaVoluntario(String id , String nome, String email, String pwd,  double range ) throws IOException;
 
     /**
@@ -47,13 +44,12 @@ public interface IControler {
      * @apiNote tambem a adiciona ao Map de Lojas do Model
      * @return Uma loja para ser usada mais tarde
      * @throws IOException
-     */
-
+     * */
     public void registaLoja(String id,String nome, String email, String pwd) throws IOException;
 
     /**
      *
-     *
+     * @param id ID da Loja
      * @param nome Nome do Utilizador
      * @param email email do Utilizador
      * @param pwd pwd do Utilizador
@@ -62,9 +58,7 @@ public interface IControler {
      * @return Um Utilizador para ser usada mais tarde
      * @throws IOException
      */
-
-
-    public void registaUtilizador(String nome, String email, String pwd) throws IOException;
+    public void registaUtilizador(String id, String nome, String email, String pwd) throws IOException;
 
 
     /**

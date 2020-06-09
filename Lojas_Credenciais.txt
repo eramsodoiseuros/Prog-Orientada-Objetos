@@ -1,2 +1,0 @@
-loja@gmail.com=123456
-loja2@gmail.com=123456

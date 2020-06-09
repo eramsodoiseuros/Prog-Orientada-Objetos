@@ -28,19 +28,13 @@ public class Viewer {
     }
 
     public void menu() throws IOException, ClassNotFoundException, CloneNotSupportedException {
-
         int escolha = 0, entidade,navega;
-        this.controler=new Controler();
-        this.e= new Entidades();
-
 
         String p ;
         String email;
         String e;
         String nome;
         double range;
-
-        //inicia();
 
         Scanner scanner = new Scanner(System.in);
         this.controler.setModel(this.controler.getModel().loadEstado());
@@ -69,21 +63,20 @@ public class Viewer {
                     break;
             }
         }
-   }
+    }
 
 
 
 
 
-        public void imprimeLoja(){
-            int i =1;
-            for (Loja loja:this.controler.getModel().getLojaMap().values()) {
-                System.out.println(i+". "+loja.getNome()+"\n");
-                i++;
-
-            }
-
+    public void imprimeLoja(){
+        int i =1;
+        for (Loja loja:this.controler.getModel().getLojaMap().values()) {
+            System.out.println(i+". "+loja.getNome()+"\n");
+            i++;
         }
+
+    }
 
     public String selecionaLoja(int r){
         int i = 1;
@@ -95,15 +88,11 @@ public class Viewer {
                 for (LinhaEncomenda le: loja.getInventario()) {
                     System.out.println(k+". "+le.getDescricao()+"\n");
                     k++;
-
                 }
-
-
             }
             i++;
-
         }
-    return s;
+        return s;
     }
 
 
@@ -115,17 +104,17 @@ public class Viewer {
             if(i==r){
                 for (LinhaEncomenda le: loja.getInventario()) {
                     if(p==k) prod= le;
-
                     k++;
                 }
             }
             i++;
         }
-    return prod;
+        return prod;
     }
 
-
     public void inicia () throws IOException {
+        this.controler=new Controler();
+        this.e= new Entidades();
         controler.getModel().setTransMap(e.fileToTrans());
         controler.getModel().setLojaMap(e.filetoLoja());
         controler.getModel().setUserMap(e.fileToUser());
@@ -135,10 +124,7 @@ public class Viewer {
         controler.getModel().guardaEstado();
     }
 
-
-
-        public void regista() throws IOException {
-
+    public void regista() throws IOException {
         Scanner scanner = new Scanner(System.in);
         int entidade;
         String email;
@@ -146,94 +132,81 @@ public class Viewer {
         String nome;
         double range;
 
-            System.out.println("Selecione a entidade que quer registar:\n");
+        System.out.println("Selecione a entidade que quer registar:\n");
 
-            System.out.println("1. Utilizador\n");
-            System.out.println("2. Transportadora\n");
-            System.out.println("3. Voluntario\n");
-            System.out.println("4. Loja\n");
-            System.out.println("0. Anterior\n");
+        System.out.println("1. Utilizador\n");
+        System.out.println("2. Transportadora\n");
+        System.out.println("3. Voluntario\n");
+        System.out.println("4. Loja\n");
+        System.out.println("0. Anterior\n");
 
-            entidade = scanner.nextInt();
-            scanner.nextLine();
+        entidade = scanner.nextInt();
+        scanner.nextLine();
+        switch (entidade){
+            case 1:
+                System.out.println("Email:");
+                email = scanner.nextLine();
 
+                System.out.println("Password:");
+                p = scanner.nextLine();
 
-            //while (entidade != 0) {
-                switch (entidade) {
-                    case 1:
-                        System.out.println("Email:");
-                        email = scanner.nextLine();
+                System.out.println("Nome:");
+                nome = scanner.nextLine();
 
-                        System.out.println("Password:");
-                        p = scanner.nextLine();
-
-                        System.out.println("Nome:");
-                        nome = scanner.nextLine();
-
-                        if (this.controler.validaRegUser(email)) {
-                            this.controler.registaUtilizador(nome, email, p);
-                        }
-                        else System.out.println("Email já em uso. Tente novamente com um novo email.");
-                        break;
-                    case 2:
-                        System.out.println("Email:");
-                        email = scanner.nextLine();
-                        System.out.println("Password:");
-                        p = scanner.nextLine();
-
-                        System.out.println("Nome:");
-                        nome = scanner.nextLine();
-                        System.out.println("NIF:");
-                        String nif = scanner.nextLine();
-                        System.out.println("Range:");
-                        range = scanner.nextDouble();
-                        System.out.println("Preço por km:");
-                        double preco = scanner.nextDouble();
-
-                        if (this.controler.validaRegTrans(email))
-                            this.controler.registaTransportadora("t" + controler.getModel().contaNCodTrans(), nome, email, p, nif, range, preco);
-                        else System.out.println("Email já em uso. Tente novamente com um novo email.");
-
-                        break;
-                    case 3:
-                        System.out.println("Email:");
-                        email = scanner.nextLine();
-                        System.out.println("Password:");
-                        p = scanner.nextLine();
-
-                        System.out.println("Nome:");
-                        nome = scanner.nextLine();
-
-                        System.out.println("Range:");
-                        range = scanner.nextDouble();
-
-
-                        if (this.controler.validaRegVol(email))
-                            this.controler.registaVoluntario("v" + controler.getModel().contaNCodVol(), nome, email, p, range);
-                        else System.out.println("Email já em uso. Tente novamente com um novo email.");
-                        break;
-                    case 4:
-                        System.out.println("Email:");
-                        email = scanner.nextLine();
-                        System.out.println("Password:");
-                        p = scanner.nextLine();
-
-                        System.out.println("Nome:");
-                        nome = scanner.nextLine();
-
-
-                        if (this.controler.validaRegLoja(email))
-                            this.controler.registaLoja("l" + controler.getModel().contaNCodLoja(), nome, email, p);
-                        else System.out.println("Email já em uso. Tente novamente com um novo email.");
-
-                        break;
-
-
-
+                if (this.controler.validaRegUser(email)) {
+                    this.controler.registaUtilizador("u"+controler.getModel().contaNCodUser(), nome, email, p);
                 }
-           // }
+                else System.out.println("Email já em uso. Tente novamente com um novo email.");
+                break;
+            case 2:
+                System.out.println("Email:");
+                email = scanner.nextLine();
+                System.out.println("Password:");
+                p = scanner.nextLine();
 
+                System.out.println("Nome:");
+                nome = scanner.nextLine();
+                System.out.println("NIF:");
+                String nif = scanner.nextLine();
+                System.out.println("Range:");
+                range = scanner.nextDouble();
+                System.out.println("Preço por km:");
+                double preco = scanner.nextDouble();
+
+                if (this.controler.validaRegTrans(email))
+                    this.controler.registaTransportadora("t" + controler.getModel().contaNCodTrans(), nome, email, p, nif, range, preco);
+                else System.out.println("Email já em uso. Tente novamente com um novo email.");
+                break;
+            case 3:
+                System.out.println("Email:");
+                email = scanner.nextLine();
+                System.out.println("Password:");
+                p = scanner.nextLine();
+
+                System.out.println("Nome:");
+                nome = scanner.nextLine();
+
+                System.out.println("Range:");
+                range = scanner.nextDouble();
+                if (this.controler.validaRegVol(email))
+                    this.controler.registaVoluntario("v" + controler.getModel().contaNCodVol(), nome, email, p, range);
+                else System.out.println("Email já em uso. Tente novamente com um novo email.");
+                break;
+            case 4:
+                System.out.println("Email:");
+                email = scanner.nextLine();
+                System.out.println("Password:");
+                p = scanner.nextLine();
+
+                System.out.println("Nome:");
+                nome = scanner.nextLine();
+
+                if (this.controler.validaRegLoja(email))
+                    this.controler.registaLoja("l" + controler.getModel().contaNCodLoja(), nome, email, p);
+                else System.out.println("Email já em uso. Tente novamente com um novo email.");
+                break;
         }
+    }
 
     public void log_In() throws IOException, CloneNotSupportedException {
 
@@ -280,9 +253,6 @@ public class Viewer {
                             navega=scanner.nextInt();
                             confirmaEnc(controler.getUserid(e,p),navega);
                         }
-
-
-
                     } else {
                         System.out.println("Credenciais erradas ou não existentes");
                         log_In();
@@ -303,7 +273,7 @@ public class Viewer {
                         System.out.println("A esperar resposta do utilizador");
 
                     } else {
-                        System.out.println("Credenciais eraadas ou não existentes");
+                        System.out.println("Credenciais erradas ou não existentes");
                         log_In();
                     }
                     break;
@@ -313,20 +283,17 @@ public class Viewer {
                     System.out.println("Password:");
                     p = scanner.nextLine();
                     if (this.controler.validaLogInVol(e, p)) System.out.println("Log in bem sucedido");
-                    else System.out.println("Credenciais eraadas ou não existentes");
+                    else System.out.println("Credenciais erradas ou não existentes");
                     break;
-                case 4:
-                    System.out.println("Email:");
-                    e = scanner.nextLine();
-                    System.out.println("Password:");
-                    p = scanner.nextLine();
-                    if (this.controler.validaLogInLoja(e, p)) System.out.println("Log in bem sucedido");
-                    else System.out.println("Credenciais eraadas ou não existentes");
-                    break;
-
-
-            }
-        //}
+            case 4:
+                System.out.println("Email:");
+                e = scanner.nextLine();
+                System.out.println("Password:");
+                p = scanner.nextLine();
+                if (this.controler.validaLogInLoja(e, p)) System.out.println("Log in bem sucedido");
+                else System.out.println("Credenciais erradas ou não existentes");
+                break;
+        }
     }
 
 
@@ -446,11 +413,8 @@ public class Viewer {
                 s = loja;
 
             }
-
             i++;
-
         }
-
         return s;
     }
 

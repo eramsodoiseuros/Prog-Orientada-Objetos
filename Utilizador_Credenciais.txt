@@ -1,3 +1,0 @@
-renato@gmail.com=123456
-user@gmail.com=123456
-abc=123456

@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class Entidades {
 
+    private File root = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+    private File logs = new File(root, "Files\\logs_20200416.txt");
     private HashMap<String, Transportadora> dadosTrans;
     private HashMap<String, Utilizador> dadosUser;
     private HashMap<String, Voluntario> dadosVol;
@@ -38,7 +40,7 @@ public class Entidades {
     public HashMap<String, Voluntario> fileToVol() throws IOException {
 
         BufferedReader reader = null;
-        reader = new BufferedReader(new FileReader("C:\\Users\\ramg2\\Documents\\GitHub\\POO\\logs_20200416.txt"));
+        reader = new BufferedReader(new FileReader(logs));
 
         while (reader != null) {
             String line;
@@ -66,7 +68,7 @@ public class Entidades {
     public HashMap<String, Utilizador> fileToUser() throws IOException {
 
         BufferedReader reader = null;
-        reader = new BufferedReader(new FileReader("C:\\Users\\ramg2\\Documents\\GitHub\\POO\\logs_20200416.txt"));
+        reader = new BufferedReader(new FileReader(logs));
 
         while (reader != null) {
             String line;
@@ -96,7 +98,7 @@ public class Entidades {
     public HashMap<String, Transportadora> fileToTrans() throws IOException {
 
         BufferedReader reader = null;
-        reader = new BufferedReader(new FileReader("C:\\Users\\ramg2\\Documents\\GitHub\\POO\\logs_20200416.txt"));
+        reader = new BufferedReader(new FileReader(logs));
 
         while (reader != null) {
             String line;
@@ -144,7 +146,7 @@ public class Entidades {
     public HashMap<String, Loja> filetoLoja() throws IOException {
 
         BufferedReader reader = null;
-        reader = new BufferedReader(new FileReader("C:\\Users\\ramg2\\Documents\\GitHub\\POO\\logs_20200416.txt"));
+        reader = new BufferedReader(new FileReader(logs));
 
         while (reader != null) {
             String line;
@@ -172,7 +174,7 @@ public class Entidades {
     public HashMap<String, Encomenda> fileToEnc() throws IOException {
 
         BufferedReader reader = null;
-        reader = new BufferedReader(new FileReader("C:\\Users\\ramg2\\Documents\\GitHub\\POO\\logs_20200416.txt"));
+        reader = new BufferedReader(new FileReader(logs));
         int i = 4;
         int r = 0;
 

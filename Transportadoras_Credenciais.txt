@@ -1,6 +1,0 @@
-trans@gmail.com=123
-trans2@gmail.com=123456
-trans5@gmail.com=123456
-transp@gmail.com=123456
-trans@gmail.com=123456
-trans@gmail.com=741852963
