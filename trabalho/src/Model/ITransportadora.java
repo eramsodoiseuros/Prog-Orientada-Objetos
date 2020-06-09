@@ -133,4 +133,5 @@ public interface ITransportadora extends Serializable {
     public int compareTo(ITransportadora t);
 
     double getDistancia();
+
 }

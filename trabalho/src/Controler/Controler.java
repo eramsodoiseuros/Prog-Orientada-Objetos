@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /*
 *       NEED FIX
@@ -35,6 +34,12 @@ import java.util.stream.Collectors;
 * APLICAR FUNÇOES DE RANGE
 *
 * USAR TOP10
+*
+* FATURACAO DA TRANSPORTADORA
+*
+* MUDAR A CONTAGEM DOS ACESSOS
+*
+* gerar JDOC
 *
 * */
 
@@ -439,6 +444,7 @@ public class Controler implements IControler {
     }
 
 
+
     public  List<IUtilizador> top10Acessos ()  {
 
         List<IUtilizador> l = new ArrayList<>();
@@ -459,6 +465,7 @@ public class Controler implements IControler {
         return l.stream().sorted().collect(Collectors.toList());
 
     }
+
 
 
     // not to be used ever again, emergencies only

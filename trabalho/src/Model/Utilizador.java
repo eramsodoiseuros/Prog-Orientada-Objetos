@@ -72,7 +72,7 @@ public class Utilizador implements Serializable, IUtilizador, Comparable<IUtiliz
         this.acessos = 0;
         this.localizacaoX = 0;
         this.localizacaoY = 0;
-        this.historico = new HashSet<>();
+        this.historico = new HashSet<>() ;
         this.estado = 0;
     }
 
@@ -144,7 +144,6 @@ public class Utilizador implements Serializable, IUtilizador, Comparable<IUtiliz
         return new Utilizador(this);
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -176,7 +175,4 @@ public class Utilizador implements Serializable, IUtilizador, Comparable<IUtiliz
                 .append("}; \n");
         return sb.toString();
     }
-
-
-
 }
