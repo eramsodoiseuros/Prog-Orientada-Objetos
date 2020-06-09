@@ -5,25 +5,27 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
+/**
+ * Interface do Model
+ * */
 public interface IModel {
-
     /**
      * @return Mapa de encomendas com o seu ID como key
      */
-    HashMap<String, Encomenda> getEncMap();
+    HashMap<String, IEncomenda> getEncMap();
 
     /**
      *
      * @param encMap Mapa de encomendas com o seu ID como key
      */
-    void setEncMap(HashMap<String, Encomenda> encMap);
-
-    @Override
-    String toString();
-
+    void setEncMap(HashMap<String, IEncomenda> encMap);
 
     /**
      *
+     * */
+    String toString();
+
+    /**
      * Guarda o estado do model ou seja de todas as classes de entidades num ficheiro usando o ObjectOutputStream
      * @throws IOException
      */
@@ -72,21 +74,25 @@ public interface IModel {
      */
     int contaNCodVol ();
 
-    HashMap<String, Transportadora> getTransMap();
+    /**
+     *
+     * */
+    HashMap<String, ITransportadora> getTransMap();
 
-    HashMap<String, Loja> getLojaMap();
+    /**
+     *
+     * */
+    HashMap<String, ILoja> getLojaMap();
 
-    HashMap<String, Utilizador> getUserMap();
+    /**
+     *
+     * */
+    HashMap<String, IUtilizador> getUserMap();
 
-    HashMap<String, Voluntario> getVolMap();
-
-    void setTransMap(HashMap<String, Transportadora> transMap);
-
-    void setVolMap(HashMap<String, Voluntario> volMap);
-
-    void setUserMap(HashMap<String, Utilizador> userMap);
-
-    void setLojaMap(HashMap<String, Loja> lojaMap);
+    /**
+     *
+     * */
+    HashMap<String, IVoluntario> getVolMap();
 
     void registaEncomenda(String id, String userId, String lojaId, double peso, ArrayList<LinhaEncomenda> produtos);
 
@@ -96,13 +102,28 @@ public interface IModel {
      */
     void loadInventLoja() throws IOException;
 
+    /**
+     *
+     * */
     void fileToTrans() throws IOException;
 
+    /**
+     *
+     * */
     void filetoLoja() throws IOException;
 
+    /**
+     *
+     * */
     void fileToUser() throws IOException;
 
+    /**
+     *
+     * */
     void fileToVol() throws IOException;
 
+    /**
+     *
+     * */
     void fileToEnc() throws IOException;
 }

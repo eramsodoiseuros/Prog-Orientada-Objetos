@@ -9,11 +9,11 @@ public class Model implements Serializable, IModel {
     private File inventario = new File(root, "Files\\Inventario.txt");
     private File logsO = new File(root, "Files\\logsO.obj");
     private File logs_stor = new File(root, "Files\\logs_20200416.txt");
-    private HashMap<String, Transportadora> transMap;
-    private HashMap<String,Voluntario> volMap;
-    private HashMap<String,Utilizador> userMap;
-    private HashMap<String,Loja> lojaMap;
-    private HashMap<String,Encomenda> encMap;
+    private HashMap<String,ITransportadora> transMap;
+    private HashMap<String,IVoluntario> volMap;
+    private HashMap<String,IUtilizador> userMap;
+    private HashMap<String,ILoja> lojaMap;
+    private HashMap<String,IEncomenda> encMap;
 
     public Model(){
         this.transMap = new HashMap<>();
@@ -23,11 +23,11 @@ public class Model implements Serializable, IModel {
         this.encMap = new HashMap<>();
     }
 
-    public HashMap<String, Encomenda> getEncMap() {
+    public HashMap<String, IEncomenda> getEncMap() {
         return encMap;
     }
 
-    public void setEncMap(HashMap<String, Encomenda> encMap) {
+    public void setEncMap(HashMap<String, IEncomenda> encMap) {
         this.encMap = encMap;
     }
 
@@ -67,10 +67,10 @@ public class Model implements Serializable, IModel {
     }
 
     public  int contaNCodProd(){
-        Collection<Encomenda> set  = this.encMap.values();
+        Collection<IEncomenda> set  = this.encMap.values();
         int i =1;
 
-        for (Encomenda enc: set){
+        for (IEncomenda enc: set){
             for (LinhaEncomenda le: enc.getProdutos()){
                 String[] parts = le.getCodProd().split("(?<=\\D)(?=\\d)",2);
                 if(le.getCodProd()==null || i==Integer.parseInt(parts[1])) i++;
@@ -126,35 +126,35 @@ public class Model implements Serializable, IModel {
         return i;
     }
 
-    public HashMap<String, Transportadora> getTransMap() {
+    public HashMap<String, ITransportadora> getTransMap() {
         return transMap;
     }
 
-    public HashMap<String, Loja> getLojaMap() {
+    public HashMap<String, ILoja> getLojaMap() {
         return lojaMap;
     }
 
-    public HashMap<String, Utilizador> getUserMap() {
+    public HashMap<String, IUtilizador> getUserMap() {
         return userMap;
     }
 
-    public HashMap<String, Voluntario> getVolMap() {
+    public HashMap<String, IVoluntario> getVolMap() {
         return volMap;
     }
 
-    public void setTransMap(HashMap<String, Transportadora> transMap) {
+    public void setTransMap(HashMap<String, ITransportadora> transMap) {
         this.transMap = transMap;
     }
 
-    public void setVolMap(HashMap<String, Voluntario> volMap) {
+    public void setVolMap(HashMap<String, IVoluntario> volMap) {
         this.volMap = volMap;
     }
 
-    public void setUserMap(HashMap<String, Utilizador> userMap) {
+    public void setUserMap(HashMap<String, IUtilizador> userMap) {
         this.userMap = userMap;
     }
 
-    public void setLojaMap(HashMap<String, Loja> lojaMap) {
+    public void setLojaMap(HashMap<String, ILoja> lojaMap) {
         this.lojaMap = lojaMap;
     }
 
@@ -180,7 +180,7 @@ public class Model implements Serializable, IModel {
 
             String[] parts = line.split(",", 5);
 
-            Loja loja = this.lojaMap.get(parts[0]);
+            ILoja loja = this.lojaMap.get(parts[0]);
 
             LinhaEncomenda le = new LinhaEncomenda();
             le.setCodProd("p"+contaNCodProd());

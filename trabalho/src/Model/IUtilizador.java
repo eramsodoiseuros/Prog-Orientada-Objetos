@@ -3,36 +3,108 @@ import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * Interface de um Utilizador
+ * */
 public interface IUtilizador extends Serializable {
+    /**
+     *
+     * */
+    String getId();
 
-    public String getId();
+    /**
+     *
+     * */
+    void setNome(String nome);
 
-    public void setNome(String nome);
+    /**
+     *
+     * */
+    String getNome();
 
-    public String getNome();
+    /**
+     *
+     * */
+    void setId(String id);
 
-    public void setId(String id);
+    /**
+     *
+     * */
+    int getAcessos();
 
-    public int getAcessos();
+    /**
+     *
+     * */
+    int getEstado();
 
-    public int getEstado();
+    /**
+     *
+     * */
+    void setEstado(int estado);
 
-    public void setEstado(int estado);
+    /**
+     *
+     * */
+    void setHistorico(Set<IEncomenda> historico);
 
-    public void setHistorico(Set<Encomenda> historico);
+    /**
+     *
+     * */
+    void setAcessos(int acessos);
 
-    public void setAcessos(int acessos);
+    /**
+     *
+     * */
+    double getLocalizacaoX();
 
-    public double getLocalizacaoX();
+    /**
+     *
+     * */
+    double getLocalizacaoY();
 
-    public double getLocalizacaoY();
+    /**
+     *
+     * */
+    void setLocalizacaoX(double localizacaoX);
 
-    public void setLocalizacaoX(double localizacaoX);
+    /**
+     *
+     * */
+    void setLocalizacaoY(double localizacaoY);
 
-    public void setLocalizacaoY(double localizacaoY);
+    /**
+     *
+     *
+     * */
+    Set<IEncomenda> getHistorico();
 
-    public Set<Encomenda> getHistorico();
+    /**
+     *
+     * */
+    void setHistorico(TreeSet<IEncomenda> historico);
 
-    public void setHistorico(TreeSet<Encomenda> historico);
+    /**
+     *
+     * */
+    String getEmail();
 
+    /**
+     *
+     * */
+    String getPwd();
+
+    /**
+     *
+     * */
+    void setPwd(String s);
+
+    /**
+     *
+     * */
+    void setEmail(String s);
+
+    /**
+     *
+     * */
+    int compareTo(IUtilizador u);
 }

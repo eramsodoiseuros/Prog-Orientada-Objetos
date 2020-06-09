@@ -5,59 +5,77 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Interface de um Voluntário
+ * */
 public interface IVoluntario extends Serializable {
+    /* *
+     *
+     * */
+    String getId();
 
-    public String getId();
+    /* *
+     *
+     * */
+    String getPwd();
 
-    public double getLocalizacaoX();
+    /* *
+     *
+     * */
+    void setPwd(String pwd);
 
-    public double getLocalizacaoY();
+    /* *
+     *
+     * */
+    String getEmail();
 
-    public String getPwd();
+    /* *
+     *
+     * */
+    void setEmail(String email);
 
-    public void setPwd(String pwd);
+    /* *
+     *
+     * */
+    String getNome();
 
-    public String getEmail();
+    /* *
+     *
+     * */
+    ArrayList<Integer> getRating();
 
-    public void setEmail(String email);
+    /* *
+     *
+     * */
+    Set<IEncomenda> getRegistos();
 
-    public String getNome();
+    /* *
+     *
+     * */
+    void setId(String id);
 
-    public int getN_encomendas();
+    /* *
+     *
+     * */
+    void setNome(String nome);
 
-    public double getRange();
+    /* *
+     *
+     * */
+    void setLocalizacaoX(double localizacaoX);
 
-    public String getTipo();
+    /* *
+     *
+     * */
+    void setLocalizacaoY(double localizacaoY);
 
-    public ArrayList<Integer> getRating();
+    /* *
+     *
+     * */
+    void setRange(double range);
 
-    public boolean isDisponivel();
-
-    public Set<Encomenda> getRegistos();
-
-    public void setDisponivel(boolean disponivel);
-
-    public void setId(String id);
-
-    public void setNome(String nome);
-
-    public void setLocalizacaoX(double localizacaoX);
-
-    public void setLocalizacaoY(double localizacaoY);
-
-    public void setN_encomendas(int n_encomendas);
-
-    public Encomenda getAtiva();
-
-    public void setAtiva(Encomenda ativa);
-
-    public void setRange(double range);
-
-    public void setRating(ArrayList<Integer> rating);
-
-    public void setTipo(String tipo);
-
-    public void setRegistos(Set<Encomenda> registos);
-
-    public double estrela();
+    /* *
+     *
+     * */
+    double estrela();
 }

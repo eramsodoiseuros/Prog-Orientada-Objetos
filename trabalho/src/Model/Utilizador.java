@@ -1,9 +1,11 @@
 package Model;
 
+import com.sun.webkit.network.Util;
+
 import java.io.Serializable;
 import java.util.*;
 
-public class Utilizador implements Serializable, IUtilizador {
+public class Utilizador implements Serializable, IUtilizador, Comparable<IUtilizador> {
     private String id;
     private String nome;
     private String email;
@@ -13,9 +15,15 @@ public class Utilizador implements Serializable, IUtilizador {
     private double localizacaoY;
     private int estado;
 
-    private Set<Encomenda> historico;
+    private Set<IEncomenda> historico;
 
-    public Utilizador(String id,String email, String pwd, String nome, int acessos, double localizacaoX, double localizacaoY, Set<Encomenda> historico, int estado) {
+
+    @Override
+    public int compareTo(IUtilizador u){
+        return this.acessos - u.getAcessos();
+    }
+
+    public Utilizador(String id,String email, String pwd, String nome, int acessos, double localizacaoX, double localizacaoY, Set<IEncomenda> historico, int estado) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -97,7 +105,7 @@ public class Utilizador implements Serializable, IUtilizador {
         this.estado = estado;
     }
 
-    public void setHistorico(Set<Encomenda> historico) {
+    public void setHistorico(Set<IEncomenda> historico) {
         this.historico = historico;
     }
 
@@ -123,11 +131,11 @@ public class Utilizador implements Serializable, IUtilizador {
     }
 
 
-    public Set<Encomenda> getHistorico() {
+    public Set<IEncomenda> getHistorico() {
         return historico;
     }
 
-    public void setHistorico(TreeSet<Encomenda> historico) {
+    public void setHistorico(TreeSet<IEncomenda> historico) {
         this.historico = historico;
     }
 

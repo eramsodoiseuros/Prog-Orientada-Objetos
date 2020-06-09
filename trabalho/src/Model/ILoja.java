@@ -5,49 +5,84 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Interface de uma Loja
+ * */
 public interface ILoja extends Serializable {
+    /**
+     *
+     * */
+    Set<LinhaEncomenda> getInventario();
 
-    public Set<LinhaEncomenda> getInventario();
+    /**
+     *
+     * */
+    String getId();
 
-    public void setInventario(Set<LinhaEncomenda> inventario);
+    /**
+     *
+     * */
+    String getNome();
 
-    public String getId();
+    /**
+     *
+     * */
+    String getPwd();
 
-    public String getNome();
+    /**
+     *
+     * */
+    void setPwd(String pwd);
 
-    public String getPwd();
+    /**
+     *
+     * */
+    String getEmail();
 
-    public void setPwd(String pwd);
+    /**
+     *
+     * */
+    void setEmail(String email);
 
-    public String getEmail();
+    /**
+     *
+     * */
+    void setNome(String nome);
 
-    public void setEmail(String email);
+    /**
+     *
+     * */
+    double getLocalizacaoY();
 
-    public void setNome(String nome);
+    /**
+     *
+     * */
+    double getLocalizacaoX();
 
-    public double getLocalizacaoY();
+    /**
+     *
+     * */
+    HashSet<IEncomenda> getLista_encomendas();
 
-    public double getLocalizacaoX();
+    /**
+     *
+     * */
+    void setId(String id);
 
-    public Fila getFila();
+    /**
+     *
+     * */
+    void setLocalizacaoX(double localizacaoX);
 
-    public HashSet<Encomenda> getLista_encomendas();
+    /**
+     *
+     * */
+    void setLocalizacaoY(double localizacaoY);
 
-    public HashSet<Encomenda> getHistorico();
+    /**
+     *
+     * */
+    void addHistorico (IEncomenda e);
 
-    public void setId(String id);
-
-    public void setLocalizacaoX(double localizacaoX);
-
-    public void setLocalizacaoY(double localizacaoY);
-
-    public void setFila(Fila fila);
-
-    public void setLista_encomendas(HashSet<Encomenda> lista_encomendas);
-
-    public void setHistorico(HashSet<Encomenda> historico);
-
-    public void addLista (Encomenda e);
-
-    public void addHistorico (Encomenda e);
+    String fila();
 }

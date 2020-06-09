@@ -4,70 +4,112 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Interface de uma Transportadora
+ * */
 public interface ITransportadora extends Serializable {
+    /**
+     *
+     * */
+    String getNome();
 
-    public String getNif();
+    /**
+     *
+     * */
+    ArrayList<Integer> getRating();
 
-    public String getNome();
+    /**
+     *
+     * */
+    double getRange();
 
-    public ArrayList<Integer> getRating();
+    /**
+     *
+     * */
+    double getLocalizacaoX();
 
-    public String getTipo();
+    /**
+     *
+     * */
+    double getLocalizacaoY();
 
-    public double getRange();
+    /**
+     *
+     * */
+    void setLocalizacaoY(double localizacaoY);
 
-    public int getN_encomendas();
+    /**
+     *
+     * */
+    void setLocalizacaoX(double localizacaoX);
 
-    public double getLocalizacaoX();
+    /**
+     *
+     * */
+    String getId();
 
-    public double getLocalizacaoY();
+    /**
+     *
+     * */
+    Set<IEncomenda> getHistorico();
 
-    public void setLocalizacaoY(double localizacaoY);
+    /**
+     *
+     * */
+    List<Double> getFaturacao();
 
-    public void setLocalizacaoX(double localizacaoX);
+    /**
+     *
+     * */
+    double getPreco_transporte();
 
-    public String getId();
+    /**
+     *
+     * */
+    void setRange(double range);
 
-    public double getPreco_km();
+    /**
+     *
+     * */
+    void setId(String id) ;
 
-    public int getN_max();
+    /**
+     *
+     * */
+    void setPreco_km(double preco_km);
 
-    public Set<Encomenda> getHistorico();
+    /**
+     *
+     * */
+    void setNif(String nif);
 
-    public List<Double> getFaturacao();
+    /**
+     *
+     * */
+    void setNome(String nome);
 
-    public void setTipo(String tipo);
+    /**
+     *
+     * */
+    Double estrela();
 
-    public double getPreco_transporte();
+    /**
+     *
+     * */
+    String getEmail();
 
-    public void setPreco_transporte(double preco_transporte);
+    /**
+     *
+     * */
+    String getPwd();
 
-    public void setRating(ArrayList<Integer> rating);
+    /**
+     *
+     * */
+    void setPwd(String s);
 
-    public void setRange(double range);
-
-    public void setN_encomendas(int n_encomendas) ;
-
-
-    public void setId(String id) ;
-
-    public void setDisponivel(boolean disponivel) ;
-
-    public void setFaturacao(List<Double> faturacao);
-
-    public void setN_max(int n_max);
-
-    public void setPreco_km(double preco_km);
-
-    public void setAtivas(Set<Encomenda> ativas);
-
-    public void setNif(String nif);
-
-    public void setNome(String nome);
-
-    public boolean valida(String cod);
-
-    public Set<Encomenda> getAtivas();
-
-    public void setHistorico(Set<Encomenda> historico);
+    /**
+     *
+     * */
+    void setEmail(String s);
 }

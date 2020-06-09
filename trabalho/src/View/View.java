@@ -333,7 +333,7 @@ public class View implements IView{
     } // done
 
     @Override
-    public Scene menu_user(Utilizador u, List<String> lojas, List<String> historico, Encomenda encomenda ) {
+    public Scene menu_user(IUtilizador u, List<String> lojas, List<String> historico, IEncomenda encomenda ) {
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
 
@@ -374,7 +374,7 @@ public class View implements IView{
     }
 
     @Override
-    public Scene menu_transportadora(Transportadora t, List<String> lojas, List<String> faturacao ) {
+    public Scene menu_transportadora(ITransportadora t, List<String> lojas, List<String> faturacao ) {
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
 
@@ -400,7 +400,7 @@ public class View implements IView{
     }
 
     @Override
-    public Scene menu_voluntario(Voluntario v, List<String> lojas) {
+    public Scene menu_voluntario(IVoluntario v, List<String> lojas) {
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
 
@@ -422,12 +422,25 @@ public class View implements IView{
     }
 
     @Override
-    public Scene menu_loja(Loja l) {
-        return null;
+    public Scene menu_loja(ILoja l) {
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(20, 20, 20, 20));
+
+        Label lblnumero = new Label("Número de pessoas em fila:");
+        Label lbl = new Label(l.fila());
+
+        Button update = new Button("Update");
+        update.setOnAction(e -> {
+            c.update_loja(l);
+            c.end_scene(e);
+        });
+
+        layout.getChildren().addAll(lblnumero, lbl, update);
+        return new Scene(layout, 400, 300);
     }
 
     @Override
-    public Scene select_produtos(Utilizador u, Loja l, List<String> produtos) {
+    public Scene select_produtos(IUtilizador u, ILoja l, List<String> produtos) {
         VBox layout = new VBox(10);
 
         Button comprar = new Button("Finalizar encomenda");
@@ -463,12 +476,7 @@ public class View implements IView{
     }
 
     @Override
-    public void setControler(IControler controler) {
-        this.c = controler;
-    }
-
-    @Override
-    public Scene encomendas_ativas(Transportadora t, List<String> recolhas){
+    public Scene encomendas_ativas(ITransportadora t, List<String> recolhas){
         VBox layout = new VBox(10);
 
         ComboBox<String> cb = new ComboBox<>();
@@ -485,8 +493,20 @@ public class View implements IView{
     }
 
     @Override
-    public Scene encomendas_ativas(Voluntario v, List<String> recolhas){
+    public Scene encomendas_ativas(IVoluntario v, List<String> recolhas){
         return null;
+    }
+
+    @Override
+    public Scene encomendas_ativas(List<String> encomendas){
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(20, 20, 20, 20));
+
+        listView= new ListView<>();
+        listView.getItems().addAll(encomendas);
+
+        layout.getChildren().addAll(listView);
+        return new Scene(layout, 600, 500);
     }
 
     /* Verifica a escolhe feita no menu */
@@ -549,7 +569,7 @@ public class View implements IView{
         }
 
         if(s.equals("[Encomendas Ativas]")){
-            alert("Funcionalidade", "CODE NOT IMPLEMENTED"); // HELP
+            c.listar_on_going();
         }
-    } // need fix
+    } // done
 }

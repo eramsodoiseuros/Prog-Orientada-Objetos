@@ -24,8 +24,8 @@ public class Transportadora implements Serializable, ITransportadora {
     private double preco_transporte;
     private int n_max;
 
-    private Set<Encomenda> ativas;
-    private Set<Encomenda> historico;
+    private Set<IEncomenda> ativas;
+    private Set<IEncomenda> historico;
     private List<Double> faturacao;
 
     public boolean isDisponivel() {
@@ -72,14 +72,14 @@ public class Transportadora implements Serializable, ITransportadora {
         this.localizacaoX =0;
         this.localizacaoY = 0;
         this.faturacao = new ArrayList<>();
-        this.ativas = new HashSet<Encomenda>();
-        this.historico = new HashSet<Encomenda>();
+        this.ativas = new HashSet<IEncomenda>();
+        this.historico = new HashSet<IEncomenda>();
         this.pwd = null;
         this.email = null;
         this.preco_transporte = 0;
     }
 
-    public  Transportadora (String id, ArrayList<Integer> rating, double distancia, int n_encomendas, int range, double localizacaoX, double localizacaoY, String nif, boolean disponivel, String tipo, String nome, double preco_km, int n_max, Set<Encomenda> historico, Set<Encomenda> ativas, List<Double> faturacao){
+    public  Transportadora (String id, ArrayList<Integer> rating, double distancia, int n_encomendas, int range, double localizacaoX, double localizacaoY, String nif, boolean disponivel, String tipo, String nome, double preco_km, int n_max, Set<IEncomenda> historico, Set<IEncomenda> ativas, List<Double> faturacao){
         this.id = id;
         this.disponivel = disponivel;
         this.localizacaoX = localizacaoX;
@@ -96,7 +96,6 @@ public class Transportadora implements Serializable, ITransportadora {
         this.faturacao = faturacao;
         this.historico = historico;
         this.ativas = ativas;
-
     }
 
     public String getNif() {
@@ -151,7 +150,7 @@ public class Transportadora implements Serializable, ITransportadora {
         return n_max;
     }
 
-    public Set<Encomenda> getHistorico() {
+    public Set<IEncomenda> getHistorico() {
         return historico;
     }
 
@@ -183,7 +182,6 @@ public class Transportadora implements Serializable, ITransportadora {
         this.n_encomendas = n_encomendas;
     }
 
-
     public void setId(String id) {
         this.id = id;
     }
@@ -204,7 +202,7 @@ public class Transportadora implements Serializable, ITransportadora {
         this.preco_km = preco_km;
     }
 
-    public void setAtivas(Set<Encomenda> ativas) {
+    public void setAtivas(Set<IEncomenda> ativas) {
         this.ativas = ativas;
     }
 
@@ -220,11 +218,11 @@ public class Transportadora implements Serializable, ITransportadora {
         return cod.startsWith("t");
     }
 
-    public Set<Encomenda> getAtivas() {
+    public Set<IEncomenda> getAtivas() {
         return ativas;
     }
 
-    public void setHistorico(Set<Encomenda> historico) {
+    public void setHistorico(Set<IEncomenda> historico) {
         this.historico = historico;
     }
 
@@ -281,7 +279,7 @@ public class Transportadora implements Serializable, ITransportadora {
         return Objects.hash(id, rating, n_encomendas, range, localizacaoX, localizacaoY, disponivel, nif, email, pwd, tipo, nome, preco_km, n_max, ativas, historico, faturacao);
     }
 
-    public double estrela(){
+    public Double estrela(){
         double sum = 0;
         if(!this.rating.isEmpty()) {
             for (double mark : this.rating) {

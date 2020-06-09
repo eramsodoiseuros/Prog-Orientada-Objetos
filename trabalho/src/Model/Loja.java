@@ -13,8 +13,8 @@ public class Loja implements Serializable, ILoja {
     private double localizacaoX;
     private double localizacaoY;
     private Fila fila;
-    private HashSet<Encomenda> lista_encomendas;
-    private HashSet<Encomenda> historico;
+    private HashSet<IEncomenda> lista_encomendas;
+    private HashSet<IEncomenda> historico;
     private Set<LinhaEncomenda> inventario;
 
     public Loja(Loja l) {
@@ -38,7 +38,7 @@ public class Loja implements Serializable, ILoja {
         this.inventario = inventario;
     }
 
-    public Loja(String id, String nome, String email, String pwd, double localizacaoX, double localizacaoY, Fila fila, HashSet<Encomenda> lista_encomendas, HashSet<Encomenda> historico, Set<LinhaEncomenda> inventario) {
+    public Loja(String id, String nome, String email, String pwd, double localizacaoX, double localizacaoY, Fila fila, HashSet<IEncomenda> lista_encomendas, HashSet<IEncomenda> historico, Set<LinhaEncomenda> inventario) {
         this.id = id;
         this.nome = nome;
         this.pwd = pwd;
@@ -55,7 +55,7 @@ public class Loja implements Serializable, ILoja {
         this.id = null;
         this.localizacaoX = 0;
         this.localizacaoY = 0;
-        this.fila = null;
+        this.fila = new Fila();
         this.pwd = null;
         this.email = null;
         this.lista_encomendas = new HashSet<>();
@@ -104,11 +104,11 @@ public class Loja implements Serializable, ILoja {
         return fila;
     }
 
-    public HashSet<Encomenda> getLista_encomendas() {
+    public HashSet<IEncomenda> getLista_encomendas() {
         return lista_encomendas;
     }
 
-    public HashSet<Encomenda> getHistorico() {
+    public HashSet<IEncomenda> getHistorico() {
         return historico;
     }
 
@@ -128,11 +128,11 @@ public class Loja implements Serializable, ILoja {
         this.fila = fila;
     }
 
-    public void setLista_encomendas(HashSet<Encomenda> lista_encomendas) {
+    public void setLista_encomendas(HashSet<IEncomenda> lista_encomendas) {
         this.lista_encomendas = lista_encomendas;
     }
 
-    public void setHistorico(HashSet<Encomenda> historico) {
+    public void setHistorico(HashSet<IEncomenda> historico) {
         this.historico = historico;
     }
 
@@ -176,18 +176,21 @@ public class Loja implements Serializable, ILoja {
                 '}';
     }
 
-    public void addLista (Encomenda e){
+    public void addLista (IEncomenda e){
         lista_encomendas.add(e);
     }
 
-    public void addHistorico (Encomenda e){
+    public void addHistorico (IEncomenda e){
         historico.add(e);
     }
 
-
+    @Override
+    public String fila() {
+        return fila.toString();
+    }
 }
 
-class Fila{
+class Fila implements Serializable{
     private int n_max;
     private int em_fila;
     private int tempo_medio;
@@ -198,6 +201,13 @@ class Fila{
         this.em_fila = em_fila;
         this.tempo_medio = tempo_medio;
         this.disponivel = disponivel;
+    }
+
+    public Fila(){
+        this.n_max = 0;
+        this.em_fila = 0;
+        this.tempo_medio = 0;
+        this.disponivel = true;
     }
 
     public int getN_max() {
@@ -243,6 +253,10 @@ class Fila{
                 disponivel == fila.disponivel;
     }
 
+    @Override
+    public String toString(){
+        return ""+em_fila+"";
+    }
     @Override
     public int hashCode() {
         return Objects.hash(n_max, em_fila, tempo_medio, disponivel);

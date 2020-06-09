@@ -17,10 +17,10 @@ public class Voluntario implements Serializable, IVoluntario {
 
     private String tipo;
     private String nome;
-    private Set<Encomenda> registos;
-    private Encomenda ativa;
+    private Set<IEncomenda> registos;
+    private IEncomenda ativa;
 
-    public Voluntario(String id, String email, String pwd, ArrayList<Integer> rating, int n_encomendas, int range, double localizacaoX, double localizacaoY, boolean disponivel, String tipo, String nome, Set<Encomenda> registos, Encomenda ativa) {
+    public Voluntario(String id, String email, String pwd, ArrayList<Integer> rating, int n_encomendas, int range, double localizacaoX, double localizacaoY, boolean disponivel, String tipo, String nome, Set<IEncomenda> registos, Encomenda ativa) {
         this.id = id;
         this.tipo = tipo;
         this.nome = nome;
@@ -50,7 +50,7 @@ public class Voluntario implements Serializable, IVoluntario {
         this.localizacaoY = 0;
         this.n_encomendas = 0;
         this.disponivel = false;
-        this.registos = new HashSet<Encomenda>();
+        this.registos = new HashSet<IEncomenda>();
         this.ativa = new Encomenda();
     }
 
@@ -106,7 +106,7 @@ public class Voluntario implements Serializable, IVoluntario {
         return disponivel;
     }
 
-    public Set<Encomenda> getRegistos() {
+    public Set<IEncomenda> getRegistos() {
         return registos;
     }
 
@@ -135,7 +135,7 @@ public class Voluntario implements Serializable, IVoluntario {
         this.n_encomendas = n_encomendas;
     }
 
-    public Encomenda getAtiva() {
+    public IEncomenda getAtiva() {
         return ativa;
     }
 
@@ -155,7 +155,7 @@ public class Voluntario implements Serializable, IVoluntario {
         this.tipo = tipo;
     }
 
-    public void setRegistos(Set<Encomenda> registos) {
+    public void setRegistos(Set<IEncomenda> registos) {
         this.registos = registos;
     }
 

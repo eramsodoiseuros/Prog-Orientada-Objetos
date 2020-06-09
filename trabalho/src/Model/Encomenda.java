@@ -154,21 +154,16 @@ public class Encomenda implements Serializable, IEncomenda {
         this.produtos = produtos;
     }
 
-    public ArrayList<LinhaEncomenda> addProdutos(LinhaEncomenda p) {
-
+    public void addProdutos(LinhaEncomenda p) {
         produtos.add(p);
-        return produtos;
     }
 
     public ArrayList<LinhaEncomenda> addProdutosFromString (String s){
-
-
         ArrayList<LinhaEncomenda> l = new ArrayList<>();
         int i =0;
         int r = 0;
         String[] parts = s.split(",", 20);
         while (r<20) {
-
             LinhaEncomenda le = new LinhaEncomenda();
 
             le.setCodProd(parts[r]);
@@ -184,10 +179,8 @@ public class Encomenda implements Serializable, IEncomenda {
     }
 
     public boolean existeProduto(String codProd) {
-
         for (LinhaEncomenda f : produtos) {
             if (f.getCodProd().equals(codProd)) return true;
-
         }
 
         return false;
@@ -197,7 +190,6 @@ public class Encomenda implements Serializable, IEncomenda {
         double i = 0;
         for (LinhaEncomenda f : produtos) {
             i += f.precoTot();
-
         }
 
         return i;
@@ -207,12 +199,9 @@ public class Encomenda implements Serializable, IEncomenda {
         double i = 0;
         for (LinhaEncomenda f : produtos) {
             i += f.pesoTot();
-
         }
 
         return i;
     }
-
-
 }
 

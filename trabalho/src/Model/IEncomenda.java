@@ -4,47 +4,68 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Interface de uma Encomenda
+ * */
 public interface IEncomenda extends Serializable {
+    /**
+     *
+     * */
+    void setPreco(double preco);
 
-    public double getPreco();
+    /**
+     *
+     * */
+    String getId();
 
-    public void setPreco(double preco);
+    /**
+     *
+     * */
+    String getLoja();
 
-    public String getId();
+    /**
+     *
+     * */
+    String getUserId();
 
-    public String getLoja();
+    /**
+     *
+     * */
+    void setPeso(double peso);
 
-    public String getUserId();
+    /**
+     *
+     * */
+    List<String> getEstafeta();
 
-    public void setPeso(double peso);
+    /**
+     *
+     * */
+    ArrayList<LinhaEncomenda> getProdutos();
 
-    public double getPeso();
+    /**
+     *
+     * */
+    void setId(String id);
 
-    public Location getDestino();
+    /**
+     *
+     * */
+    void setLoja(String loja);
 
-    public List<String> getEstafeta();
+    /**
+     *
+     * */
+    void setUserId(String userId);
 
-    public ArrayList<LinhaEncomenda> getProdutos();
+    /**
+     *
+     * */
+    void setProdutos(ArrayList<LinhaEncomenda> produtos);
 
-    public void setId(String id);
+    /**
+     *
+     * */
+    void addProdutos(LinhaEncomenda p);
 
-    public void setLoja(String loja);
-
-    public void setDestino(Location destino);
-
-    public void setEstafeta(List<String> estafeta);
-
-    public void setUserId(String userId);
-
-    public void setProdutos(ArrayList<LinhaEncomenda> produtos);
-
-    public ArrayList<LinhaEncomenda> addProdutos(LinhaEncomenda p);
-
-    public ArrayList<LinhaEncomenda> addProdutosFromString (String s);
-
-    public boolean existeProduto(String codProd);
-
-    public double getPrecoTot ();
-
-    public double getPesoTot ();
 }
