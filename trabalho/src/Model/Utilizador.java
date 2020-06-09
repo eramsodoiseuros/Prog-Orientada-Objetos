@@ -3,7 +3,7 @@ package Model;
 import java.io.Serializable;
 import java.util.*;
 
-public class Utilizador implements Serializable, IUtilizador {
+public class Utilizador implements Serializable, IUtilizador, Comparable<IUtilizador>{
     private String id;
     private String nome;
     private String email;
@@ -15,7 +15,7 @@ public class Utilizador implements Serializable, IUtilizador {
 
     private Set<Encomenda> historico;
 
-    public Utilizador(String id,String email, String pwd, String nome, int acessos, double localizacaoX, double localizacaoY, Set<Encomenda> historico, int estado) {
+    public Utilizador(String id, String email, String pwd, String nome, int acessos, double localizacaoX, double localizacaoY, Set<Encomenda> historico, int estado) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -64,7 +64,7 @@ public class Utilizador implements Serializable, IUtilizador {
         this.acessos = 0;
         this.localizacaoX = 0;
         this.localizacaoY = 0;
-        this.historico = new HashSet<>() ;
+        this.historico = new HashSet<>();
         this.estado = 0;
     }
 
@@ -136,6 +136,7 @@ public class Utilizador implements Serializable, IUtilizador {
         return new Utilizador(this);
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -167,4 +168,11 @@ public class Utilizador implements Serializable, IUtilizador {
                 .append("}; \n");
         return sb.toString();
     }
+
+    @Override
+    public int compareTo(IUtilizador u){
+        return this.acessos - u.getAcessos();
+    }
+
+
 }

@@ -3,7 +3,7 @@ package Model;
 import java.io.Serializable;
 import java.util.*;
 
-public class Transportadora implements Serializable, ITransportadora {
+public class Transportadora implements Serializable, ITransportadora, Comparable<ITransportadora> {
     private String id;
     private ArrayList<Integer> rating;
     private int n_encomendas;
@@ -290,6 +290,11 @@ public class Transportadora implements Serializable, ITransportadora {
             return sum / this.rating.size();
         }
         return sum;
+    }
+
+    @Override
+    public int compareTo(ITransportadora t){
+        return (int) (this.distancia - t.getDistancia());
     }
 
 /*

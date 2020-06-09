@@ -48,6 +48,10 @@ public interface ITransportadora extends Serializable {
 
     public void setN_encomendas(int n_encomendas) ;
 
+    public double getDistancia();
+
+    public void setDistancia(double distancia);
+
 
     public void setId(String id) ;
 
@@ -70,4 +74,6 @@ public interface ITransportadora extends Serializable {
     public Set<Encomenda> getAtivas();
 
     public void setHistorico(Set<Encomenda> historico);
+
+    public int compareTo(ITransportadora t);
 }

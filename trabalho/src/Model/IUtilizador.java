@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeSet;
 
-public interface IUtilizador extends Serializable {
+public interface IUtilizador extends Serializable{
 
     public String getId();
 
@@ -34,5 +34,7 @@ public interface IUtilizador extends Serializable {
     public Set<Encomenda> getHistorico();
 
     public void setHistorico(TreeSet<Encomenda> historico);
+
+    public int compareTo(IUtilizador u);
 
 }
