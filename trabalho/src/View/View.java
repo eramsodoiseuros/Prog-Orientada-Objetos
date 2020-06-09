@@ -10,6 +10,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.List;
 
 public class View implements IView{
@@ -67,7 +69,14 @@ public class View implements IView{
             Platform.exit();
         });
 
-        layout.getChildren().addAll(listView,b1,b2);
+        Button b3 = new Button("Guardar.");
+        b3.setOnAction(e -> {
+            c.save();
+            c.end_scene(e);
+            make_window("Menu Principal", menu());
+        });
+
+        layout.getChildren().addAll(listView,b1,b2,b3);
         return new Scene(layout, 400, 300);
     } // done
 
@@ -243,6 +252,7 @@ public class View implements IView{
             String user = usertxt.getText();
             String pwd = passwordtxt.getText();
             c.validaLogInUser(user, pwd);
+            c.end_scene(e);
         });
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, b);
@@ -266,6 +276,7 @@ public class View implements IView{
             String user = usertxt.getText();
             String pwd = passwordtxt.getText();
             c.validaLogInVol(user, pwd);
+            c.end_scene(e);
         });
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, b);
@@ -289,6 +300,7 @@ public class View implements IView{
             String user = usertxt.getText();
             String pwd = passwordtxt.getText();
             c.validaLogInTrans(user, pwd);
+            c.end_scene(e);
         });
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, b);
@@ -312,6 +324,7 @@ public class View implements IView{
             String user = usertxt.getText();
             String pwd = passwordtxt.getText();
             c.validaLogInLoja(user, pwd);
+            c.end_scene(e);
         });
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, b);
@@ -350,12 +363,34 @@ public class View implements IView{
     }
 
     @Override
-    public Scene menu_transportadora(Transportadora t) {
-        return null;
+    public Scene menu_transportadora(Transportadora t, List<String> lojas, List<String> faturacao ) {
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(20, 20, 20, 20));
+
+        ComboBox<String> cb = new ComboBox<>();
+        cb.getItems().addAll(lojas);
+        cb.setPromptText("Selecione a Loja da qual pertende entregar:");
+        cb.setOnAction(e -> {
+            c.loja_selecionada(t, cb.getValue());
+            c.end_scene(e);
+        });
+
+        ComboBox<String> cb2 = new ComboBox<>();
+        cb2.getItems().addAll(faturacao);
+        cb2.setPromptText("Ver histórico de faturacao:");
+
+        Button update = new Button("Update");
+        update.setOnAction(e -> {
+            c.update_transportadora(t);
+            c.end_scene(e);
+        });
+
+        layout.getChildren().addAll(cb, cb2, update);
+        return new Scene(layout, 400, 300);
     }
 
     @Override
-    public Scene menu_voluntario(Voluntario v) {
+    public Scene menu_voluntario(Voluntario v, List<String> lojas) {
         return null;
     }
 
@@ -365,12 +400,20 @@ public class View implements IView{
     }
 
     @Override
-    public Scene select_produtos(Utilizador u,List<String> produtos) {
+    public Scene select_produtos(Utilizador u, Loja l, List<String> produtos) {
         VBox layout = new VBox(10);
 
         Button comprar = new Button("Finalizar encomenda");
         comprar.setOnAction(e -> {
-            // c.fazer_encomenda(u, listView);
+            for (LinhaEncomenda ec : l.getInventario()) {
+                if(listView.getSelectionModel().getSelectedItems().contains(ec.getDescricao())){
+                    try {
+                        c.pedidoUser(ec, l.getId(), u.getId());
+                    } catch (IOException ioException) {
+                        alert("Erro", "Falhou a realizar uma encomenda");
+                    }
+                }
+            }
             c.update_user(u);
             c.end_scene(e);
         });
@@ -395,6 +438,28 @@ public class View implements IView{
     @Override
     public void setControler(IControler controler) {
         this.c = controler;
+    }
+
+    @Override
+    public Scene encomendas_ativas(Transportadora t, List<String> recolhas){
+        VBox layout = new VBox(10);
+
+        ComboBox<String> cb = new ComboBox<>();
+        cb.getItems().addAll(recolhas);
+        cb.setPromptText("Selecione a Loja da qual pertende ir realizar uma recolha:");
+        cb.setOnAction(e -> {
+            c.loja_selecionada(t, cb.getValue());
+            c.end_scene(e);
+        });
+
+        layout.getChildren().addAll(cb);
+        layout.setPadding(new Insets(20, 20, 20, 20));
+        return new Scene(layout, 400, 300);
+    }
+
+    @Override
+    public Scene encomendas_ativas(Voluntario v, List<String> recolhas){
+        return null;
     }
 
     /* Verifica a escolhe feita no menu */

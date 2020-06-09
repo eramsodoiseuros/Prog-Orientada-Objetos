@@ -43,19 +43,14 @@ public class Model implements Serializable, IModel {
     }
 
     public void guardaEstado() throws IOException{
-        FileOutputStream fos = new FileOutputStream(logsO);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(logsO));
 
         oos.writeObject(this);
-
-        oos.close();
-        fos.close();
+        oos.flush();
     }
 
     public Model loadEstado() throws IOException, ClassNotFoundException {
-        FileInputStream fis = new FileInputStream(logsO);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(logsO));
         return (Model) ois.readObject();
     }
 

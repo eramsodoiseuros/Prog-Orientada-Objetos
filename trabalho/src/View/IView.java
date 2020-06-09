@@ -22,13 +22,16 @@ public interface IView {
     Scene login_loja();
 
     Scene menu_user(Utilizador u, List<String> lojas, List<String> historico);
-    Scene menu_transportadora(Transportadora t);
-    Scene menu_voluntario(Voluntario v);
+    Scene menu_transportadora(Transportadora t, List<String> lojas, List<String> faturacao  );
+    Scene menu_voluntario(Voluntario v, List<String> lojas);
     Scene menu_loja(Loja l);
 
-    Scene select_produtos(Utilizador u, List<String> produtos);
+    Scene select_produtos(Utilizador u, Loja l, List<String> produtos);
 
     void make_window(String title, Scene s);
 
     void setControler(IControler controler);
+
+    Scene encomendas_ativas(Transportadora t, List<String> recolha);
+    Scene encomendas_ativas(Voluntario v, List<String> recolha);
 }

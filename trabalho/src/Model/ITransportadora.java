@@ -1,6 +1,7 @@
 package Model;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public interface ITransportadora extends Serializable {
@@ -33,7 +34,7 @@ public interface ITransportadora extends Serializable {
 
     public Set<Encomenda> getHistorico();
 
-    public double getFaturacao();
+    public List<Double> getFaturacao();
 
     public void setTipo(String tipo);
 
@@ -52,7 +53,7 @@ public interface ITransportadora extends Serializable {
 
     public void setDisponivel(boolean disponivel) ;
 
-    public void setFaturacao(double faturacao);
+    public void setFaturacao(List<Double> faturacao);
 
     public void setN_max(int n_max);
 

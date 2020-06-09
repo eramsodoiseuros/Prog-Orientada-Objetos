@@ -26,7 +26,7 @@ public class Transportadora implements Serializable, ITransportadora {
 
     private Set<Encomenda> ativas;
     private Set<Encomenda> historico;
-    private double faturacao;
+    private List<Double> faturacao;
 
     public boolean isDisponivel() {
         return disponivel;
@@ -71,7 +71,7 @@ public class Transportadora implements Serializable, ITransportadora {
         this.nome = null;
         this.localizacaoX =0;
         this.localizacaoY = 0;
-        this.faturacao =0;
+        this.faturacao = new ArrayList<>();
         this.ativas = new HashSet<Encomenda>();
         this.historico = new HashSet<Encomenda>();
         this.pwd = null;
@@ -79,7 +79,7 @@ public class Transportadora implements Serializable, ITransportadora {
         this.preco_transporte = 0;
     }
 
-    public  Transportadora (String id, ArrayList<Double> rating, double distancia, int n_encomendas, int range, double localizacaoX, double localizacaoY, String nif, boolean disponivel, String tipo, String nome, double preco_km, int n_max, Set<Encomenda> historico, Set<Encomenda> ativas, double faturacao){
+    public  Transportadora (String id, ArrayList<Double> rating, double distancia, int n_encomendas, int range, double localizacaoX, double localizacaoY, String nif, boolean disponivel, String tipo, String nome, double preco_km, int n_max, Set<Encomenda> historico, Set<Encomenda> ativas, List<Double> faturacao){
         this.id = id;
         this.disponivel = disponivel;
         this.localizacaoX = localizacaoX;
@@ -155,7 +155,7 @@ public class Transportadora implements Serializable, ITransportadora {
         return historico;
     }
 
-    public double getFaturacao() {
+    public List<Double> getFaturacao() {
         return faturacao;
     }
 
@@ -192,7 +192,7 @@ public class Transportadora implements Serializable, ITransportadora {
         this.disponivel = disponivel;
     }
 
-    public void setFaturacao(double faturacao) {
+    public void setFaturacao(List<Double> faturacao) {
         this.faturacao = faturacao;
     }
 
