@@ -337,6 +337,14 @@ public class Model implements Serializable, IModel {
                 }
 
                 encMap.putIfAbsent(parts[0], encomenda);
+
+                for (ILoja l: lojaMap.values()) {
+                    if(l.getId().equals(encomenda.getLoja())){
+                        l.getLista_encomendas().add(encomenda);
+                    }
+
+                }
+
             }
         }
         reader.close();

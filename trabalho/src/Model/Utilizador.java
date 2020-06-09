@@ -177,9 +177,6 @@ public class Utilizador implements Serializable, IUtilizador, Comparable<IUtiliz
         return sb.toString();
     }
 
-    @Override
-    public int compareTo(IUtilizador u){
-        return this.acessos - u.getAcessos();
-    }
+
 
 }

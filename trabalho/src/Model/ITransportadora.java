@@ -112,9 +112,25 @@ public interface ITransportadora extends Serializable {
      *
      * */
     void setEmail(String s);
+
+    /**
+     *
+     *
+     * */
+
+    public void setPreco_transporte(double preco_transporte);
     
     /**
      *
      * */
+
+    public double getPreco_km();
+
+    /**
+     *
+     *
+     * */
     public int compareTo(ITransportadora t);
+
+    double getDistancia();
 }

@@ -14,9 +14,15 @@ import java.util.stream.Collectors;
 /*
 *       NEED FIX
 *
-* LOAD ENCOMENDAS INICIAIS -> TO ATIVAS
+* LOAD ENCOMENDAS INICIAIS -> TO ATIVAS -> DONE
 *
-* DAR PREÇOS
+* DAR PREÇOS -> esta a dar erro mas em teoria feito
+*
+* PROBLEMAS NOS VOLUNTARIOS A SELECIONAR PRODUTOS
+*
+* PROBLEMAS NOS HISTORICOS QUE NAO ESTAO A REGISTAR
+*
+* PROBLEMAS NAS ATIVAS QUE N SAO RETIRADAS DE ATIVIDADE
 *
 * PEDIR PREÇOS NO MENU LOJA
 *
@@ -121,6 +127,7 @@ public class Controler implements IControler {
         return null;
     }
     public void pedir_recolha(ITransportadora t, String value){
+        //t.setPreco_transporte(t.getPreco_km()*distancia(model.getEncMap().get(value).getUserId(),model.getEncMap().get(value).getLoja(),model.getEncMap().get(value).getId())); -> da erro e n sei pq mas em teoria e isto
         model.getEncMap().get(value).getEstafeta().add("T " + t.getId() + " - " + t.getPreco_transporte() + "€ - " + t.estrela());
     }
     public void finalizar_encomenda(IUtilizador u, String value, char type){
@@ -370,7 +377,7 @@ public class Controler implements IControler {
         ITransportadora tras = this.model.getTransMap().get(transid);
         double r = 0;
 
-        r = Math.sqrt(Math.pow((loja.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - tras.getLocalizacaoY()), 2)) + Math.sqrt(Math.pow((user.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((user.getLocalizacaoY() - tras.getLocalizacaoY()), 2));
+        r = Math.sqrt(Math.pow(Math.abs(loja.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - tras.getLocalizacaoY()), 2)) + Math.sqrt(Math.pow((user.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((user.getLocalizacaoY() - tras.getLocalizacaoY()), 2));
 
         return r;
     }
@@ -432,9 +439,9 @@ public class Controler implements IControler {
     }
 
 
-    public  List<Utilizador> top10Acessos ()  {
+    public  List<IUtilizador> top10Acessos ()  {
 
-        List<Utilizador> l = new ArrayList<>();
+        List<IUtilizador> l = new ArrayList<>();
 
         l.addAll(model.getUserMap().values());
 
@@ -443,9 +450,9 @@ public class Controler implements IControler {
     }
 
 
-    public  List<Transportadora> top10Distancias ()  {
+    public  List<ITransportadora> top10Distancias ()  {
 
-        List<Transportadora> l = new ArrayList<>();
+        List<ITransportadora> l = new ArrayList<>();
 
         l.addAll(model.getTransMap().values());
 
