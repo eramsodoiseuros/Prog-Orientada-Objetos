@@ -112,9 +112,4 @@ public interface ITransportadora extends Serializable {
      *
      * */
     void setEmail(String s);
-    
-    /**
-     *
-     * */
-    public int compareTo(ITransportadora t);
 }
