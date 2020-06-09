@@ -2,6 +2,7 @@ import com.sun.jdi.Location;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -32,6 +33,8 @@ public class Controler implements IControler {
         transportadora.setNome(nome);
         transportadora.setEmail(email);
         transportadora.setPwd(pwd);
+        transportadora.setLocalizacaoX(localizacao()[0]);
+        transportadora.setLocalizacaoY(localizacao()[1]);
 
         model.getTransMap().putIfAbsent(id, transportadora);
         model.guardaEstado();
@@ -48,6 +51,8 @@ public class Controler implements IControler {
         voluntario.setNome(nome);
         voluntario.setEmail(email);
         voluntario.setPwd(pwd);
+        voluntario.setLocalizacaoX(localizacao()[0]);
+        voluntario.setLocalizacaoY(localizacao()[1]);
 
 
         model.getVolMap().putIfAbsent(email, voluntario);
@@ -62,6 +67,8 @@ public class Controler implements IControler {
         loja.setNome(nome);
         loja.setEmail(email);
         loja.setPwd(pwd);
+        loja.setLocalizacaoX(localizacao()[0]);
+        loja.setLocalizacaoY(localizacao()[1]);
 
         model.getLojaMap().putIfAbsent(email, loja);
         model.guardaEstado();
@@ -73,10 +80,13 @@ public class Controler implements IControler {
 
         utilizador.setId(id);
         utilizador.setEmail(email);
+        utilizador.setId(id);
         utilizador.setPwd(pwd);
         utilizador.setNome(nome);
         utilizador.setEstado(0);
         utilizador.setAcessos(0);
+        utilizador.setLocalizacaoX(localizacao()[0]);
+        utilizador.setLocalizacaoY(localizacao()[1]);
 
         model.getUserMap().putIfAbsent(id, utilizador);
         model.guardaEstado();
@@ -273,6 +283,32 @@ public class Controler implements IControler {
         }
 
         return transId;
+    }
+
+
+    public double[] localizacao (){
+        double [] loc = new double[2];
+
+        Random r = new Random();
+        double low = -100;
+        double high = 100;
+        double resultX = r.nextDouble();
+        loc[0] = low + (resultX * (high - low));
+        double resultY = r.nextDouble();
+        loc[1] = low + (resultY * (high - low));
+
+        return loc;
+    }
+
+
+    public void inicia () throws IOException {
+        getModel().fileToTrans();
+        getModel().filetoLoja();
+        getModel().fileToUser();
+        getModel().fileToVol();
+        getModel().fileToEnc();
+        getModel().loadInventLoja();
+        getModel().guardaEstado();
     }
 }
 

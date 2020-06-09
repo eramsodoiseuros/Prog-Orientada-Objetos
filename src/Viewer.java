@@ -9,7 +9,7 @@ import static java.lang.System.*;
 public class Viewer {
 
     private Controler controler;
-    private Entidades e;
+
 
     public Controler getControler() {
         return controler;
@@ -19,16 +19,12 @@ public class Viewer {
         this.controler = controler;
     }
 
-    public Entidades getE() {
-        return e;
-    }
 
-    public void setE(Entidades e) {
-        this.e = e;
-    }
 
     public void menu() throws IOException, ClassNotFoundException, CloneNotSupportedException {
         int escolha = 0, entidade,navega;
+
+        this.controler = new Controler();
 
         String p ;
         String email;
@@ -65,10 +61,6 @@ public class Viewer {
         }
     }
 
-
-
-
-
     public void imprimeLoja(){
         int i =1;
         for (Loja loja:this.controler.getModel().getLojaMap().values()) {
@@ -95,7 +87,6 @@ public class Viewer {
         return s;
     }
 
-
     public LinhaEncomenda selecionaProd(int r, int p){
         int i = 1;
         int k = 1;
@@ -112,19 +103,7 @@ public class Viewer {
         return prod;
     }
 
-    public void inicia () throws IOException {
-        this.controler=new Controler();
-        this.e= new Entidades();
-        controler.getModel().setTransMap(e.fileToTrans());
-        controler.getModel().setLojaMap(e.filetoLoja());
-        controler.getModel().setUserMap(e.fileToUser());
-        controler.getModel().setVolMap(e.fileToVol());
-        controler.getModel().setEncMap(e.fileToEnc());
-        controler.getModel().loadInventLoja();
-        controler.getModel().guardaEstado();
-    }
-
-    public void regista() throws IOException {
+        public void regista() throws IOException {
         Scanner scanner = new Scanner(System.in);
         int entidade;
         String email;
@@ -133,6 +112,40 @@ public class Viewer {
         double range;
 
         System.out.println("Selecione a entidade que quer registar:\n");
+
+            System.out.println("1. Utilizador\n");
+            System.out.println("2. Transportadora\n");
+            System.out.println("3. Voluntario\n");
+            System.out.println("4. Loja\n");
+            System.out.println("0. Anterior\n");
+
+            entidade = scanner.nextInt();
+            scanner.nextLine();
+
+
+            //while (entidade != 0) {
+                switch (entidade) {
+                    case 1:
+                        System.out.println("Email:");
+                        email = scanner.nextLine();
+
+                        System.out.println("Password:");
+                        p = scanner.nextLine();
+
+                        System.out.println("Nome:");
+                        nome = scanner.nextLine();
+
+                        if (this.controler.validaRegUser(email)) {
+
+                            this.controler.registaUtilizador("u" + controler.getModel().contaNCodUser(),nome, email, p);
+                        }
+                        else System.out.println("Email já em uso. Tente novamente com um novo email.");
+                        break;
+                    case 2:
+                        System.out.println("Email:");
+                        email = scanner.nextLine();
+                        System.out.println("Password:");
+                        p = scanner.nextLine();
 
         System.out.println("1. Utilizador\n");
         System.out.println("2. Transportadora\n");

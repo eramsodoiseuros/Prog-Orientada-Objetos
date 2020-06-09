@@ -2,16 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0261f097-eec6-44ba-8713-551dea7ad2e5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Tempo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Inventario.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lojas_Credenciais.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Transportadoras_Credenciais.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Utilizador_Credenciais.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Voluntarios_Credenciais.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logsO.obj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs_20200416.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logsO.obj" beforeDir="false" afterPath="$PROJECT_DIR$/logsO.obj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/Capturar.PNG" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/Controler.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/POO_2020/com/company/Diagrama.bluej" beforeDir="false" />
@@ -47,8 +40,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -85,6 +78,13 @@
     </key>
   </component>
   <component name="RunManager" selected="Application.Main (1)">
+    <configuration name="ClockTimeTravel" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ClockTimeTravel" />
+      <module name="POO_2020" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="POO_2020" />
@@ -102,9 +102,18 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Tempo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Tempo" />
+      <module name="POO_2020" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main (1)" />
+        <item itemvalue="Application.ClockTimeTravel" />
+        <item itemvalue="Application.Tempo" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -150,8 +159,13 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="808" y="429" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1588085313329" />
-    <state x="-1180" y="283" key="FileChooserDialogImpl" timestamp="1591696536333">
-      <screen x="-1920" y="0" width="1920" height="1040" />
+
+    <state x="690" y="287" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1591640114574">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="690" y="287" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1591640114574" />
+    <state x="740" y="294" key="FileChooserDialogImpl" timestamp="1590773497051">
+      <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="-1180" y="283" key="FileChooserDialogImpl/-1920.0.1920.1040/0.0.1920.1040@-1920.0.1920.1040" timestamp="1591696536333" />
     <state x="740" y="294" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1590773497051" />

@@ -10,14 +10,13 @@ public class Main {
 
 
     public static void main(String[] args)  {
-
-        Entidades e = new Entidades();
         Controler c = new Controler();
 
         try {
-            Viewer v = new Viewer();
-            v.inicia();
-            v.menu();
+                Viewer v =new Viewer();
+                c.inicia();
+                v.menu();
+                System.out.println(v.getControler().getModel().getUserMap().toString());
 
         } catch (IOException | ClassNotFoundException | CloneNotSupportedException i) {
             i.printStackTrace();
