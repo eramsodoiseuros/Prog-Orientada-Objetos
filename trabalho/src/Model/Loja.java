@@ -1,9 +1,7 @@
 package Model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Loja implements Serializable, ILoja {
     private String id;
@@ -13,7 +11,7 @@ public class Loja implements Serializable, ILoja {
     private double localizacaoX;
     private double localizacaoY;
     private Fila fila;
-    private HashSet<IEncomenda> lista_encomendas;
+    private HashMap<String,IEncomenda> lista_encomendas;
     private HashSet<IEncomenda> historico;
     private Set<LinhaEncomenda> inventario;
 
@@ -38,7 +36,7 @@ public class Loja implements Serializable, ILoja {
         this.inventario = inventario;
     }
 
-    public Loja(String id, String nome, String email, String pwd, double localizacaoX, double localizacaoY, Fila fila, HashSet<IEncomenda> lista_encomendas, HashSet<IEncomenda> historico, Set<LinhaEncomenda> inventario) {
+    public Loja(String id, String nome, String email, String pwd, double localizacaoX, double localizacaoY, Fila fila, HashMap<String, IEncomenda> lista_encomendas, HashSet<IEncomenda> historico, Set<LinhaEncomenda> inventario) {
         this.id = id;
         this.nome = nome;
         this.pwd = pwd;
@@ -58,7 +56,7 @@ public class Loja implements Serializable, ILoja {
         this.fila = new Fila();
         this.pwd = null;
         this.email = null;
-        this.lista_encomendas = new HashSet<>();
+        this.lista_encomendas = new HashMap<>();
         this.historico = new HashSet<>();
         this.nome = null;
         this.inventario = new HashSet<>();
@@ -104,14 +102,6 @@ public class Loja implements Serializable, ILoja {
         return fila;
     }
 
-    public HashSet<IEncomenda> getLista_encomendas() {
-        return lista_encomendas;
-    }
-
-    public HashSet<IEncomenda> getHistorico() {
-        return historico;
-    }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -126,14 +116,6 @@ public class Loja implements Serializable, ILoja {
 
     public void setFila(Fila fila) {
         this.fila = fila;
-    }
-
-    public void setLista_encomendas(HashSet<IEncomenda> lista_encomendas) {
-        this.lista_encomendas = lista_encomendas;
-    }
-
-    public void setHistorico(HashSet<IEncomenda> historico) {
-        this.historico = historico;
     }
 
     @Override
@@ -162,31 +144,47 @@ public class Loja implements Serializable, ILoja {
 
     @Override
     public String toString() {
-        return "Loja{" +
-                "id='" + id + '\'' +
-                ", nome='" + nome + '\'' +
-                ", pwd='" + pwd + '\'' +
-                ", email='" + email + '\'' +
-                ", localizacaoX=" + localizacaoX +
-                ", localizacaoY=" + localizacaoY +
-                ", fila=" + fila +
+        return "Loja{" + id + '\'' +
+                " | " + nome + '\'' +
+                ", X=" + localizacaoX +
+                " | Y=" + localizacaoY + fila +
                 ", lista_encomendas=" + lista_encomendas +
-                ", historico=" + historico +
-                ", inventario=" + inventario +
-                '}';
+                ", historico=" + historico + '}';
     }
 
     public void addLista (IEncomenda e){
-        lista_encomendas.add(e);
+        lista_encomendas.put(e.getId(), e);
+    }
+    public void removeLista(String e){
+        lista_encomendas.remove(e);
     }
 
     public void addHistorico (IEncomenda e){
         historico.add(e);
     }
 
+    public List<String> precisa_recolha(ILoja l){
+        List<String> s = new ArrayList<>();
+        for(IEncomenda enc : lista_encomendas.values()){
+            s.add(enc.getId());
+        }
+        return s;
+    }
+
+    @Override
+    public int f_time() {
+        return fila.getTempo_medio();
+    }
+
     @Override
     public String fila() {
         return fila.toString();
+    }
+    public void add_fila(){
+        fila.setEm_fila(fila.getEm_fila()+1);
+    }
+    public void remove_fila(){
+        fila.setEm_fila(fila.getEm_fila()-1);
     }
 }
 
@@ -204,9 +202,11 @@ class Fila implements Serializable{
     }
 
     public Fila(){
-        this.n_max = 0;
+        Random r = new Random();
+        this.n_max = r.nextInt((10 - 3) + 1) + 3;
         this.em_fila = 0;
-        this.tempo_medio = 0;
+        r = new Random();
+        this.tempo_medio = r.nextInt((15 - 3) + 1) + 3;
         this.disponivel = true;
     }
 
@@ -255,8 +255,11 @@ class Fila implements Serializable{
 
     @Override
     public String toString(){
-        return ""+em_fila+"";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Estão em fila ").append(em_fila).append(" encomendas, o máximo são ").append(n_max).append(" encomendas.");
+        return sb.toString();
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(n_max, em_fila, tempo_medio, disponivel);

@@ -254,10 +254,6 @@ public interface IControler {
      * */
     void listar_on_going();
 
-
-
-    public  boolean isNumeric(String strNum);
-
     /**
      *  Metodo que cria uma Janela representativa da Lista de Encomendas Ativas
      * */
@@ -267,5 +263,4 @@ public interface IControler {
      *  Metodo que cria uma Janela representativa da Lista de Encomendas Ativas
      * */
     void listar_top_transportadoras();
-
 }

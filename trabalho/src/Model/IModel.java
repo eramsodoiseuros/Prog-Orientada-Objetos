@@ -7,16 +7,6 @@ import java.util.*;
  * Interface do Model
  * */
 public interface IModel {
-    /**
-     * @return Mapa de encomendas com o seu ID como key
-     */
-    HashMap<String, IEncomenda> getEncMap();
-
-    /**
-     *
-     * @param encMap Mapa de encomendas com o seu ID como key
-     */
-    void setEncMap(HashMap<String, IEncomenda> encMap);
 
     /**
      *
@@ -74,33 +64,37 @@ public interface IModel {
 
     /**
      *
-     * @return Mapa das Transportadoras
      * */
     HashMap<String, ITransportadora> getTransMap();
 
     /**
      *
-     * @return Mapa das Lojas
      * */
     HashMap<String, ILoja> getLojaMap();
 
     /**
      *
-     * @return Mapa dos utilizadores
      * */
     TreeMap<String, IUtilizador> getUserMap();
 
     /**
      *
-     * @return Mapa dos Voluntarios
      * */
     HashMap<String, IVoluntario> getVolMap();
 
     /**
-     *
-     * @return Mapa dos Voluntarios
-     * */
+     * @return Mapa de encomendas com o seu ID como key
+     */
+    HashMap<String, IEncomenda> getEncMap();
+
     void registaEncomenda(String id, String userId, String lojaId, double peso, ArrayList<LinhaEncomenda> produtos);
+
+    void addEncomenda(IEncomenda e);
+    void addVoluntario(IVoluntario v);
+    void addUtilizador(IUtilizador u);
+    void addLoja(ILoja l);
+    void addTransportadora(ITransportadora t);
+
 
     /**
      * Metodo provavelmente temporario que adiciona um inventario as lojas existentes fazendo load de um ficheiro txt
@@ -109,32 +103,109 @@ public interface IModel {
     void loadInventLoja() throws IOException;
 
     /**
-     * Metodo provavelmente temporario que adiciona as transporadoras existentes fazendo load de um ficheiro txt
-     * @throws IOException
-     */
+     *
+     * */
     void fileToTrans() throws IOException;
 
     /**
-     * Metodo provavelmente temporario que adiciona as lojas existentes fazendo load de um ficheiro txt
-     * @throws IOException
-     */
+     *
+     * */
     void filetoLoja() throws IOException;
 
     /**
-     * Metodo provavelmente temporario que adiciona os Utilizadores existentes fazendo load de um ficheiro txt
-     * @throws IOException
-     */
+     *
+     * */
     void fileToUser() throws IOException;
 
     /**
-     * Metodo provavelmente temporario que adiciona os Voluntarios existentes fazendo load de um ficheiro txt
-     * @throws IOException
-     */
+     *
+     * */
     void fileToVol() throws IOException;
 
     /**
-     * Metodo provavelmente temporario que adiciona as Encomendas existentes fazendo load de um ficheiro txt
-     * @throws IOException
-     */
+     *
+     * */
     void fileToEnc() throws IOException;
+
+    void removeEncomenda(String id);
+
+    /**
+     *
+     * */
+    List<String> precisa_recolha(ILoja l);
+
+    /**
+     *
+     * */
+    ILoja loja_nome(String nome);
+
+    /**
+     *
+     * */
+    IEncomenda encomendas_u(IUtilizador u);
+
+    /**
+     *
+     * */
+    boolean validaLogInUser(String email, String pwd);
+
+    /**
+     *
+     * */
+    boolean validaLogInVol(String email, String pwd);
+
+    /**
+     *
+     * */
+    boolean validaLogInTrans(String email, String pwd);
+
+    /**
+     *
+     * */
+    boolean validaLogInLoja(String email, String pwd);
+
+    /**
+     *
+     * */
+    IUtilizador getUser(String email);
+
+    /**
+     *
+     * */
+    IVoluntario getVol(String email);
+
+    /**
+     *
+     * */
+    ITransportadora getTrans(String email);
+
+    /**
+     *
+     * */
+    ILoja getLoja(String email);
+
+    /**
+     *
+     * */
+    ILoja loja(String id);
+
+    /**
+     *
+     * */
+    boolean validaRegistoUser(String email);
+
+    /**
+     *
+     * */
+    boolean validaRegistoVol(String email);
+
+    /**
+     *
+     * */
+    boolean validaRegistoTrans(String email);
+
+    /**
+     *
+     * */
+    boolean validaRegistoLoja(String email);
 }

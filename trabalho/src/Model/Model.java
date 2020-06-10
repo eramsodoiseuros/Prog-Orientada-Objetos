@@ -23,14 +23,6 @@ public class Model implements Serializable, IModel {
         this.encMap = new HashMap<>();
     }
 
-    public HashMap<String, IEncomenda> getEncMap() {
-        return encMap;
-    }
-
-    public void setEncMap(HashMap<String, IEncomenda> encMap) {
-        this.encMap = encMap;
-    }
-
     @Override
     public String toString(){
         return "Model{" +
@@ -48,7 +40,6 @@ public class Model implements Serializable, IModel {
         oos.writeObject(this);
         oos.flush();
     }
-
     public Model loadEstado() throws IOException, ClassNotFoundException {
         ObjectInputStream ois = new ObjectInputStream(new FileInputStream(logsO));
         return (Model) ois.readObject();
@@ -63,97 +54,66 @@ public class Model implements Serializable, IModel {
         if(set.contains("e" + i)) i++;
         return i;
     }
-
     public  int contaNCodProd(){
         Collection<IEncomenda> set  = this.encMap.values();
-        int i =1;
 
-        for (IEncomenda enc: set){
-            for (LinhaEncomenda le: enc.getProdutos()){
-                String[] parts = le.getCodProd().split("(?<=\\D)(?=\\d)",2);
-                if(le.getCodProd()==null || i==Integer.parseInt(parts[1])) i++;
-            }
-        }
+        Random r = new Random();
+        int i = r.nextInt((10000 - 3) + 1) + 3;
+
+        if(set.contains("p" + i)) i++;
         return i;
     }
-
     public  int contaNCodUser () {
         Set<String> set  = this.userMap.keySet();
-        int i =1;
 
-        for (String s: set){
-            String[] parts = s.split("(?<=\\D)(?=\\d)",2);
-            if(i == Integer.parseInt(parts[1])) i++;
-        }
+        Random r = new Random();
+        int i = r.nextInt((10000 - 3) + 1) + 3;
+
+        if(set.contains("u" + i)) i++;
         return i;
     }
-
     public  int contaNCodTrans () {
-
         Set<String> set  = this.transMap.keySet();
-        int i =1;
 
-        for (String s: set) {
-            String[] parts = s.split("(?<=\\D)(?=\\d)",2);
-            if(i == Integer.parseInt(parts[1])) i++;
+        Random r = new Random();
+        int i = r.nextInt((10000 - 3) + 1) + 3;
 
-        }
+        if(set.contains("t" + i)) i++;
         return i;
     }
-
     public  int contaNCodLoja () {
         Set<String> set  = this.lojaMap.keySet();
-        int i =1;
 
-        for (String s: set) {
-            String[] parts = s.split("(?<=\\D)(?=\\d)",2);
-            if(i == Integer.parseInt(parts[1])) i++;
+        Random r = new Random();
+        int i = r.nextInt((10000 - 3) + 1) + 3;
 
-        }
+        if(set.contains("l" + i)) i++;
         return i;
     }
-
     public  int contaNCodVol () {
         Set<String> set  = this.volMap.keySet();
-        int i =1;
 
-        for (String s: set) {
-            String[] parts = s.split("(?<=\\D)(?=\\d)",2);
-            if(i == Integer.parseInt(parts[1])) i++;
-        }
+        Random r = new Random();
+        int i = r.nextInt((10000 - 3) + 1) + 3;
+
+        if(set.contains("v" + i)) i++;
         return i;
     }
 
     public HashMap<String, ITransportadora> getTransMap() {
         return transMap;
     }
-
     public HashMap<String, ILoja> getLojaMap() {
         return lojaMap;
     }
-
     public TreeMap<String, IUtilizador> getUserMap() {
         return userMap;
     }
-
     public HashMap<String, IVoluntario> getVolMap() {
         return volMap;
     }
-
-    public void setTransMap(HashMap<String, ITransportadora> transMap) {
-        this.transMap = transMap;
-    }
-
-    public void setVolMap(HashMap<String, IVoluntario> volMap) {
-        this.volMap = volMap;
-    }
-
-    public void setUserMap(TreeMap<String, IUtilizador> userMap) {
-        this.userMap = userMap;
-    }
-
-    public void setLojaMap(HashMap<String, ILoja> lojaMap) {
-        this.lojaMap = lojaMap;
+    public HashMap<String, IEncomenda> getEncMap() {
+        return encMap;
     }
 
     public void registaEncomenda(String id, String userId, String lojaId, double peso,ArrayList<LinhaEncomenda> produtos){
@@ -166,6 +126,161 @@ public class Model implements Serializable, IModel {
         encomenda.setProdutos(produtos);
 
         this.encMap.putIfAbsent(id,encomenda);
+    }
+
+    public void addEncomenda(IEncomenda e){
+        encMap.put(e.getId(), e);
+    }
+    public void removeEncomenda(String id){
+        encMap.remove(id);
+    }
+    public void addVoluntario(IVoluntario v){
+        volMap.put(v.getId(), v);
+    }
+    public void addUtilizador(IUtilizador u){
+        userMap.put(u.getId(), u);
+    }
+    public void addLoja(ILoja l){
+        lojaMap.put(l.getId(), l);
+    }
+    public void addTransportadora(ITransportadora t){
+        transMap.put(t.getId(), t);
+    }
+
+    public List<String> precisa_recolha(ILoja l){
+        List<String> lista = l.precisa_recolha(l);
+        for(String s : lista){
+            if(!this.getEncMap().containsKey(s)){
+                lista.remove(s);
+                l.removeLista(s);
+            }
+        }
+        return lista;
+    }
+    public ILoja loja_nome(String nome){
+        ILoja loja = new Loja();
+        for (ILoja l: lojaMap.values()) {
+            if(l.getNome().equals(nome))
+                return l;
+        }
+        return loja;
+    }
+    public ILoja loja(String id){
+        if(lojaMap.containsKey(id))
+            return lojaMap.get(id);
+        else return new Loja();
+    }
+    public IEncomenda encomendas_u(IUtilizador u) {
+        IEncomenda e = new Encomenda();
+        for(IEncomenda enc : encMap.values()){
+            if(enc.getUserId().equals(u.getId())){
+                return enc;
+            }
+        }
+        return e;
+    }
+
+    public boolean validaLogInUser(String email, String pwd) {
+        for (IUtilizador u : userMap.values()) {
+            if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean validaLogInVol(String email, String pwd) {
+        for (IVoluntario u : volMap.values()) {
+            if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean validaLogInTrans(String email, String pwd) {
+        for (ITransportadora u : transMap.values()) {
+            if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean validaLogInLoja(String email, String pwd) {
+        for (ILoja u : lojaMap.values()) {
+            if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public IUtilizador getUser(String email){
+        IUtilizador user = new Utilizador();
+        for (IUtilizador u : userMap.values()) {
+            if (u.getEmail().equals(email)) {
+                return u;
+            }
+        }
+        return user;
+    }
+    public IVoluntario getVol(String email) {
+        IVoluntario v = new Voluntario();
+        for (IVoluntario vol : volMap.values()) {
+            if (vol.getEmail().equals(email)) {
+                return vol;
+            }
+        }
+        return v;
+    }
+    public ITransportadora getTrans(String email) {
+        ITransportadora t = new Transportadora();
+        for (ITransportadora trans : transMap.values()) {
+            if (trans.getEmail().equals(email)) {
+                return trans;
+            }
+        }
+        return t;
+    }
+    public ILoja getLoja(String email) {
+        ILoja l = new Loja();
+        for (ILoja loja : lojaMap.values()) {
+            if (loja.getEmail().equals(email)) {
+                return loja;
+            }
+        }
+        return l;
+    }
+
+    public boolean validaRegistoUser(String email) {
+        for (IUtilizador u : userMap.values()) {
+            if (u.getEmail().equals(email)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean validaRegistoVol(String email) {
+        for (IVoluntario u : volMap.values()) {
+            if (u.getEmail().equals(email)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean validaRegistoTrans(String email) {
+        for (ITransportadora u : transMap.values()) {
+            if (u.getEmail().equals(email)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean validaRegistoLoja(String email) {
+        for (ILoja u : lojaMap.values()) {
+            if (u.getEmail().equals(email)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void loadInventLoja() throws IOException {
@@ -190,7 +305,6 @@ public class Model implements Serializable, IModel {
         }
         reader.close();
     }
-
     public void fileToVol() throws IOException {
 
         BufferedReader reader = null;
@@ -216,7 +330,6 @@ public class Model implements Serializable, IModel {
         }
         reader.close();
     }
-
     public void fileToUser() throws IOException {
 
         BufferedReader reader = null;
@@ -230,6 +343,7 @@ public class Model implements Serializable, IModel {
                 String[] parts = line.split(",", 4);
 
                 Utilizador utilizador = new Utilizador();
+                utilizador.setEstado(0);
                 utilizador.setAcessos(0);
                 utilizador.setId(parts[0]);
                 utilizador.setNome(parts[1]);
@@ -242,7 +356,6 @@ public class Model implements Serializable, IModel {
         }
         reader.close();
     }
-
     public void fileToTrans() throws IOException {
 
         BufferedReader reader = null;
@@ -270,7 +383,6 @@ public class Model implements Serializable, IModel {
         }
         reader.close();
     }
-
     public void filetoLoja() throws IOException {
 
         BufferedReader reader = null;
@@ -296,7 +408,6 @@ public class Model implements Serializable, IModel {
         }
         reader.close();
     }
-
     public void fileToEnc() throws IOException {
         BufferedReader reader = null;
         reader = new BufferedReader(new FileReader(logs_stor));
@@ -330,7 +441,7 @@ public class Model implements Serializable, IModel {
                 encMap.putIfAbsent(parts[0], encomenda);
                 for (ILoja l: lojaMap.values()) {
                     if(l.getId().equals(encomenda.getLoja())){
-                        l.getLista_encomendas().add(encomenda);
+                        l.addLista(encomenda);
                     }
                 }
             }

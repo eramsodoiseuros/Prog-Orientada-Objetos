@@ -13,7 +13,7 @@ public class Utilizador implements Serializable, IUtilizador, Comparable<IUtiliz
     private int acessos;
     private double localizacaoX;
     private double localizacaoY;
-
+    private int estado;
 
     private Set<IEncomenda> historico;
 
@@ -23,7 +23,7 @@ public class Utilizador implements Serializable, IUtilizador, Comparable<IUtiliz
         return this.acessos - u.getAcessos();
     }
 
-    public Utilizador(String id,String email, String pwd, String nome, int acessos, double localizacaoX, double localizacaoY, Set<IEncomenda> historico) {
+    public Utilizador(String id,String email, String pwd, String nome, int acessos, double localizacaoX, double localizacaoY, Set<IEncomenda> historico, int estado) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -32,7 +32,7 @@ public class Utilizador implements Serializable, IUtilizador, Comparable<IUtiliz
         this.localizacaoX = localizacaoX;
         this.localizacaoY = localizacaoY;
         this.historico = historico;
-
+        this.estado = estado;
     }
 
     public Utilizador(Utilizador utilizador) {
@@ -44,7 +44,7 @@ public class Utilizador implements Serializable, IUtilizador, Comparable<IUtiliz
         this.localizacaoX = utilizador.localizacaoX;
         this.localizacaoY = utilizador.localizacaoY;
         this.historico = utilizador.historico;
-
+        this.estado = utilizador.estado;
 
     }
 
@@ -73,7 +73,7 @@ public class Utilizador implements Serializable, IUtilizador, Comparable<IUtiliz
         this.localizacaoX = 0;
         this.localizacaoY = 0;
         this.historico = new HashSet<>() ;
-
+        this.estado = 0;
     }
 
 
@@ -95,6 +95,14 @@ public class Utilizador implements Serializable, IUtilizador, Comparable<IUtiliz
 
     public int getAcessos() {
         return acessos;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
 
     public void setHistorico(Set<IEncomenda> historico) {
@@ -142,6 +150,7 @@ public class Utilizador implements Serializable, IUtilizador, Comparable<IUtiliz
         if (o == null || getClass() != o.getClass()) return false;
         Utilizador that = (Utilizador) o;
         return acessos == that.acessos &&
+                estado == that.estado &&
                 Double.compare(that.localizacaoX, localizacaoX) == 0 &&
                 Double.compare(that.localizacaoY, localizacaoY) == 0 &&
                 Objects.equals(id, that.id) &&
@@ -151,7 +160,7 @@ public class Utilizador implements Serializable, IUtilizador, Comparable<IUtiliz
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, acessos, localizacaoX, localizacaoY, historico);
+        return Objects.hash(id, nome, acessos, localizacaoX, localizacaoY, historico, estado);
     }
 
     @Override

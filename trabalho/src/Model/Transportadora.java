@@ -24,7 +24,6 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
     private double preco_transporte;
     private int n_max;
 
-    private Set<IEncomenda> ativas;
     private List<String> historico;
     private List<Double> faturacao;
 
@@ -72,14 +71,13 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
         this.localizacaoX = 0;
         this.localizacaoY = 0;
         this.faturacao = new ArrayList<>();
-        this.ativas = new HashSet<IEncomenda>();
         this.historico = new ArrayList<>();
         this.pwd = null;
         this.email = null;
         this.preco_transporte = 0;
     }
 
-    public  Transportadora (String id, ArrayList<Integer> rating, double distancia, int n_encomendas, int range, double localizacaoX, double localizacaoY, String nif, boolean disponivel, String tipo, String nome, double preco_km, int n_max, List<String> historico, Set<IEncomenda> ativas, List<Double> faturacao){
+    public  Transportadora (String id, ArrayList<Integer> rating, double distancia, int n_encomendas, int range, double localizacaoX, double localizacaoY, String nif, boolean disponivel, String tipo, String nome, double preco_km, int n_max, List<String> historico, List<Double> faturacao){
         this.id = id;
         this.disponivel = disponivel;
         this.localizacaoX = localizacaoX;
@@ -95,7 +93,6 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
         this.n_max = n_max;
         this.faturacao = faturacao;
         this.historico = historico;
-        this.ativas = ativas;
     }
 
     public String getNif() {
@@ -207,10 +204,6 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
         this.preco_km = preco_km;
     }
 
-    public void setAtivas(Set<IEncomenda> ativas) {
-        this.ativas = ativas;
-    }
-
     public void setNif(String nif) {
         this.nif = nif;
     }
@@ -223,10 +216,6 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
         return cod.startsWith("t");
     }
 
-    public Set<IEncomenda> getAtivas() {
-        return ativas;
-    }
-
     public void setHistorico(List<String> historico) {
         this.historico = historico;
     }
@@ -237,7 +226,7 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
                 "id='" + id + '\'' +
                 ", rating=" + rating +
                 ", n_encomendas=" + n_encomendas +
-                ", range=" + range +
+                ", range =" + range +
                 ", localizacaoX=" + localizacaoX +
                 ", localizacaoY=" + localizacaoY +
                 ", disponivel=" + disponivel +
@@ -247,7 +236,6 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
                 ", preco_km=" + preco_km +
                 ", n_max=" + n_max +
                 ", historico=" + historico +
-                ", Ativas=" + ativas +
                 ", faturacao=" + faturacao +
                 '}';
     }
@@ -274,13 +262,12 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
                 Objects.equals(nif, that.nif) &&
                 Objects.equals(tipo, that.tipo) &&
                 Objects.equals(nome, that.nome) &&
-                Objects.equals(historico, that.historico) &&
-                Objects.equals(ativas, that.ativas);
+                Objects.equals(historico, that.historico);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, rating, n_encomendas, range, localizacaoX, localizacaoY, disponivel, nif, email, pwd, tipo, nome, preco_km, n_max, ativas, historico, faturacao);
+        return Objects.hash(id, rating, n_encomendas, range, localizacaoX, localizacaoY, disponivel, nif, email, pwd, tipo, nome, preco_km, n_max, historico, faturacao);
     }
 
     public Double estrela(){

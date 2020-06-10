@@ -2,6 +2,7 @@ package Model;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -80,12 +81,34 @@ public interface ILoja extends Serializable {
     void addHistorico (IEncomenda e);
 
     /**
-     * @return HashSet com as encomndas realizadas na Loja
-     * */
-    HashSet<IEncomenda> getLista_encomendas();
-
-    /**
      * @return String que representa o número de pessoas numa fila
      * */
     String fila();
+
+    /**
+     *
+     * */
+    void add_fila();
+
+    /**
+     *
+     * */
+    void remove_fila();
+
+    /**
+     *
+     * */
+    void addLista(IEncomenda e);
+
+    /**
+     *
+     * */
+    void removeLista(String e);
+
+    /**
+     *
+     * */
+    List<String> precisa_recolha(ILoja l);
+
+    int f_time();
 }

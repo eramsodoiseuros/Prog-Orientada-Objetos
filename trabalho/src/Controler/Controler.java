@@ -20,8 +20,6 @@ import static jdk.nashorn.internal.objects.NativeMath.round;
 *
 * TIME
 *
-* FIX RATING
-*
 * gerar JDOC
 *
 * */
@@ -33,7 +31,7 @@ public class Controler implements IControler {
     public Controler() {
         model = new Model();
         try {
-            inicia(); // TO BE RUNNED IF S* HITS THE FAN
+            //inicia(); // TO BE RUNNED IF S* HITS THE FAN
             this.model = model.loadEstado();
         } catch (IOException | ClassNotFoundException e) {
             view.alert("Erro", "O controler falhou a dar load do estado.");
@@ -63,8 +61,9 @@ public class Controler implements IControler {
         stage.close();
     }
 
+    // DONE
     public void update_user(IUtilizador u){
-        view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, lojas(), historico(u), encomendas(u)));
+        view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, lojas(), historico(u), model.encomendas_u(u)));
     }
     public void update_transportadora(ITransportadora t){
         view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, lojas(), t.getHistorico()));
@@ -76,78 +75,65 @@ public class Controler implements IControler {
         view.make_window("Menu de Loja " + l.getNome(), view.menu_loja(l));
     }
 
+    // DONE
     public void loja_selecionada(IUtilizador u, String nome) {
-        ILoja loja = new Loja();
-        for (ILoja l: model.getLojaMap().values()) {
-            if(l.getNome().equals(nome))
-                loja = l;
-        }
+        ILoja loja = model.loja_nome(nome);
         view.make_window("Lista de produtos da Loja '" + loja.getNome() + "'", view.select_produtos(u, loja,produtos(loja)));
     }
     public void loja_selecionada(ITransportadora t, String nome) {
-        ILoja loja = new Loja();
-        for (ILoja l: model.getLojaMap().values()) {
-            if(l.getNome().equals(nome))
-                loja = l;
-        }
-        if(precisa_recolha(loja).size() > 0){
-            view.make_window("Lista de produtos da Loja '" + loja.getNome() + "'", view.encomendas_ativas(t, precisa_recolha(loja)));
+        ILoja loja = model.loja_nome(nome);
+        List<String> lista = model.precisa_recolha(loja);
+        if(lista.size() > 0){
+            view.make_window("Lista de encomendas da Loja '" + loja.getNome() + "'", view.encomendas_ativas(t, lista));
         } else view.alert("Não há mais encomendas.","A loja escolhida não têm encomendas ativas de momento");
     }
     public void loja_selecionada(IVoluntario v, String nome) {
-        ILoja loja = new Loja();
-        for (ILoja l: model.getLojaMap().values()) {
-            if(l.getNome().equals(nome))
-                loja = l;
-        }
-        view.make_window("Lista de produtos da Loja '" + loja.getNome() + "'", view.encomendas_ativas(v, precisa_recolha(loja)));
+        ILoja loja = model.loja_nome(nome);
+        List<String> lista = model.precisa_recolha(loja);
+        if(lista.size() > 0){
+            view.make_window("Lista de encomendas da Loja '" + loja.getNome() + "'", view.encomendas_ativas(v, lista));
+        } else view.alert("Não há mais encomendas.","A loja escolhida não têm encomendas ativas de momento");
     }
 
-    private IEncomenda encomendas(IUtilizador u) {
-        IEncomenda e;
-        for(IEncomenda enc : model.getEncMap().values()){
-            if(enc.getUserId().equals(u.getId())){
-                e = enc;
-                return e;
-            }
-        }
-        return null;
-    }
     public void finalizar_encomenda(IUtilizador u, String estafeta, String value){
         for(IEncomenda enc : model.getEncMap().values()){
-            System.out.println(enc.getEstafeta());
             if(enc.getEstafeta().contains(estafeta)){
-                //adiciona a encomenda à lista de históricos do user
                 u.getHistorico().add(enc);
                 u.setAcessos(u.getAcessos()+1);
 
-                ILoja l = model.getLojaMap().get(enc.getLoja());
-                //adiciona a encomenda à lista de históricos da loja
+                ILoja l = model.loja(enc.getLoja());
+                l.add_fila();
                 l.addHistorico(enc);
-                //remove a encomenda da lista de encomendas ativas da loja
-                l.getLista_encomendas().remove(enc);
-                model.getUserMap().get(u.getId()).getHistorico().add(enc);
+                l.removeLista(enc.getId());
+                u.getHistorico().add(enc);
 
                 if(value.startsWith("t")){
                     ITransportadora t = model.getTransMap().get(value);
                     double t1 = t.getPreco_transporte();
-                    // adiciona distância
                     t.setDistancia(distancia(u.getId(), l.getId(), enc.getId()));
-                    //adiciona a encomenda à lista de históricos
                     t.getHistorico().add("Encomenda: " + enc.getId() + " | Preço: " + t1);
                     t.getFaturacao().add(t1);
                 }
                 if(value.startsWith("v")){
-                    //adiciona a encomenda à lista de registos
-                    model.getVolMap().get(value).getRegistos().add(enc);
+                    IVoluntario v = model.getVolMap().get(value);
+                    v.addHistorico("User: " + enc.getUserId() + " , Encomenda: " + enc.getId());
                 }
-                //remove a encomenda do mapa de encomendas ativas
-                model.getEncMap().remove(enc.getId());
+                model.removeEncomenda(enc.getId());
+
+                make_it_run(l.f_time() * 1000000000);
+                System.out.println(l.f_time() * 1000000000);
+                l.remove_fila();
                 return;
             }
         }
     }
+    // needs remover
     public void pedir_recolha(ITransportadora t, String value){
+        if(!model.getEncMap().containsKey(value)){
+            view.alert("Encomenda Fantasma", "OOPS! Parece que alguém fez mal o inventário da semana passada!");
+            // needs a remover
+            return;
+        }
         String userid = model.getEncMap().get(value).getUserId();
         String lojaid = model.getEncMap().get(value).getLoja();
         if(dentro_range_t(model.getUserMap().get(userid), model.getLojaMap().get(lojaid), t)){
@@ -156,22 +142,27 @@ public class Controler implements IControler {
         } else view.alert("Encomenda fora de alcance", "O range da sua transportadora não permite realizar esta recolha.");
     }
     public void pedir_recolha(IVoluntario v, String value){
+        if(!model.getEncMap().containsKey(value)){
+            view.alert("Encomenda Fantasma", "OOPS! Parece que alguém fez mal o inventário da semana passada!");
+            // needs a remover
+            return;
+        }
         String userid = model.getEncMap().get(value).getUserId();
         String lojaid = model.getEncMap().get(value).getLoja();
         if(dentro_range_v(model.getUserMap().get(userid), model.getLojaMap().get(lojaid), v)){
             model.getEncMap().get(value).getEstafeta().add("Voluntário: " + v.getId() + " - Nome: " + v.getNome() + " - Rating: " + v.estrela());
         } else view.alert("Encomenda fora de alcance", "O seu range não permite realizar esta recolha.");
     }
+
+    // HELP
     public void rating(IUtilizador u, String s, char type){
         if(type == 't'){
-            model.getTransMap().get(s).getRating().add(5);
+            model.getTransMap().get(s).getRating().add(view.rating("Introduza o rating", "Por favor, avalie a sua satisfação perante a encomenda realizada. [0 muito mau] [10 muito bom]"));
         }
         if(type == 'v'){
-            model.getVolMap().get(s).getRating().add(5);
+            model.getVolMap().get(s).getRating().add(view.rating("Introduza o rating", "Por favor, avalie a sua satisfação perante a encomenda realizada. [0 muito mau] [10 muito bom]"));
         }
-    } // not done, add prompt
-
-    // done
+    }
     public void listar_on_going(){
         view.make_window("Encomendas Ativas", view.print_list(encomendas_ativas()));
     }
@@ -180,11 +171,10 @@ public class Controler implements IControler {
     }
     public void listar_top_transportadoras(){ view.make_window("Top 10 Transportadoras", view.print_list(top10Distancias()));}
 
-    // done
+    // REGISTO
     public void registaTransportadora(String id, String nome, String email, String pwd, String nif, double range, double preco) throws IOException {
 
         ITransportadora transportadora = new Transportadora();
-
         Double[] loc = localizacao();
 
         transportadora.setId(id);
@@ -197,7 +187,7 @@ public class Controler implements IControler {
         transportadora.setLocalizacaoX(loc[0]);
         transportadora.setLocalizacaoY(loc[1]);
 
-        model.getTransMap().putIfAbsent(id, transportadora);
+        model.addTransportadora(transportadora);
         model.guardaEstado();
     }
     public void registaVoluntario(String id, String nome, String email, String pwd, double range) throws IOException {
@@ -215,7 +205,7 @@ public class Controler implements IControler {
         voluntario.setLocalizacaoY(loc[1]);
 
 
-        model.getVolMap().putIfAbsent(email, voluntario);
+        model.addVoluntario(voluntario);
         model.guardaEstado();
 
     }
@@ -231,7 +221,7 @@ public class Controler implements IControler {
         loja.setLocalizacaoX(loc[0]);
         loja.setLocalizacaoY(loc[1]);
 
-        model.getLojaMap().putIfAbsent(email, loja);
+        model.addLoja(loja);
         model.guardaEstado();
     }
     public void registaUtilizador(String id, String nome, String email, String pwd) throws IOException {
@@ -244,27 +234,25 @@ public class Controler implements IControler {
         utilizador.setId(id);
         utilizador.setPwd(pwd);
         utilizador.setNome(nome);
+        utilizador.setEstado(0);
         utilizador.setAcessos(0);
         utilizador.setLocalizacaoX(loc[0]);
         utilizador.setLocalizacaoY(loc[1]);
 
-        model.getUserMap().putIfAbsent(id, utilizador);
+        model.addUtilizador(utilizador);
         model.guardaEstado();
     }
 
-    // done
+    // VALIDAÇÃO
     public void validaRegUser(String email, String pwd, String nome) {
         if(email == null) return;
         if(pwd == null) return;
         if(nome == null) return;
 
-        for (IUtilizador u : this.model.getUserMap().values()) {
-            if (u.getEmail().equals(email) || u.getEmail() == null) {
-                 view.alert("Erro.", "Email já em uso. Tente novamente com um novo email.");
-                return;
-            }
+        if (!model.validaRegistoUser(email)) {
+            view.alert("Erro.", "Email já em uso. Tente novamente com um novo email.");
+            return;
         }
-
         try {
             registaUtilizador("u" + model.contaNCodUser(), nome, email, pwd);
         } catch (IOException e) {
@@ -279,11 +267,9 @@ public class Controler implements IControler {
         if(range == null) return;
         if(precokm == null) return;
 
-        for (ITransportadora u : this.model.getTransMap().values()) {
-            if (u.getEmail().equals(email) || u.getEmail() == null) {
-                view.alert("Erro.", "Email já em uso. Tente novamente com um novo email.");
-                return;
-            }
+        if (!model.validaRegistoTrans(email)) {
+            view.alert("Erro.", "Email já em uso. Tente novamente com um novo email.");
+            return;
         }
 
         try {
@@ -298,11 +284,9 @@ public class Controler implements IControler {
         if(nome == null) return;
         if(range == null) return;
 
-        for (IVoluntario u : this.model.getVolMap().values()) {
-            if (u.getEmail().equals(email) || u.getEmail() == null) {
-                view.alert("Erro.", "Email já em uso. Tente novamente com um novo email.");
-                return;
-            }
+        if (!model.validaRegistoVol(email)) {
+            view.alert("Erro.", "Email já em uso. Tente novamente com um novo email.");
+            return;
         }
 
         try {
@@ -316,11 +300,9 @@ public class Controler implements IControler {
         if(pwd == null) return;
         if(nome == null) return;
 
-        for (ILoja u : this.model.getLojaMap().values()) {
-            if (u.getEmail().equals(email) || u.getEmail() == null) {
-                view.alert("Erro.", "Email já em uso. Tente novamente com um novo email.");
-                return;
-            }
+        if(!model.validaRegistoLoja(email)) {
+            view.alert("Erro.", "Email já em uso. Tente novamente com um novo email.");
+            return;
         }
 
         try {
@@ -330,50 +312,40 @@ public class Controler implements IControler {
         }
     }
 
-    // done
     public void validaLogInUser(String email, String pwd) {
-        for (IUtilizador u : model.getUserMap().values()) {
-            if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) {
-                view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, lojas(), historico(u),encomendas(u)));
-                return;
-            }
-        }
-        view.alert("Erro no login.","Credenciais erradas ou não existentes.");
+        if (model.validaLogInUser(email, pwd)) {
+            IUtilizador u = model.getUser(email);
+            view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, lojas(), historico(u), model.encomendas_u(u)));
+        } else view.alert("Erro no login.","Credenciais erradas ou não existentes.");
     }
     public void validaLogInTrans(String email, String pwd) {
-        for (ITransportadora t : model.getTransMap().values()) {
-            if (t.getEmail().equals(email) && t.getPwd().equals(pwd)){
-                view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, lojas(), faturacao(t)));
-                return;
-            }
+        if (model.validaLogInTrans(email, pwd)){
+            ITransportadora t = model.getTrans(email);
+            view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, lojas(), faturacao(t)));
+            return;
         }
         view.alert("Erro no login.","Credenciais erradas ou não existentes.");
     }
     public void validaLogInVol(String email, String pwd) {
-        for (IVoluntario u : model.getVolMap().values()) {
-            if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) {
-                view.make_window("Menu de Voluntário " + u.getNome(), view.menu_voluntario(u, lojas()));
-                return;
-            }
+        if (model.validaLogInVol(email, pwd)) {
+            IVoluntario v = model.getVol(email);
+            view.make_window("Menu de Voluntário " + v.getNome(), view.menu_voluntario(v, lojas()));
+            return;
         }
         view.alert("Erro no login.","Credenciais erradas ou não existentes.");
     }
     public void validaLogInLoja(String email, String pwd) {
-        for (ILoja u : model.getLojaMap().values()) {
-            if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) {
-                view.make_window("Menu de Loja " + u.getNome(), view.menu_loja(u));
-                return;
-            }
+        if(model.validaLogInLoja(email, pwd)){
+            ILoja l = model.getLoja(email);
+            view.make_window("Menu de Loja " + l.getNome(), view.menu_loja(l));
+            return;
         }
         view.alert("Erro no login.","Credenciais erradas ou não existentes.");
     }
 
     // done
     public IEncomenda pedidoUser(LinhaEncomenda produto, String idLoja, String userId) throws IOException {
-
-        ILoja loja = model.getLojaMap().get(idLoja);
         IEncomenda encomenda = new Encomenda();
-
         String id = "e" + model.contaNCodEnc();
 
         encomenda.setId(id);
@@ -383,8 +355,8 @@ public class Controler implements IControler {
         encomenda.setPeso(produto.getPeso());
         encomenda.setPreco(produto.getPreco());
 
-        model.getEncMap().putIfAbsent(id, encomenda);
-        loja.getLista_encomendas().add(encomenda);
+        model.addEncomenda(encomenda);
+        model.getLojaMap().get(idLoja).addLista(encomenda);
         return encomenda;
     }
     public boolean dentro_range_t(IUtilizador user, ILoja loja, ITransportadora t) {
@@ -440,20 +412,6 @@ public class Controler implements IControler {
         };
         return s;
     }
-    private List<String> precisa_recolha(ILoja l){
-        List<String> s = new ArrayList<>();
-        for(IEncomenda enc : l.getLista_encomendas()){
-            s.add(enc.getId());
-        }
-        return s;
-    }
-    private List<String> encomendas(){
-        List<String> s = new Vector<>();
-        for(IEncomenda enc : model.getEncMap().values()){
-            s.add(enc.getId());
-        }
-        return s;
-    }
     private List<String> encomendas_ativas(){
         List<String> s = new Vector<>();
         for(IEncomenda enc : model.getEncMap().values()){
@@ -464,14 +422,13 @@ public class Controler implements IControler {
 
     public  List<String> top10Acessos() {
         List<String> lista = new ArrayList<>();
-        List<IUtilizador> l = new ArrayList<>();
 
-        l.addAll(model.getUserMap().values());
+        List<IUtilizador> l = new ArrayList<>(model.getUserMap().values());
 
         l.stream().sorted().limit(10).collect(Collectors.toList());
 
-        for(IUtilizador u:l){
-            lista.add("Utilizador: " + u.getNome() + "| Compras: " + u.getAcessos());
+        for(IUtilizador u : l){
+            lista.add("Utilizador: " + u.getNome() + " |  Compras: " + u.getAcessos());
         }
         return lista;
     }
@@ -490,16 +447,27 @@ public class Controler implements IControler {
         return lista;
     }
 
-    public boolean isNumeric(String strNum) {
-        if (strNum == null) {
-            return false;
+    void make_it_run(int tempo){
+        boolean enough = false;
+        int aux = 0;
+        int s = 0, m = 0, h = 0;
+        while(aux < tempo) {
+            s += 1;
+            if (s > 59){
+                m += 1;
+                s = 0;
+            }
+            if (m > 59){
+                h += 1;
+                m = 0;
+            }
+            if (h > 12){
+                h = 1;
+                m = 0;
+                s = 0;
+            }
+            aux++;
         }
-        try {
-            double d = Double.parseDouble(strNum);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-        return true;
     }
 
     // not to be used ever again, emergencies only

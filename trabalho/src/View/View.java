@@ -8,11 +8,16 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class View implements IView{
@@ -22,6 +27,7 @@ public class View implements IView{
     private TextField usertxt, txt, txt2, txt3, txt4;
     private PasswordField passwordtxt;
     private ListView<String> listView;
+    private int rating;
 
     public View(IControler c){
         this.c = c;
@@ -40,7 +46,7 @@ public class View implements IView{
 
         Label label = new Label();
         label.setText(mensagem);
-        Button closeButton = new Button("Fechar");
+        Button closeButton = new Button("Fechar.");
         closeButton.setOnAction(e -> w.close());
 
         VBox layout = new VBox(15);
@@ -52,9 +58,65 @@ public class View implements IView{
         w.showAndWait();
     } // done
 
+    public int rating(String titulo, String mensagem){
+        Stage w = new Stage();
+        w.initModality(Modality.APPLICATION_MODAL);
+        w.setTitle(titulo);
+        w.setMinWidth(300);
+
+        listView= new ListView<>();
+        listView.getItems().addAll(
+                "1", "2", "3",
+                "4", "5", "6", "7",
+                "8", "9", "10"
+        );
+        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        Button b1 = new Button("Escolher.");
+        b1.setOnAction(e ->{
+                rating = pick_rating();
+                c.end_scene(e);
+        });
+
+        VBox layout = new VBox(5);
+        layout.getChildren().addAll(listView,b1);
+        layout.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(layout);
+        w.setScene(scene);
+        w.show();
+        return rating;
+    }
+
+    private int pick_rating(){
+        String s = String.valueOf(listView.getSelectionModel().getSelectedItems());
+        if(s.equals("[0]"))
+            return 0;
+        if(s.equals("[1]"))
+            return 1;
+        if(s.equals("[2]"))
+            return 2;
+        if(s.equals("[3]"))
+            return 3;
+        if(s.equals("[4]"))
+            return 4;
+        if(s.equals("[5]"))
+            return 5;
+        if(s.equals("[6]"))
+            return 6;
+        if(s.equals("[7]"))
+            return 7;
+        if(s.equals("[8]"))
+            return 8;
+        if(s.equals("[9]"))
+            return 9;
+        if(s.equals("[10]"))
+            return 10;
+        alert("Erro", "É necessário dar um rating.");
+        return rating("Introduza o rating", "Por favor, avalie a sua satisfação perante a encomenda realizada. [0 muito mau] [10 muito bom]");
+    }
+
     @Override
     public Scene menu() {
-
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
 
@@ -66,24 +128,23 @@ public class View implements IView{
         );
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        Button b1 = new Button("Escolher");
+        Button b1 = new Button("Escolher.");
         b1.setOnAction(e -> escolher_menu());
 
-        Button b2 = new Button("Sair");
+        Button b2 = new Button("Sair.");
         b2.setOnAction(e -> {
             c.save();
             Platform.exit();
         });
 
-        Button b3 = new Button("Guardar");
+        Button b3 = new Button("Guardar.");
         b3.setOnAction(e -> {
             c.save();
             c.end_scene(e);
             make_window("Menu Principal", menu());
         });
-
         layout.getChildren().addAll(listView,b1,b2,b3);
-        return new Scene(layout, 400, 300);
+        return new Scene(layout, 400, 400);
     } // done
 
     @Override
@@ -100,27 +161,19 @@ public class View implements IView{
         txt = new TextField();
         Label lblNome = new Label("Nome");
 
-        Button b = new Button("Registar");
+        Button b = new Button("Registar.");
         b.setOnAction(e -> {
             String user = usertxt.getText();
             String pwd = passwordtxt.getText();
             String nome = txt.getText();
 
-            boolean v = true;
-            if(user.equals("")) {
-                alert("Email NULL", "Precisa de inserir um email para se registar");
-                v = false;
+            if(user.equals("")) alert("Email NULL", "Precisa de inserir um email para se registar.");
+            if(pwd.equals("")) alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar.");
+            if(nome.equals("")) alert("Nome NULL", "Precisa de inserir um nome para se registar.");
+            else {
+                c.validaRegUser(user, pwd, nome);
+                c.end_scene(e);
             }
-            if(pwd.equals("")) {
-                alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar");
-                v = false;
-            }
-            if(nome.equals("")) {
-                alert("Nome NULL", "Precisa de inserir um nome para se registar");
-                v = false;
-            }
-            if (v) c.validaRegUser(user, pwd, nome);
-            c.end_scene(e);
         });
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, lblNome, txt, b);
@@ -151,7 +204,7 @@ public class View implements IView{
         txt4 = new TextField();
         Label lblPreco = new Label("Preço/km");
 
-        Button b = new Button("Registar");
+        Button b = new Button("Registar.");
         b.setOnAction(e -> {
             String user = usertxt.getText();
             String pwd = passwordtxt.getText();
@@ -160,34 +213,16 @@ public class View implements IView{
             String range = txt3.getText();
             String precokm = txt4.getText();
 
-            boolean v = true;
-            if(user.equals("")) {
-                alert("Email NULL", "Precisa de inserir um email para se registar.");
-                v = false;
+            if(user.equals("")) alert("Email NULL", "Precisa de inserir um email para se registar.");
+            if(pwd.equals("")) alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar.");
+            if(nome.equals("")) alert("Nome NULL", "Precisa de inserir um nome para se registar.");
+            if(nif.equals("")) alert("Nif NULL", "Precisa de inserir um nif para se registar.");
+            if(range.equals("")) alert("Range NULL", "Precisa de inserir um range para se registar.");
+            if(precokm.equals("")) alert("Preço NULL", "Precisa de inserir um preço/km para se registar.");
+            else {
+                c.validaRegTrans(user, pwd, nome, nif, range, precokm);
+                c.end_scene(e);
             }
-            if(pwd.equals("")) {
-                alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar.");
-                v = false;
-            }
-            if(nome.equals("")) {
-                alert("Nome NULL", "Precisa de inserir um nome para se registar.");
-                v = false;
-            }
-            if(nif.equals("")){
-                alert("Nif NULL", "Precisa de inserir um nif para se registar.");
-                v = false;
-            }
-            if(range.equals("") || !c.isNumeric(range) ) {
-                alert("Range NULL", "Precisa de inserir um range para se registar.");
-                v = false;
-            }
-            if(precokm.equals("") || !c.isNumeric(precokm) ) {
-                alert("Preço NULL", "Precisa de inserir um preço/km para se registar.");
-                v = false;
-            }
-            if (v) c.validaRegTrans(user, pwd, nome, nif, range, precokm);
-
-            c.end_scene(e);
         });
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, lblNome, txt, lblNif, txt2, lblRange, txt3, lblPreco, txt4, b);
@@ -212,33 +247,21 @@ public class View implements IView{
         txt3 = new TextField();
         Label lblRange = new Label("Range");
 
-        Button b = new Button("Registar");
+        Button b = new Button("Registar.");
         b.setOnAction(e -> {
             String user = usertxt.getText();
             String pwd = passwordtxt.getText();
             String nome = txt.getText();
             String range = txt3.getText();
 
-            boolean v = true;
-            if(user.equals("")) {
-                alert("Email NULL", "Precisa de inserir um email para se registar");
-                v = false;
+            if(user.equals("")) alert("Email NULL", "Precisa de inserir um email para se registar.");
+            if(pwd.equals("")) alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar.");
+            if(nome.equals("")) alert("Nome NULL", "Precisa de inserir um nome para se registar.");
+            if(range.equals("")) alert("Range NULL", "Precisa de inserir um range para se registar.");
+            else {
+                c.validaRegVol(user, pwd, nome, range);
+                c.end_scene(e);
             }
-            if(pwd.equals("")) {
-                alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar");
-                v = false;
-            }
-            if(nome.equals("")) {
-                alert("Nome NULL", "Precisa de inserir um nome para se registar");
-                v = false;
-            }
-            if(range.equals("") || !c.isNumeric(range) ) {
-                alert("Range NULL", "Precisa de inserir um range para se registar");
-                v = false;
-            }
-            if (v) c.validaRegVol(user, pwd, nome, range);
-
-            c.end_scene(e);
         });
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, lblNome, txt, lblRange, txt3, b);
@@ -260,28 +283,19 @@ public class View implements IView{
         txt = new TextField();
         Label lblNome = new Label("Nome");
 
-        Button b = new Button("Registar");
+        Button b = new Button("Registar.");
         b.setOnAction(e -> {
             String user = usertxt.getText();
             String pwd = passwordtxt.getText();
             String nome = txt.getText();
 
-            boolean v = true;
-            if(user.equals("")) {
-                alert("Email NULL", "Precisa de inserir um email para se registar");
-                v = false;
+            if(user.equals("")) alert("Email NULL", "Precisa de inserir um email para se registar.");
+            if(pwd.equals("")) alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar.");
+            if(nome.equals("")) alert("Nome NULL", "Precisa de inserir um nome para se registar.");
+            else {
+                c.validaRegLoja(user, pwd, nome);
+                c.end_scene(e);
             }
-            if(pwd.equals("")) {
-                alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar");
-                v = false;
-            }
-            if(nome.equals("")) {
-                alert("Nome NULL", "Precisa de inserir um nome para se registar");
-                v = false;
-            }
-            if (v) c.validaRegLoja(user, pwd, nome);
-
-            c.end_scene(e);
         });
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, lblNome, txt, b);
@@ -300,7 +314,7 @@ public class View implements IView{
         passwordtxt = new PasswordField();
         Label lblPassword = new Label("Password");
 
-        Button b = new Button("Login");
+        Button b = new Button("Login.");
         b.setOnAction(e -> {
             String user = usertxt.getText();
             String pwd = passwordtxt.getText();
@@ -324,7 +338,7 @@ public class View implements IView{
         passwordtxt = new PasswordField();
         Label lblPassword = new Label("Password");
 
-        Button b = new Button("Login");
+        Button b = new Button("Login.");
         b.setOnAction(e -> {
             String user = usertxt.getText();
             String pwd = passwordtxt.getText();
@@ -348,7 +362,7 @@ public class View implements IView{
         passwordtxt = new PasswordField();
         Label lblPassword = new Label("Password");
 
-        Button b = new Button("Login");
+        Button b = new Button("Login.");
         b.setOnAction(e -> {
             String user = usertxt.getText();
             String pwd = passwordtxt.getText();
@@ -372,7 +386,7 @@ public class View implements IView{
         passwordtxt = new PasswordField();
         Label lblPassword = new Label("Password");
 
-        Button b = new Button("Login");
+        Button b = new Button("Login.");
         b.setOnAction(e -> {
             String user = usertxt.getText();
             String pwd = passwordtxt.getText();
@@ -520,7 +534,7 @@ public class View implements IView{
 
         listView = new ListView<>();
         listView.getItems().addAll(produtos);
-        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         layout.getChildren().addAll(listView,comprar);
         layout.setPadding(new Insets(20, 20, 20, 20));
@@ -555,7 +569,6 @@ public class View implements IView{
     @Override
     public Scene encomendas_ativas(IVoluntario v, List<String> recolhas){
         VBox layout = new VBox(10);
-
         ComboBox<String> cb = new ComboBox<>();
         cb.getItems().addAll(recolhas);
         cb.setPromptText("Selecione a Loja da qual pertende ir realizar uma recolha:");

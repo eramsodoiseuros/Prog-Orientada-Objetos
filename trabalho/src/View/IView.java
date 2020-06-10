@@ -3,6 +3,8 @@ package View;
 import Controler.IControler;
 import javafx.scene.Scene;
 import Model.*;
+import javafx.stage.Stage;
+
 import java.util.List;
 
 /**
@@ -142,4 +144,6 @@ public interface IView {
      * @return Scene repesentativa do Menu Principal
      * */
     Scene print_list(List<String> encomendas);
+
+    int rating(String s, String s1);
 }

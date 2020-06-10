@@ -14,7 +14,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         IView view = new View();
-
         window = primaryStage;
         window.setScene(view.menu());
         window.setTitle("Menu Principal");

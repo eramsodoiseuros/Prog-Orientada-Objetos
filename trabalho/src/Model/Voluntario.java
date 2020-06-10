@@ -17,10 +17,10 @@ public class Voluntario implements Serializable, IVoluntario {
 
     private String tipo;
     private String nome;
-    private Set<IEncomenda> registos;
+    private List<String> historico;
     private IEncomenda ativa;
 
-    public Voluntario(String id, String email, String pwd, ArrayList<Integer> rating, int n_encomendas, int range, double localizacaoX, double localizacaoY, boolean disponivel, String tipo, String nome, Set<IEncomenda> registos, Encomenda ativa) {
+    public Voluntario(String id, String email, String pwd, ArrayList<Integer> rating, int n_encomendas, int range, double localizacaoX, double localizacaoY, boolean disponivel, String tipo, String nome, List<String> historico, Encomenda ativa) {
         this.id = id;
         this.tipo = tipo;
         this.nome = nome;
@@ -32,7 +32,7 @@ public class Voluntario implements Serializable, IVoluntario {
         this.localizacaoX = localizacaoX;
         this.localizacaoY = localizacaoY;
         this.disponivel = disponivel;
-        this.registos = registos;
+        this.historico = historico;
         this.ativa = ativa;
     }
 
@@ -50,7 +50,7 @@ public class Voluntario implements Serializable, IVoluntario {
         this.localizacaoY = 0;
         this.n_encomendas = 0;
         this.disponivel = false;
-        this.registos = new HashSet<IEncomenda>();
+        this.historico = new ArrayList<>();
         this.ativa = new Encomenda();
     }
 
@@ -102,14 +102,19 @@ public class Voluntario implements Serializable, IVoluntario {
         return rating;
     }
 
+    @Override
+    public List<String> getHistorico() {
+        return new ArrayList<>(historico);
+    }
+
+    @Override
+    public void addHistorico(String s) {
+        historico.add(s);
+    }
+
     public boolean isDisponivel() {
         return disponivel;
     }
-
-    public Set<IEncomenda> getRegistos() {
-        return registos;
-    }
-
 
     public void setDisponivel(boolean disponivel) {
         this.disponivel = disponivel;
@@ -155,8 +160,8 @@ public class Voluntario implements Serializable, IVoluntario {
         this.tipo = tipo;
     }
 
-    public void setRegistos(Set<IEncomenda> registos) {
-        this.registos = registos;
+    public void setRegistos(List<String> registos) {
+        this.historico = historico;
     }
 
     @Override
@@ -184,9 +189,7 @@ public class Voluntario implements Serializable, IVoluntario {
                 .append(", Y = ").append(localizacaoY)
                 .append(", disponivel = ").append(disponivel)
                 .append(", tipo = ").append(tipo)
-                .append(", registos = ").append(registos)
-                .append(", Ativa = ").append(ativa)
-                .append("}; \n");
+                .append(", registos = ").append(historico).append("}");
         return sb.toString();
     }
 
