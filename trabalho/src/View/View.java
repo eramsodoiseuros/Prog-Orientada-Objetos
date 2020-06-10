@@ -54,6 +54,7 @@ public class View implements IView{
 
     @Override
     public Scene menu() {
+        System.out.println(c.top10Acessos());
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
 
@@ -101,13 +102,21 @@ public class View implements IView{
             String pwd = passwordtxt.getText();
             String nome = txt.getText();
 
-            if(user.equals("")) alert("Email NULL", "Precisa de inserir um email para se registar.");
-            if(pwd.equals("")) alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar.");
-            if(nome.equals("")) alert("Nome NULL", "Precisa de inserir um nome para se registar.");
-            else {
-                c.validaRegUser(user, pwd, nome);
-                c.end_scene(e);
+            boolean v = true;
+            if(user.equals("")) {
+                alert("Email NULL", "Precisa de inserir um email para se registar.");
+                v = false;
             }
+            if(pwd.equals("")) {
+                alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar.");
+                v = false;
+            }
+            if(nome.equals("")) {
+                alert("Nome NULL", "Precisa de inserir um nome para se registar.");
+                v = false;
+            }
+            if (v) c.validaRegUser(user, pwd, nome);
+            c.end_scene(e);
         });
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, lblNome, txt, b);
@@ -147,16 +156,34 @@ public class View implements IView{
             String range = txt3.getText();
             String precokm = txt4.getText();
 
-            if(user.equals("")) alert("Email NULL", "Precisa de inserir um email para se registar.");
-            if(pwd.equals("")) alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar.");
-            if(nome.equals("")) alert("Nome NULL", "Precisa de inserir um nome para se registar.");
-            if(nif.equals("")) alert("Nif NULL", "Precisa de inserir um nif para se registar.");
-            if(range.equals("")) alert("Range NULL", "Precisa de inserir um range para se registar.");
-            if(precokm.equals("")) alert("Preço NULL", "Precisa de inserir um preço/km para se registar.");
-            else {
-                c.validaRegTrans(user, pwd, nome, nif, range, precokm);
-                c.end_scene(e);
+            boolean v = true;
+            if(user.equals("")) {
+                alert("Email NULL", "Precisa de inserir um email para se registar.");
+                v = false;
             }
+            if(pwd.equals("")) {
+                alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar.");
+                v = false;
+            }
+            if(nome.equals("")) {
+                alert("Nome NULL", "Precisa de inserir um nome para se registar.");
+                v = false;
+            }
+            if(nif.equals("")){
+                alert("Nif NULL", "Precisa de inserir um nif para se registar.");
+                v = false;
+            }
+            if(range.equals("") || !c.isNumeric(range) ) {
+                alert("Range NULL", "Precisa de inserir um range para se registar.");
+                v = false;
+            }
+            if(precokm.equals("") || !c.isNumeric(precokm) ) {
+                alert("Preço NULL", "Precisa de inserir um preço/km para se registar.");
+                v = false;
+            }
+            if (v) c.validaRegTrans(user, pwd, nome, nif, range, precokm);
+
+            c.end_scene(e);
         });
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, lblNome, txt, lblNif, txt2, lblRange, txt3, lblPreco, txt4, b);
@@ -188,14 +215,26 @@ public class View implements IView{
             String nome = txt.getText();
             String range = txt3.getText();
 
-            if(user.equals("")) alert("Email NULL", "Precisa de inserir um email para se registar.");
-            if(pwd.equals("")) alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar.");
-            if(nome.equals("")) alert("Nome NULL", "Precisa de inserir um nome para se registar.");
-            if(range.equals("")) alert("Range NULL", "Precisa de inserir um range para se registar.");
-            else {
-                c.validaRegVol(user, pwd, nome, range);
-                c.end_scene(e);
+            boolean v = true;
+            if(user.equals("")) {
+                alert("Email NULL", "Precisa de inserir um email para se registar.");
+                v = false;
             }
+            if(pwd.equals("")) {
+                alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar.");
+                v = false;
+            }
+            if(nome.equals("")) {
+                alert("Nome NULL", "Precisa de inserir um nome para se registar.");
+                v = false;
+            }
+            if(range.equals("") || !c.isNumeric(range) ) {
+                alert("Range NULL", "Precisa de inserir um range para se registar.");
+                v = false;
+            }
+            if (v) c.validaRegVol(user, pwd, nome, range);
+
+            c.end_scene(e);
         });
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, lblNome, txt, lblRange, txt3, b);
@@ -223,13 +262,22 @@ public class View implements IView{
             String pwd = passwordtxt.getText();
             String nome = txt.getText();
 
-            if(user.equals("")) alert("Email NULL", "Precisa de inserir um email para se registar.");
-            if(pwd.equals("")) alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar.");
-            if(nome.equals("")) alert("Nome NULL", "Precisa de inserir um nome para se registar.");
-            else {
-                c.validaRegLoja(user, pwd, nome);
-                c.end_scene(e);
+            boolean v = true;
+            if(user.equals("")) {
+                alert("Email NULL", "Precisa de inserir um email para se registar.");
+                v = false;
             }
+            if(pwd.equals("")) {
+                alert("Password NULL", "Precisa de inserir uma palavra-passe para se registar.");
+                v = false;
+            }
+            if(nome.equals("")) {
+                alert("Nome NULL", "Precisa de inserir um nome para se registar.");
+                v = false;
+            }
+            if (v) c.validaRegLoja(user, pwd, nome);
+
+            c.end_scene(e);
         });
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, lblNome, txt, b);
