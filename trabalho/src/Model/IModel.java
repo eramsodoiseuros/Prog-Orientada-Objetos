@@ -1,9 +1,7 @@
 package Model;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Interface do Model
@@ -87,7 +85,7 @@ public interface IModel {
     /**
      *
      * */
-    HashMap<String, IUtilizador> getUserMap();
+    TreeMap<String, IUtilizador> getUserMap();
 
     /**
      *

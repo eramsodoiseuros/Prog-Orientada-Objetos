@@ -10,7 +10,7 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
     private double range;
     private double localizacaoX;
     private double localizacaoY;
-    private double distancia;
+    private Double distancia;
     private boolean disponivel;
 
     private String nif;
@@ -52,7 +52,7 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
         return distancia;
     }
 
-    public void setDistancia(double distancia) {
+    public void setDistancia(Double distancia) {
         this.distancia = distancia;
     }
 
@@ -61,7 +61,7 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
         this.disponivel = true;
         this.n_encomendas = 0;
         this.range = 0;
-        this.distancia = 0;
+        this.distancia = 0.0;
         this.rating = new ArrayList<>();
 
         this.nif = null;
@@ -275,8 +275,7 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
                 Objects.equals(tipo, that.tipo) &&
                 Objects.equals(nome, that.nome) &&
                 Objects.equals(historico, that.historico) &&
-                Objects.equals(ativas, that.ativas) &&
-                faturacao == faturacao;
+                Objects.equals(ativas, that.ativas);
     }
 
     @Override

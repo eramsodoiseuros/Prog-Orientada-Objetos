@@ -126,4 +126,5 @@ public interface ITransportadora extends Serializable {
 
     double getDistancia();
 
+    void setDistancia(Double d);
 }
