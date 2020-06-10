@@ -74,24 +74,32 @@ public interface IModel {
 
     /**
      *
+     * @return Mapa das Transportadoras
      * */
     HashMap<String, ITransportadora> getTransMap();
 
     /**
      *
+     * @return Mapa das Lojas
      * */
     HashMap<String, ILoja> getLojaMap();
 
     /**
      *
+     * @return Mapa dos utilizadores
      * */
     TreeMap<String, IUtilizador> getUserMap();
 
     /**
      *
+     * @return Mapa dos Voluntarios
      * */
     HashMap<String, IVoluntario> getVolMap();
 
+    /**
+     *
+     * @return Mapa dos Voluntarios
+     * */
     void registaEncomenda(String id, String userId, String lojaId, double peso, ArrayList<LinhaEncomenda> produtos);
 
     /**
@@ -101,27 +109,32 @@ public interface IModel {
     void loadInventLoja() throws IOException;
 
     /**
-     *
-     * */
+     * Metodo provavelmente temporario que adiciona as transporadoras existentes fazendo load de um ficheiro txt
+     * @throws IOException
+     */
     void fileToTrans() throws IOException;
 
     /**
-     *
-     * */
+     * Metodo provavelmente temporario que adiciona as lojas existentes fazendo load de um ficheiro txt
+     * @throws IOException
+     */
     void filetoLoja() throws IOException;
 
     /**
-     *
-     * */
+     * Metodo provavelmente temporario que adiciona os Utilizadores existentes fazendo load de um ficheiro txt
+     * @throws IOException
+     */
     void fileToUser() throws IOException;
 
     /**
-     *
-     * */
+     * Metodo provavelmente temporario que adiciona os Voluntarios existentes fazendo load de um ficheiro txt
+     * @throws IOException
+     */
     void fileToVol() throws IOException;
 
     /**
-     *
-     * */
+     * Metodo provavelmente temporario que adiciona as Encomendas existentes fazendo load de um ficheiro txt
+     * @throws IOException
+     */
     void fileToEnc() throws IOException;
 }

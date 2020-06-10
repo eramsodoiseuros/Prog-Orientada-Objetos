@@ -244,7 +244,6 @@ public class Controler implements IControler {
         utilizador.setId(id);
         utilizador.setPwd(pwd);
         utilizador.setNome(nome);
-        utilizador.setEstado(0);
         utilizador.setAcessos(0);
         utilizador.setLocalizacaoX(loc[0]);
         utilizador.setLocalizacaoY(loc[1]);
