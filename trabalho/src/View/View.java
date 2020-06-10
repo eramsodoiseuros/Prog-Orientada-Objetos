@@ -59,7 +59,11 @@ public class View implements IView{
         layout.setPadding(new Insets(20, 20, 20, 20));
 
         listView= new ListView<>();
-        listView.getItems().addAll("Registar Utilizador", "Registar Transportadora", "Registar Voluntário", "Registar Loja", "Login Utilizador", "Login Transportadora", "Login Voluntário", "Login Loja", "Encomendas Ativas");
+        listView.getItems().addAll(
+                "Registar Utilizador", "Registar Transportadora", "Registar Voluntário",
+                "Registar Loja", "Login Utilizador", "Login Transportadora", "Login Voluntário",
+                "Login Loja", "Encomendas Ativas", "TOP Compradores", "TOP Transportadoras"
+        );
         listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         Button b1 = new Button("Escolher.");
@@ -566,7 +570,7 @@ public class View implements IView{
     }
 
     @Override
-    public Scene encomendas_ativas(List<String> encomendas){
+    public Scene print_list(List<String> encomendas){
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
 
@@ -638,6 +642,14 @@ public class View implements IView{
 
         if(s.equals("[Encomendas Ativas]")){
             c.listar_on_going();
+        }
+
+        if(s.equals("[TOP Compradores]")){
+            c.listar_top_users();
+        }
+
+        if(s.equals("[TOP Transportadoras]")){
+            c.listar_top_transportadoras();
         }
     } // done
 }

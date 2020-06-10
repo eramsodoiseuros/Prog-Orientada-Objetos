@@ -4,12 +4,9 @@ import Model.*;
 import View.*;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,14 +22,9 @@ import static jdk.nashorn.internal.objects.NativeMath.round;
 *
 * FIX RATING
 *
-* USAR TOP10
-*
-* MUDAR A CONTAGEM DOS ACESSOS
-*
 * gerar JDOC
 *
 * */
-
 
 public class Controler implements IControler {
     private IModel model;
@@ -41,7 +33,7 @@ public class Controler implements IControler {
     public Controler() {
         model = new Model();
         try {
-            inicia(); // TO BE RUNNED IF S* HITS THE FAN
+            //inicia(); // TO BE RUNNED IF S* HITS THE FAN
             this.model = model.loadEstado();
         } catch (IOException | ClassNotFoundException e) {
             view.alert("Erro", "O controler falhou a dar load do estado.");
@@ -125,24 +117,36 @@ public class Controler implements IControler {
         for(IEncomenda enc : model.getEncMap().values()){
             System.out.println(enc.getEstafeta());
             if(enc.getEstafeta().contains(estafeta)){
+                //adiciona a encomenda à lista de históricos do user
                 u.getHistorico().add(enc);
-                model.getLojaMap().get(enc.getLoja()).addHistorico(enc);
-                model.getLojaMap().get(enc.getLoja()).getLista_encomendas().remove(enc);
+                u.setAcessos(u.getAcessos()+1);
+
+                ILoja l = model.getLojaMap().get(enc.getLoja());
+                //adiciona a encomenda à lista de históricos da loja
+                l.addHistorico(enc);
+                //remove a encomenda da lista de encomendas ativas da loja
+                l.getLista_encomendas().remove(enc);
                 model.getUserMap().get(u.getId()).getHistorico().add(enc);
+
                 if(value.startsWith("t")){
                     ITransportadora t = model.getTransMap().get(value);
                     double t1 = t.getPreco_transporte();
+                    // adiciona distância
+                    t.setDistancia(distancia(u.getId(), l.getId(), enc.getId()));
+                    //adiciona a encomenda à lista de históricos
                     t.getHistorico().add("Encomenda: " + enc.getId() + " | Preço: " + t1);
                     t.getFaturacao().add(t1);
                 }
                 if(value.startsWith("v")){
+                    //adiciona a encomenda à lista de registos
                     model.getVolMap().get(value).getRegistos().add(enc);
                 }
+                //remove a encomenda do mapa de encomendas ativas
                 model.getEncMap().remove(enc.getId());
                 return;
             }
         }
-    } //done
+    }
     public void pedir_recolha(ITransportadora t, String value){
         String userid = model.getEncMap().get(value).getUserId();
         String lojaid = model.getEncMap().get(value).getLoja();
@@ -166,9 +170,15 @@ public class Controler implements IControler {
             model.getVolMap().get(s).getRating().add(5);
         }
     } // not done, add prompt
+
+    // done
     public void listar_on_going(){
-        view.make_window("Encomendas Ativas", view.encomendas_ativas(encomendas_ativas()));
+        view.make_window("Encomendas Ativas", view.print_list(encomendas_ativas()));
     }
+    public void listar_top_users(){
+        view.make_window("Top 10 Utilizadores", view.print_list(top10Acessos()));
+    }
+    public void listar_top_transportadoras(){ view.make_window("Top 10 Transportadoras", view.print_list(top10Distancias()));}
 
     // done
     public void registaTransportadora(String id, String nome, String email, String pwd, String nif, double range, double preco) throws IOException {
@@ -325,7 +335,6 @@ public class Controler implements IControler {
         for (IUtilizador u : model.getUserMap().values()) {
             if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) {
                 view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, lojas(), historico(u),encomendas(u)));
-                u.setAcessos(u.getAcessos()+1);
                 return;
             }
         }
@@ -453,23 +462,32 @@ public class Controler implements IControler {
         return s;
     }
 
-    public  List<IUtilizador> top10Acessos ()  {
-
+    public  List<String> top10Acessos() {
+        List<String> lista = new ArrayList<>();
         List<IUtilizador> l = new ArrayList<>();
 
         l.addAll(model.getUserMap().values());
 
-        return l.stream().sorted().collect(Collectors.toList());
+        l.stream().sorted().limit(10).collect(Collectors.toList());
 
+        for(IUtilizador u:l){
+            lista.add("Utilizador: " + u.getNome() + "| Compras: " + u.getAcessos());
+        }
+        return lista;
     }
-    public  List<ITransportadora> top10Distancias ()  {
-
+    public  List<String> top10Distancias() {
+        List<String> lista = new ArrayList<>();
         List<ITransportadora> l = new ArrayList<>();
 
         l.addAll(model.getTransMap().values());
 
-        return l.stream().sorted().collect(Collectors.toList());
+        l.stream().sorted().limit(10).collect(Collectors.toList());
 
+        for(ITransportadora t:l){
+            lista.add("Transportadora: " + t.getNome() + "| Distancia percorrida: " + t.getDistancia());
+        }
+        Collections.reverse(lista);
+        return lista;
     }
 
     public boolean isNumeric(String strNum) {

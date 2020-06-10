@@ -254,7 +254,18 @@ public interface IControler {
      * */
     void listar_on_going();
 
-    public  List<IUtilizador> top10Acessos ();
+
 
     public  boolean isNumeric(String strNum);
+
+    /**
+     *  Metodo que cria uma Janela representativa da Lista de Encomendas Ativas
+     * */
+    void listar_top_users();
+
+    /**
+     *  Metodo que cria uma Janela representativa da Lista de Encomendas Ativas
+     * */
+    void listar_top_transportadoras();
+
 }

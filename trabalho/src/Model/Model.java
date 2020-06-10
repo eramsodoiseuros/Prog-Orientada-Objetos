@@ -11,14 +11,14 @@ public class Model implements Serializable, IModel {
     private File logs_stor = new File(root, "Files\\logs_20200416.txt");
     private HashMap<String,ITransportadora> transMap;
     private HashMap<String,IVoluntario> volMap;
-    private HashMap<String,IUtilizador> userMap;
+    private TreeMap<String,IUtilizador> userMap;
     private HashMap<String,ILoja> lojaMap;
     private HashMap<String,IEncomenda> encMap;
 
     public Model(){
         this.transMap = new HashMap<>();
         this.volMap = new HashMap<>();
-        this.userMap = new HashMap<>();
+        this.userMap = new TreeMap<>();
         this.lojaMap = new HashMap<>();
         this.encMap = new HashMap<>();
     }
@@ -132,7 +132,7 @@ public class Model implements Serializable, IModel {
         return lojaMap;
     }
 
-    public HashMap<String, IUtilizador> getUserMap() {
+    public TreeMap<String, IUtilizador> getUserMap() {
         return userMap;
     }
 
@@ -148,7 +148,7 @@ public class Model implements Serializable, IModel {
         this.volMap = volMap;
     }
 
-    public void setUserMap(HashMap<String, IUtilizador> userMap) {
+    public void setUserMap(TreeMap<String, IUtilizador> userMap) {
         this.userMap = userMap;
     }
 

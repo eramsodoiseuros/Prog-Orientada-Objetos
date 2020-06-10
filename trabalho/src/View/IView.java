@@ -141,5 +141,5 @@ public interface IView {
      * @param encomendas
      * @return Scene repesentativa do Menu Principal
      * */
-    Scene encomendas_ativas(List<String> encomendas);
+    Scene print_list(List<String> encomendas);
 }
