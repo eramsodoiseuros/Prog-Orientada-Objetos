@@ -33,7 +33,7 @@ public class Controler implements IControler {
     public Controler() {
         model = new Model();
         try {
-            //inicia(); // TO BE RUNNED IF S* HITS THE FAN
+            inicia(); // TO BE RUNNED IF S* HITS THE FAN
             this.model = model.loadEstado();
         } catch (IOException | ClassNotFoundException e) {
             view.alert("Erro", "O controler falhou a dar load do estado.");
