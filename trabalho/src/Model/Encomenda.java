@@ -165,8 +165,7 @@ public class Encomenda implements Serializable, IEncomenda {
 
             le.setCodProd(parts[r]);
             le.setDescricao(parts[r+1]);
-            le.setQuantidade(Integer.parseInt(parts[r+2]));
-            le.setPreco(Double.parseDouble(parts[r+3]));
+            le.setPreco(Double.parseDouble(parts[r+2]));
 
             l.add(le);
 
@@ -179,25 +178,22 @@ public class Encomenda implements Serializable, IEncomenda {
         for (LinhaEncomenda f : produtos) {
             if (f.getCodProd().equals(codProd)) return true;
         }
-
         return false;
     }
 
     public double getPrecoTot () {
         double i = 0;
         for (LinhaEncomenda f : produtos) {
-            i += f.precoTot();
+            i += f.getPreco();
         }
-
         return i;
     }
 
     public double getPesoTot () {
         double i = 0;
         for (LinhaEncomenda f : produtos) {
-            i += f.pesoTot();
+            i += f.getPeso();
         }
-
         return i;
     }
 }

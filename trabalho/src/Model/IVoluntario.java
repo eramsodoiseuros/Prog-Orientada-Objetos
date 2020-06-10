@@ -78,4 +78,19 @@ public interface IVoluntario extends Serializable {
      *
      * */
     double estrela();
+
+    /* *
+     *
+     * */
+    double getLocalizacaoX();
+
+    /* *
+     *
+     * */
+    double getLocalizacaoY();
+
+    /* *
+     *
+     * */
+    double getRange();
 }

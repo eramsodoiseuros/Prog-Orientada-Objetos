@@ -364,9 +364,7 @@ public class View implements IView{
             cb3.getItems().addAll(encomenda.getEstafeta());
             cb3.setPromptText("Lista de Encomendas a precisarem de ser processadas:");
             cb3.setOnAction(e -> {
-                System.out.println("cb3_"+cb3.getValue()+"_");
                 String[] split = cb3.getValue().split(" ", 4);
-                System.out.println(split);
                 c.finalizar_encomenda(u, cb3.getValue(), split[1]);
                 c.rating(u, split[1], split[1].charAt(0));
                 c.update_user(u);

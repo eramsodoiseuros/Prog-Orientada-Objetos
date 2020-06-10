@@ -183,9 +183,8 @@ public class Model implements Serializable, IModel {
             LinhaEncomenda le = new LinhaEncomenda();
             le.setCodProd("p"+contaNCodProd());
             le.setDescricao(parts[1]);
-            le.setQuantidade(Double.parseDouble(parts[2]));
-            le.setPreco(Double.parseDouble(parts[3]));
-            le.setPeso(Double.parseDouble(parts[4]));
+            le.setPreco(Double.parseDouble(parts[2]));
+            le.setPeso(Double.parseDouble(parts[3]));
 
             loja.getInventario().add(le);
         }
@@ -300,7 +299,6 @@ public class Model implements Serializable, IModel {
     }
 
     public void fileToEnc() throws IOException {
-
         BufferedReader reader = null;
         reader = new BufferedReader(new FileReader(logs_stor));
         int i = 4;
@@ -326,23 +324,16 @@ public class Model implements Serializable, IModel {
                     LinhaEncomenda le = new LinhaEncomenda();
                     le.setCodProd(parts2[i]);
                     le.setDescricao(parts2[i+1]);
-                    le.setQuantidade(Double.parseDouble(parts2[i+2]));
-                    le.setPreco(Double.parseDouble(parts2[i+3]));
+                    le.setPreco(Double.parseDouble(parts2[i+2]));
 
                     encomenda.addProdutos(le);
-
-
                 }
-
                 encMap.putIfAbsent(parts[0], encomenda);
-
                 for (ILoja l: lojaMap.values()) {
                     if(l.getId().equals(encomenda.getLoja())){
                         l.getLista_encomendas().add(encomenda);
                     }
-
                 }
-
             }
         }
         reader.close();
