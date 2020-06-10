@@ -3,6 +3,7 @@ import javax.xml.stream.Location;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Interface de uma Encomenda
@@ -36,7 +37,7 @@ public interface IEncomenda extends Serializable {
     /**
      *
      * */
-    List<String> getEstafeta();
+    Set<String> getEstafeta();
 
     /**
      *

@@ -13,7 +13,6 @@ public class LinhaEncomenda implements Serializable {
     private String tipo;
 
     public LinhaEncomenda(String codProd, String discricao, double quantidade, double preco, double peso, String tipo) {
-
         this.codProd = codProd;
         this.descricao = discricao;
         this.quantidade = quantidade;
@@ -23,7 +22,6 @@ public class LinhaEncomenda implements Serializable {
     }
 
     public LinhaEncomenda() {
-
         this.codProd = null;
         this.descricao = null;
         this.quantidade = 0;
@@ -116,12 +114,10 @@ public class LinhaEncomenda implements Serializable {
     }
 
     public double precoTot() {
-
         return (this.preco * this.quantidade);
     }
 
     public double pesoTot() {
-
         return (this.peso * this.quantidade);
     }
 }

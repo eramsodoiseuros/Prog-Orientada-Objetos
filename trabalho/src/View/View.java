@@ -333,7 +333,7 @@ public class View implements IView{
     } // done
 
     @Override
-    public Scene menu_user(IUtilizador u, List<String> lojas, List<String> historico, IEncomenda encomenda ) {
+    public Scene menu_user(IUtilizador u, List<String> lojas, List<String> historico, IEncomenda encomenda) {
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
 
@@ -364,9 +364,13 @@ public class View implements IView{
             cb3.getItems().addAll(encomenda.getEstafeta());
             cb3.setPromptText("Lista de Encomendas a precisarem de ser processadas:");
             cb3.setOnAction(e -> {
-                String[] split = cb3.getValue().split(" ", 3);
-                c.finalizar_encomenda(u, split[1], split[0].charAt(0));
+                System.out.println("cb3_"+cb3.getValue()+"_");
+                String[] split = cb3.getValue().split(" ", 4);
+                System.out.println(split);
+                c.finalizar_encomenda(u, cb3.getValue(), split[1]);
                 c.rating(u, split[1], split[1].charAt(0));
+                c.update_user(u);
+                c.end_scene(e);
             });
             layout.getChildren().addAll(cb, cb2, cb3, update);
         } else layout.getChildren().addAll(cb, cb2, update);
@@ -428,6 +432,12 @@ public class View implements IView{
 
         Label lblnumero = new Label("Número de pessoas em fila:");
         Label lbl = new Label(l.fila());
+
+        /*
+        *
+        * add produto pls implement
+        *
+        * */
 
         Button update = new Button("Update");
         update.setOnAction(e -> {
@@ -494,7 +504,19 @@ public class View implements IView{
 
     @Override
     public Scene encomendas_ativas(IVoluntario v, List<String> recolhas){
-        return null;
+        VBox layout = new VBox(10);
+
+        ComboBox<String> cb = new ComboBox<>();
+        cb.getItems().addAll(recolhas);
+        cb.setPromptText("Selecione a Loja da qual pertende ir realizar uma recolha:");
+        cb.setOnAction(e -> {
+            c.pedir_recolha(v, cb.getValue());
+            c.end_scene(e);
+        });
+
+        layout.getChildren().addAll(cb);
+        layout.setPadding(new Insets(20, 20, 20, 20));
+        return new Scene(layout, 400, 300);
     }
 
     @Override

@@ -3,7 +3,7 @@ package Model;
 import java.io.Serializable;
 import java.util.*;
 
-public class Transportadora implements Serializable, ITransportadora {
+public class Transportadora implements Serializable, ITransportadora, Comparable<ITransportadora> {
     private String id;
     private ArrayList<Integer> rating;
     private int n_encomendas;
@@ -25,7 +25,7 @@ public class Transportadora implements Serializable, ITransportadora {
     private int n_max;
 
     private Set<IEncomenda> ativas;
-    private Set<IEncomenda> historico;
+    private List<String> historico;
     private List<Double> faturacao;
 
     public boolean isDisponivel() {
@@ -69,17 +69,17 @@ public class Transportadora implements Serializable, ITransportadora {
         this.preco_km = 0;
         this.n_max = 0;
         this.nome = null;
-        this.localizacaoX =0;
+        this.localizacaoX = 0;
         this.localizacaoY = 0;
         this.faturacao = new ArrayList<>();
         this.ativas = new HashSet<IEncomenda>();
-        this.historico = new HashSet<IEncomenda>();
+        this.historico = new ArrayList<>();
         this.pwd = null;
         this.email = null;
         this.preco_transporte = 0;
     }
 
-    public  Transportadora (String id, ArrayList<Integer> rating, double distancia, int n_encomendas, int range, double localizacaoX, double localizacaoY, String nif, boolean disponivel, String tipo, String nome, double preco_km, int n_max, Set<IEncomenda> historico, Set<IEncomenda> ativas, List<Double> faturacao){
+    public  Transportadora (String id, ArrayList<Integer> rating, double distancia, int n_encomendas, int range, double localizacaoX, double localizacaoY, String nif, boolean disponivel, String tipo, String nome, double preco_km, int n_max, List<String> historico, Set<IEncomenda> ativas, List<Double> faturacao){
         this.id = id;
         this.disponivel = disponivel;
         this.localizacaoX = localizacaoX;
@@ -146,11 +146,16 @@ public class Transportadora implements Serializable, ITransportadora {
         return preco_km;
     }
 
+    @Override
+    public int compareTo(ITransportadora t){
+        return (int) (this.distancia - t.getDistancia());
+    }
+
     public int getN_max() {
         return n_max;
     }
 
-    public Set<IEncomenda> getHistorico() {
+    public List<String> getHistorico() {
         return historico;
     }
 
@@ -222,7 +227,7 @@ public class Transportadora implements Serializable, ITransportadora {
         return ativas;
     }
 
-    public void setHistorico(Set<IEncomenda> historico) {
+    public void setHistorico(List<String> historico) {
         this.historico = historico;
     }
 

@@ -225,15 +225,23 @@ public interface IControler {
     /**
      *
      * */
-    void finalizar_encomenda(IUtilizador u, String value, char type);
+    void pedir_recolha(IVoluntario v, String value);
 
     /**
      *
      * */
-    void rating(IUtilizador u, String s, char type);
+    void finalizar_encomenda(IUtilizador u, String estafeta, String value);
 
     /**
      *
+     * @param u
+     * @param s
+     * @param type
+     * */
+    void rating(IUtilizador u, String s, char type);
+
+    /**
+     *  Metodo que cria uma Janela representativa da Lista de Encomendas Ativas
      * */
     void listar_on_going();
 }

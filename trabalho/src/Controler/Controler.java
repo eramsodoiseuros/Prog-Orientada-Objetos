@@ -8,22 +8,22 @@ import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static jdk.nashorn.internal.objects.NativeMath.round;
 
 /*
 *       NEED FIX
-*
-* LOAD ENCOMENDAS INICIAIS -> TO ATIVAS -> DONE
-*
-* DAR PREÇOS -> esta a dar erro mas em teoria feito
-*
-* PROBLEMAS NOS VOLUNTARIOS A SELECIONAR PRODUTOS
 *
 * PROBLEMAS NOS HISTORICOS QUE NAO ESTAO A REGISTAR
 *
 * PROBLEMAS NAS ATIVAS QUE N SAO RETIRADAS DE ATIVIDADE
 *
 * PEDIR PREÇOS NO MENU LOJA
+*       DAR POSSIBILIDADE DE ADD PRODUTOS
 *
 * MOSTRAR USERS NAS ENCOMENDAS ATIVAS
 *
@@ -51,7 +51,7 @@ public class Controler implements IControler {
     public Controler() {
         model = new Model();
         try {
-            //inicia(); // TO BE RUNNED IF S* HITS THE FAN
+            inicia(); // TO BE RUNNED IF S* HITS THE FAN
             this.model = model.loadEstado();
         } catch (IOException | ClassNotFoundException e) {
             view.alert("Erro", "O controler falhou a dar load do estado.");
@@ -85,7 +85,7 @@ public class Controler implements IControler {
         view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, lojas(), historico(u), encomendas(u)));
     }
     public void update_transportadora(ITransportadora t){
-        view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, lojas(), faturacao(t)));
+        view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, lojas(), t.getHistorico()));
     }
     public void update_voluntario(IVoluntario v){
         view.make_window("Menu de Voluntário " + v.getNome(), view.menu_voluntario(v,lojas()));
@@ -131,19 +131,21 @@ public class Controler implements IControler {
         }
         return null;
     }
-    public void pedir_recolha(ITransportadora t, String value){
-        //t.setPreco_transporte(t.getPreco_km()*distancia(model.getEncMap().get(value).getUserId(),model.getEncMap().get(value).getLoja(),model.getEncMap().get(value).getId())); -> da erro e n sei pq mas em teoria e isto
-        model.getEncMap().get(value).getEstafeta().add("T " + t.getId() + " - " + t.getPreco_transporte() + "€ - " + t.estrela());
-    }
-    public void finalizar_encomenda(IUtilizador u, String value, char type){
+    public void finalizar_encomenda(IUtilizador u, String estafeta, String value){
         for(IEncomenda enc : model.getEncMap().values()){
-            if(enc.getEstafeta().contains(value)){
+            System.out.println(enc.getEstafeta());
+            if(enc.getEstafeta().contains(estafeta)){
                 u.getHistorico().add(enc);
                 model.getLojaMap().get(enc.getLoja()).addHistorico(enc);
-                if(type == 'T'){
-                    model.getTransMap().get(value).getHistorico().add(enc);
+                model.getLojaMap().get(enc.getLoja()).getLista_encomendas().remove(enc);
+                model.getUserMap().get(u.getId()).getHistorico().add(enc);
+                if(value.startsWith("t")){
+                    ITransportadora t = model.getTransMap().get(value);
+                    double t1 = t.getPreco_transporte();
+                    t.getHistorico().add("Encomenda: " + enc.getId() + " | Preço: " + t1);
+                    t.getFaturacao().add(t1);
                 }
-                if(type == 'V'){
+                if(value.startsWith("v")){
                     model.getVolMap().get(value).getRegistos().add(enc);
                 }
                 model.getEncMap().remove(enc.getId());
@@ -151,11 +153,19 @@ public class Controler implements IControler {
             }
         }
     } //done
+    public void pedir_recolha(ITransportadora t, String value){
+        t.setPreco_transporte(t.getPreco_km()*distancia(model.getEncMap().get(value).getUserId(),model.getEncMap().get(value).getLoja(),model.getEncMap().get(value).getId()));
+        model.getEncMap().get(value).getEstafeta().add("Transportadora: " + t.getId() + " - Nome: " + t.getNome() + " - " + t.getPreco_transporte() + "€ - Rating: " + t.estrela());
+    }
+    public void pedir_recolha(IVoluntario v, String value){
+       model.getEncMap().get(value).getEstafeta().add("Voluntário: " + v.getId() + " - Nome: " + v.getNome() + " - Rating: " + v.estrela());
+       // "Voluntário: " + v.getId() + " - Nome: " + v.getNome() + " - Rating: " + v.estrela()
+    }
     public void rating(IUtilizador u, String s, char type){
-        if(type == 'T'){
+        if(type == 't'){
             model.getTransMap().get(s).getRating().add(5);
         }
-        if(type == 'V'){
+        if(type == 'v'){
             model.getVolMap().get(s).getRating().add(5);
         }
     } // not done, add prompt
@@ -168,6 +178,8 @@ public class Controler implements IControler {
 
         ITransportadora transportadora = new Transportadora();
 
+        Double[] loc = localizacao();
+
         transportadora.setId(id);
         transportadora.setPreco_km(preco);
         transportadora.setRange(range);
@@ -175,8 +187,8 @@ public class Controler implements IControler {
         transportadora.setNome(nome);
         transportadora.setEmail(email);
         transportadora.setPwd(pwd);
-        transportadora.setLocalizacaoX(localizacao()[0]);
-        transportadora.setLocalizacaoY(localizacao()[1]);
+        transportadora.setLocalizacaoX(loc[0]);
+        transportadora.setLocalizacaoY(loc[1]);
 
         model.getTransMap().putIfAbsent(id, transportadora);
         model.guardaEstado();
@@ -185,13 +197,15 @@ public class Controler implements IControler {
 
         IVoluntario voluntario = new Voluntario();
 
+        Double[] loc = localizacao();
+
         voluntario.setId(id);
         voluntario.setRange(range);
         voluntario.setNome(nome);
         voluntario.setEmail(email);
         voluntario.setPwd(pwd);
-        voluntario.setLocalizacaoX(localizacao()[0]);
-        voluntario.setLocalizacaoY(localizacao()[1]);
+        voluntario.setLocalizacaoX(loc[0]);
+        voluntario.setLocalizacaoY(loc[1]);
 
 
         model.getVolMap().putIfAbsent(email, voluntario);
@@ -201,18 +215,22 @@ public class Controler implements IControler {
     public void registaLoja(String id, String nome, String email, String pwd) throws IOException {
         ILoja loja = new Loja();
 
+        Double[] loc = localizacao();
+
         loja.setId(id);
         loja.setNome(nome);
         loja.setEmail(email);
         loja.setPwd(pwd);
-        loja.setLocalizacaoX(localizacao()[0]);
-        loja.setLocalizacaoY(localizacao()[1]);
+        loja.setLocalizacaoX(loc[0]);
+        loja.setLocalizacaoY(loc[1]);
 
         model.getLojaMap().putIfAbsent(email, loja);
         model.guardaEstado();
     }
     public void registaUtilizador(String id, String nome, String email, String pwd) throws IOException {
         IUtilizador utilizador = new Utilizador();
+
+        Double[] loc = localizacao();
 
         utilizador.setId(id);
         utilizador.setEmail(email);
@@ -221,8 +239,8 @@ public class Controler implements IControler {
         utilizador.setNome(nome);
         utilizador.setEstado(0);
         utilizador.setAcessos(0);
-        utilizador.setLocalizacaoX(localizacao()[0]);
-        utilizador.setLocalizacaoY(localizacao()[1]);
+        utilizador.setLocalizacaoX(loc[0]);
+        utilizador.setLocalizacaoY(loc[1]);
 
         model.getUserMap().putIfAbsent(id, utilizador);
         model.guardaEstado();
@@ -264,7 +282,7 @@ public class Controler implements IControler {
         }
 
         try {
-            registaTransportadora("u" + model.contaNCodTrans(), nome, email, pwd, nif, Double.parseDouble(range), Double.parseDouble(precokm));
+            registaTransportadora("t" + model.contaNCodTrans(), nome, email, pwd, nif, Double.parseDouble(range), Double.parseDouble(precokm));
         } catch (IOException e) {
             view.alert("Erro.", "Programa falhou a registar uma transportadora.");
         }
@@ -283,7 +301,7 @@ public class Controler implements IControler {
         }
 
         try {
-            registaVoluntario("u" + model.contaNCodVol(), nome, email, pwd, Double.parseDouble(range));
+            registaVoluntario("v" + model.contaNCodVol(), nome, email, pwd, Double.parseDouble(range));
         } catch (IOException e) {
             view.alert("Erro.", "Programa falhou a registar uma voluntário.");
         }
@@ -301,7 +319,7 @@ public class Controler implements IControler {
         }
 
         try {
-            registaLoja("u" + model.contaNCodLoja(), nome, email, pwd);
+            registaLoja("l" + model.contaNCodLoja(), nome, email, pwd);
         } catch (IOException e) {
             view.alert("Erro.", "Programa falhou a registar uma loja.");
         }
@@ -368,26 +386,17 @@ public class Controler implements IControler {
         IUtilizador user = this.model.getUserMap().get(userid);
         ILoja loja = this.model.getLojaMap().get(lojaid);
         ITransportadora tras = this.model.getTransMap().get(transid);
-        boolean r = true;
-
-        if (Math.sqrt(Math.pow((loja.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - tras.getLocalizacaoY()), 2)) < tras.getRange() && Math.sqrt(Math.pow((user.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((user.getLocalizacaoY() - tras.getLocalizacaoY()), 2)) < tras.getRange()) {
-            r = true;
-        } else r = false;
-
-        return r;
+        return Math.sqrt(Math.pow((loja.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - tras.getLocalizacaoY()), 2)) < tras.getRange() && Math.sqrt(Math.pow((user.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((user.getLocalizacaoY() - tras.getLocalizacaoY()), 2)) < tras.getRange();
     } // NEEDS TO BE ADDED
-    public double distancia(String userid, String lojaid, String transid) { //0-distancia tras-loja 1-user-trans
+    public double distancia(String userid, String lojaid, String transid) {
         IUtilizador user = this.model.getUserMap().get(userid);
         ILoja loja = this.model.getLojaMap().get(lojaid);
-        ITransportadora tras = this.model.getTransMap().get(transid);
-        double r = 0;
-
-        r = Math.sqrt(Math.pow(Math.abs(loja.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - tras.getLocalizacaoY()), 2)) + Math.sqrt(Math.pow((user.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((user.getLocalizacaoY() - tras.getLocalizacaoY()), 2));
-
-        return r;
+        System.out.println("LOJA X _"+loja.getLocalizacaoX() + "_ Y_" + loja.getLocalizacaoY() +"_");
+        System.out.println("USER X _"+user.getLocalizacaoX() + "_ Y_" + user.getLocalizacaoY() +"_");
+        return Math.sqrt(Math.pow(Math.abs(loja.getLocalizacaoX() - user.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - user.getLocalizacaoY()), 2));
     }
-    public double[] localizacao (){
-        double [] loc = new double[2];
+    public Double[] localizacao (){
+        Double [] loc = new Double[2];
 
         Random r = new Random();
         double low = -100;
@@ -424,7 +433,7 @@ public class Controler implements IControler {
     private List<String> faturacao(ITransportadora t) {
         List<String> s = new ArrayList<>();
         for (Double d: t.getFaturacao()) {
-            s.add(d.toString());
+            s.add("" + d.toString());
         };
         return s;
     }
@@ -443,8 +452,6 @@ public class Controler implements IControler {
         return s;
     }
 
-
-
     public  List<IUtilizador> top10Acessos ()  {
 
         List<IUtilizador> l = new ArrayList<>();
@@ -454,8 +461,6 @@ public class Controler implements IControler {
         return l.stream().sorted().collect(Collectors.toList());
 
     }
-
-
     public  List<ITransportadora> top10Distancias ()  {
 
         List<ITransportadora> l = new ArrayList<>();
@@ -465,8 +470,6 @@ public class Controler implements IControler {
         return l.stream().sorted().collect(Collectors.toList());
 
     }
-
-
 
     // not to be used ever again, emergencies only
     public void escreveMail() {

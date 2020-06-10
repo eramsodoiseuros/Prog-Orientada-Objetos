@@ -51,7 +51,7 @@ public interface ITransportadora extends Serializable {
     /**
      *
      * */
-    Set<IEncomenda> getHistorico();
+    List<String> getHistorico();
 
     /**
      *
@@ -117,20 +117,12 @@ public interface ITransportadora extends Serializable {
      *
      *
      * */
-
-    public void setPreco_transporte(double preco_transporte);
+     void setPreco_transporte(double preco_transporte);
     
     /**
      *
      * */
-
-    public double getPreco_km();
-
-    /**
-     *
-     *
-     * */
-    public int compareTo(ITransportadora t);
+    double getPreco_km();
 
     double getDistancia();
 

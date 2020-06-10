@@ -56,13 +56,11 @@ public class Model implements Serializable, IModel {
 
     public  int contaNCodEnc(){
         Set<String> set  = this.encMap.keySet();
-        int i =1;
 
-        for (String s: set){
-            String[] parts = s.split("(?<=\\D)(?=\\d)",2);
-            if(i == Integer.parseInt(parts[1])) i++;
+        Random r = new Random();
+        int i = r.nextInt((10000 - 3) + 1) + 3;
 
-        }
+        if(set.contains("e" + i)) i++;
         return i;
     }
 
