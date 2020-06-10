@@ -147,12 +147,21 @@ public interface IControler {
 
     /**
      *
-     * @param userid Id do user
-     * @param lojaid Id da loja
-     * @param transid Id da transportadora
+         * @param user Utilizador
+     * @param loja Loja
+     * @param t Transportadora
      * @return se a trans esta ou n dentr de range para fazer a entrga
      * */
-    public boolean dentroRange (String userid, String lojaid, String transid);
+    boolean dentro_range_t(IUtilizador user, ILoja loja, ITransportadora t);
+
+    /**
+     *
+     * @param user Utilizador
+     * @param loja Loja
+     * @param v Voluntário
+     * @return se a trans esta ou n dentr de range para fazer a entrga
+     * */
+    boolean dentro_range_v(IUtilizador user, ILoja loja, IVoluntario v);
 
     /**
      *

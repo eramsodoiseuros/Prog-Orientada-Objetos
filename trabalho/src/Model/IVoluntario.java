@@ -78,4 +78,19 @@ public interface IVoluntario extends Serializable {
      * @return Double com a media das avaliações
      * */
     double estrela();
+
+    /* *
+     *
+     * */
+    double getLocalizacaoX();
+
+    /* *
+     *
+     * */
+    double getLocalizacaoY();
+
+    /* *
+     *
+     * */
+    double getRange();
 }

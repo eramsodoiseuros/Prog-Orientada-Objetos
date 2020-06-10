@@ -18,24 +18,14 @@ import static jdk.nashorn.internal.objects.NativeMath.round;
 /*
 *       NEED FIX
 *
-* PROBLEMAS NOS HISTORICOS QUE NAO ESTAO A REGISTAR
-*
-* PROBLEMAS NAS ATIVAS QUE N SAO RETIRADAS DE ATIVIDADE
-*
 * PEDIR PREÇOS NO MENU LOJA
 *       DAR POSSIBILIDADE DE ADD PRODUTOS
-*
-* MOSTRAR USERS NAS ENCOMENDAS ATIVAS
 *
 * TIME
 *
 * FIX RATING
 *
-* APLICAR FUNÇOES DE RANGE
-*
 * USAR TOP10
-*
-* FATURACAO DA TRANSPORTADORA
 *
 * MUDAR A CONTAGEM DOS ACESSOS
 *
@@ -154,12 +144,19 @@ public class Controler implements IControler {
         }
     } //done
     public void pedir_recolha(ITransportadora t, String value){
-        t.setPreco_transporte(t.getPreco_km()*distancia(model.getEncMap().get(value).getUserId(),model.getEncMap().get(value).getLoja(),model.getEncMap().get(value).getId()));
-        model.getEncMap().get(value).getEstafeta().add("Transportadora: " + t.getId() + " - Nome: " + t.getNome() + " - " + t.getPreco_transporte() + "€ - Rating: " + t.estrela());
+        String userid = model.getEncMap().get(value).getUserId();
+        String lojaid = model.getEncMap().get(value).getLoja();
+        if(dentro_range_t(model.getUserMap().get(userid), model.getLojaMap().get(lojaid), t)){
+            t.setPreco_transporte(t.getPreco_km()*distancia(userid, lojaid, value));
+            model.getEncMap().get(value).getEstafeta().add("Transportadora: " + t.getId() + " - Nome: " + t.getNome() + " - " + t.getPreco_transporte() + "€ - Rating: " + t.estrela());
+        } else view.alert("Encomenda fora de alcance", "O range da sua transportadora não permite realizar esta recolha.");
     }
     public void pedir_recolha(IVoluntario v, String value){
-       model.getEncMap().get(value).getEstafeta().add("Voluntário: " + v.getId() + " - Nome: " + v.getNome() + " - Rating: " + v.estrela());
-       // "Voluntário: " + v.getId() + " - Nome: " + v.getNome() + " - Rating: " + v.estrela()
+        String userid = model.getEncMap().get(value).getUserId();
+        String lojaid = model.getEncMap().get(value).getLoja();
+        if(dentro_range_v(model.getUserMap().get(userid), model.getLojaMap().get(lojaid), v)){
+            model.getEncMap().get(value).getEstafeta().add("Voluntário: " + v.getId() + " - Nome: " + v.getNome() + " - Rating: " + v.estrela());
+        } else view.alert("Encomenda fora de alcance", "O seu range não permite realizar esta recolha.");
     }
     public void rating(IUtilizador u, String s, char type){
         if(type == 't'){
@@ -170,7 +167,7 @@ public class Controler implements IControler {
         }
     } // not done, add prompt
     public void listar_on_going(){
-        view.make_window("Encomendas Ativas", view.encomendas_ativas(encomendas()));
+        view.make_window("Encomendas Ativas", view.encomendas_ativas(encomendas_ativas()));
     }
 
     // done
@@ -263,7 +260,6 @@ public class Controler implements IControler {
         } catch (IOException e) {
             view.alert("Erro.", "Programa falhou a registar um utilizador.");
         }
-        System.out.println(model.getUserMap());
     }
     public void validaRegTrans(String email, String pwd, String nome, String nif, String range, String precokm) {
         if(email == null) return;
@@ -363,6 +359,7 @@ public class Controler implements IControler {
         view.alert("Erro no login.","Credenciais erradas ou não existentes.");
     }
 
+    // done
     public IEncomenda pedidoUser(LinhaEncomenda produto, String idLoja, String userId) throws IOException {
 
         ILoja loja = model.getLojaMap().get(idLoja);
@@ -374,24 +371,22 @@ public class Controler implements IControler {
         encomenda.setLoja(idLoja);
         encomenda.setUserId(userId);
         encomenda.addProdutos(produto);
-        encomenda.setPeso(produto.pesoTot());
-        encomenda.setPreco(produto.precoTot());
+        encomenda.setPeso(produto.getPeso());
+        encomenda.setPreco(produto.getPreco());
 
         model.getEncMap().putIfAbsent(id, encomenda);
         loja.getLista_encomendas().add(encomenda);
         return encomenda;
     }
-    public boolean dentroRange(String userid, String lojaid, String transid) {
-        IUtilizador user = this.model.getUserMap().get(userid);
-        ILoja loja = this.model.getLojaMap().get(lojaid);
-        ITransportadora tras = this.model.getTransMap().get(transid);
-        return Math.sqrt(Math.pow((loja.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - tras.getLocalizacaoY()), 2)) < tras.getRange() && Math.sqrt(Math.pow((user.getLocalizacaoX() - tras.getLocalizacaoX()), 2) + Math.pow((user.getLocalizacaoY() - tras.getLocalizacaoY()), 2)) < tras.getRange();
-    } // NEEDS TO BE ADDED
+    public boolean dentro_range_t(IUtilizador user, ILoja loja, ITransportadora t) {
+        return Math.sqrt(Math.pow((loja.getLocalizacaoX() - t.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - t.getLocalizacaoY()), 2)) < t.getRange() && Math.sqrt(Math.pow((user.getLocalizacaoX() - t.getLocalizacaoX()), 2) + Math.pow((user.getLocalizacaoY() - t.getLocalizacaoY()), 2)) < t.getRange();
+    }
+    public boolean dentro_range_v(IUtilizador user, ILoja loja, IVoluntario v) {
+        return Math.sqrt(Math.pow((loja.getLocalizacaoX() - v.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - v.getLocalizacaoY()), 2)) < v.getRange() && Math.sqrt(Math.pow((user.getLocalizacaoX() - v.getLocalizacaoX()), 2) + Math.pow((user.getLocalizacaoY() - v.getLocalizacaoY()), 2)) < v.getRange();
+    }
     public double distancia(String userid, String lojaid, String transid) {
         IUtilizador user = this.model.getUserMap().get(userid);
         ILoja loja = this.model.getLojaMap().get(lojaid);
-        System.out.println("LOJA X _"+loja.getLocalizacaoX() + "_ Y_" + loja.getLocalizacaoY() +"_");
-        System.out.println("USER X _"+user.getLocalizacaoX() + "_ Y_" + user.getLocalizacaoY() +"_");
         return Math.sqrt(Math.pow(Math.abs(loja.getLocalizacaoX() - user.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - user.getLocalizacaoY()), 2));
     }
     public Double[] localizacao (){
@@ -447,6 +442,13 @@ public class Controler implements IControler {
         List<String> s = new Vector<>();
         for(IEncomenda enc : model.getEncMap().values()){
             s.add(enc.getId());
+        }
+        return s;
+    }
+    private List<String> encomendas_ativas(){
+        List<String> s = new Vector<>();
+        for(IEncomenda enc : model.getEncMap().values()){
+            s.add("Utilizador " + model.getUserMap().get(enc.getUserId()).getNome() + " encomendou " + enc.getId() + " com os produtos : " + enc.getProdutos());
         }
         return s;
     }
