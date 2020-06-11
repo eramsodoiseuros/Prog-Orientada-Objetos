@@ -6,7 +6,7 @@ import java.util.TreeSet;
 /**
  * Interface de um Utilizador
  * */
-public interface IUtilizador extends Serializable {
+public interface IUtilizador extends Serializable{
     /**
      *
      * */
@@ -102,9 +102,4 @@ public interface IUtilizador extends Serializable {
      *
      * */
     void setEmail(String s);
-
-    /**
-     *
-     * */
-    int compareTo(IUtilizador u);
 }

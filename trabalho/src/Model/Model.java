@@ -1,6 +1,7 @@
 package Model;
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Model implements Serializable, IModel {
 
@@ -34,6 +35,7 @@ public class Model implements Serializable, IModel {
                 '}';
     }
 
+    // funções de load/save estado
     public void guardaEstado() throws IOException{
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(logsO));
 
@@ -45,6 +47,7 @@ public class Model implements Serializable, IModel {
         return (Model) ois.readObject();
     }
 
+    // generate Id code para entidades
     public  int contaNCodEnc(){
         Set<String> set  = this.encMap.keySet();
 
@@ -128,11 +131,9 @@ public class Model implements Serializable, IModel {
         this.encMap.putIfAbsent(id,encomenda);
     }
 
+    // add to map
     public void addEncomenda(IEncomenda e){
         encMap.put(e.getId(), e);
-    }
-    public void removeEncomenda(String id){
-        encMap.remove(id);
     }
     public void addVoluntario(IVoluntario v){
         volMap.put(v.getId(), v);
@@ -145,6 +146,9 @@ public class Model implements Serializable, IModel {
     }
     public void addTransportadora(ITransportadora t){
         transMap.put(t.getId(), t);
+    }
+    public void removeEncomenda(String id){
+        encMap.remove(id);
     }
 
     public List<String> precisa_recolha(ILoja l){
@@ -165,11 +169,29 @@ public class Model implements Serializable, IModel {
         }
         return loja;
     }
+
+    // get entidade by ID
     public ILoja loja(String id){
         if(lojaMap.containsKey(id))
             return lojaMap.get(id);
         else return new Loja();
     }
+    public ITransportadora transportadora(String id) {
+        if(transMap.containsKey(id))
+            return transMap.get(id);
+        else return new Transportadora();
+    }
+    public IUtilizador user(String id) {
+        if(userMap.containsKey(id))
+            return userMap.get(id);
+        else return new Utilizador();
+    }
+    public IVoluntario voluntario(String id) {
+        if(volMap.containsKey(id))
+            return volMap.get(id);
+        else return new Voluntario();
+    }
+
     public IEncomenda encomendas_u(IUtilizador u) {
         IEncomenda e = new Encomenda();
         for(IEncomenda enc : encMap.values()){
@@ -180,6 +202,7 @@ public class Model implements Serializable, IModel {
         return e;
     }
 
+    // valida log in
     public boolean validaLogInUser(String email, String pwd) {
         for (IUtilizador u : userMap.values()) {
             if (u.getEmail().equals(email) && u.getPwd().equals(pwd)) {
@@ -213,6 +236,7 @@ public class Model implements Serializable, IModel {
         return false;
     }
 
+    // get entidade by email
     public IUtilizador getUser(String email){
         IUtilizador user = new Utilizador();
         for (IUtilizador u : userMap.values()) {
@@ -250,6 +274,7 @@ public class Model implements Serializable, IModel {
         return l;
     }
 
+    // valida registo
     public boolean validaRegistoUser(String email) {
         for (IUtilizador u : userMap.values()) {
             if (u.getEmail().equals(email)) {
@@ -283,6 +308,33 @@ public class Model implements Serializable, IModel {
         return true;
     }
 
+    private List<IUtilizador> get_all_users(){
+        List<IUtilizador> users = new ArrayList<IUtilizador>(userMap.values());
+        return users.stream().sorted(Comparator.comparing(IUtilizador::getAcessos).reversed()).collect(Collectors.toList());
+    }
+    public List<String> top10Acessos() {
+        List<String> lista = new ArrayList<>();
+        List<IUtilizador> l = get_all_users();
+        for(IUtilizador u : l){
+            lista.add("Utilizador: " + u.getNome() + " |  Compras: " + u.getAcessos());
+        }
+        return lista.stream().limit(10).collect(Collectors.toList());
+    }
+
+    private List<ITransportadora> get_all_trans(){
+        List<ITransportadora> transportadoras = new ArrayList<ITransportadora>(transMap.values());
+        return transportadoras.stream().sorted(Comparator.comparing(ITransportadora::getDistancia).reversed()).collect(Collectors.toList());
+    }
+    public  List<String> top10Distancias() {
+        List<String> lista = new ArrayList<>();
+        List<ITransportadora> l = get_all_trans();
+        for(ITransportadora t:l){
+            lista.add("Transportadora: " + t.getNome() + "| Distancia percorrida: " + t.getDistancia());
+        }
+        return lista.stream().limit(10).collect(Collectors.toList());
+    }
+
+    // load from file
     public void loadInventLoja() throws IOException {
         BufferedReader reader = null;
         reader = new BufferedReader(new FileReader(inventario));

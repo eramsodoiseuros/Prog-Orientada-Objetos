@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * Interface de uma Transportadora
  * */
-public interface ITransportadora extends Serializable {
+public interface ITransportadora extends Serializable{
     /**
      *
      * */
@@ -124,7 +124,23 @@ public interface ITransportadora extends Serializable {
      * */
     double getPreco_km();
 
+    /**
+     *
+     * */
+    boolean check_available();
+
+    /**
+     *
+     * */
+    void available();
+
+    /**
+     *
+     * */
     double getDistancia();
 
+    /**
+     *
+     * */
     void setDistancia(Double d);
 }

@@ -5,7 +5,7 @@ import com.sun.webkit.network.Util;
 import java.io.Serializable;
 import java.util.*;
 
-public class Utilizador implements Serializable, IUtilizador, Comparable<IUtilizador> {
+public class Utilizador implements Serializable, IUtilizador{
     private String id;
     private String nome;
     private String email;
@@ -16,12 +16,6 @@ public class Utilizador implements Serializable, IUtilizador, Comparable<IUtiliz
     private int estado;
 
     private Set<IEncomenda> historico;
-
-
-    @Override
-    public int compareTo(IUtilizador u){
-        return this.acessos - u.getAcessos();
-    }
 
     public Utilizador(String id,String email, String pwd, String nome, int acessos, double localizacaoX, double localizacaoY, Set<IEncomenda> historico, int estado) {
         this.id = id;
@@ -75,7 +69,6 @@ public class Utilizador implements Serializable, IUtilizador, Comparable<IUtiliz
         this.historico = new HashSet<>() ;
         this.estado = 0;
     }
-
 
     public String getId() {
         return id;

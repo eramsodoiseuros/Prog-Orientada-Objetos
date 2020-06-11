@@ -192,6 +192,21 @@ public interface IModel {
     /**
      *
      * */
+    ITransportadora transportadora(String id);
+
+    /**
+     *
+     * */
+    IUtilizador user(String id);
+
+    /**
+     *
+     * */
+    IVoluntario voluntario(String id);
+
+    /**
+     *
+     * */
     boolean validaRegistoUser(String email);
 
     /**
@@ -208,4 +223,14 @@ public interface IModel {
      *
      * */
     boolean validaRegistoLoja(String email);
+
+    /**
+     *
+     * */
+    List<String> top10Acessos();
+
+    /**
+     *
+     * */
+    List<String> top10Distancias();
 }

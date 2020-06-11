@@ -18,9 +18,8 @@ public class Voluntario implements Serializable, IVoluntario {
     private String tipo;
     private String nome;
     private List<String> historico;
-    private IEncomenda ativa;
 
-    public Voluntario(String id, String email, String pwd, ArrayList<Integer> rating, int n_encomendas, int range, double localizacaoX, double localizacaoY, boolean disponivel, String tipo, String nome, List<String> historico, Encomenda ativa) {
+    public Voluntario(String id, String email, String pwd, ArrayList<Integer> rating, int n_encomendas, int range, double localizacaoX, double localizacaoY, boolean disponivel, String tipo, String nome, List<String> historico) {
         this.id = id;
         this.tipo = tipo;
         this.nome = nome;
@@ -33,7 +32,6 @@ public class Voluntario implements Serializable, IVoluntario {
         this.localizacaoY = localizacaoY;
         this.disponivel = disponivel;
         this.historico = historico;
-        this.ativa = ativa;
     }
 
     public Voluntario() {
@@ -49,9 +47,7 @@ public class Voluntario implements Serializable, IVoluntario {
         this.localizacaoX = 0;
         this.localizacaoY = 0;
         this.n_encomendas = 0;
-        this.disponivel = false;
         this.historico = new ArrayList<>();
-        this.ativa = new Encomenda();
     }
 
     public String getId() {
@@ -86,8 +82,8 @@ public class Voluntario implements Serializable, IVoluntario {
         return nome;
     }
 
-    public int getN_encomendas() {
-        return n_encomendas;
+    public void n_encomedas() {
+        n_encomendas++;
     }
 
     public double getRange() {
@@ -102,22 +98,24 @@ public class Voluntario implements Serializable, IVoluntario {
         return rating;
     }
 
-    @Override
     public List<String> getHistorico() {
         return new ArrayList<>(historico);
     }
 
-    @Override
     public void addHistorico(String s) {
         historico.add(s);
     }
 
-    public boolean isDisponivel() {
+    public boolean check_available() {
         return disponivel;
     }
 
-    public void setDisponivel(boolean disponivel) {
-        this.disponivel = disponivel;
+    public void not_available() {
+        disponivel = false;
+    }
+
+    public void available() {
+        disponivel = true;
     }
 
     public void setId(String id) {
@@ -136,32 +134,12 @@ public class Voluntario implements Serializable, IVoluntario {
         this.localizacaoY = localizacaoY;
     }
 
-    public void setN_encomendas(int n_encomendas) {
-        this.n_encomendas = n_encomendas;
-    }
-
-    public IEncomenda getAtiva() {
-        return ativa;
-    }
-
-    public void setAtiva(Encomenda ativa) {
-        this.ativa = ativa;
-    }
-
     public void setRange(double range) {
         this.range = range;
     }
 
-    public void setRating(ArrayList<Integer> rating) {
-        this.rating = rating;
-    }
-
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public void setRegistos(List<String> registos) {
-        this.historico = historico;
     }
 
     @Override

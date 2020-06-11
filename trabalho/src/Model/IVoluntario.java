@@ -97,4 +97,25 @@ public interface IVoluntario extends Serializable {
      *
      * */
     double getRange();
+
+    /**
+     *
+     * */
+    void not_available();
+
+
+    /**
+     *
+     * */
+    boolean check_available();
+
+    /**
+     *
+     * */
+    void available();
+
+    /**
+     *
+     * */
+    void n_encomedas();
 }

@@ -18,6 +18,10 @@ import static jdk.nashorn.internal.objects.NativeMath.round;
 * PEDIR PREÇOS NO MENU LOJA
 *       DAR POSSIBILIDADE DE ADD PRODUTOS
 *
+* ADICIONAR HISTORICO NO MENU VOLUNTARIO
+*
+* ADD MEDICO TYPE
+*
 * TIME
 *
 * gerar JDOC
@@ -31,7 +35,7 @@ public class Controler implements IControler {
     public Controler() {
         model = new Model();
         try {
-            //inicia(); // TO BE RUNNED IF S* HITS THE FAN
+            inicia(); // TO BE RUNNED IF S* HITS THE FAN
             this.model = model.loadEstado();
         } catch (IOException | ClassNotFoundException e) {
             view.alert("Erro", "O controler falhou a dar load do estado.");
@@ -109,29 +113,39 @@ public class Controler implements IControler {
 
                 if(value.startsWith("t")){
                     ITransportadora t = model.getTransMap().get(value);
+
+                    // works, cant do s*
+                    make_it_run(l.f_time() * 1000);
+
                     double t1 = t.getPreco_transporte();
                     t.setDistancia(distancia(u.getId(), l.getId(), enc.getId()));
                     t.getHistorico().add("Encomenda: " + enc.getId() + " | Preço: " + t1);
                     t.getFaturacao().add(t1);
+                    t.available();
                 }
                 if(value.startsWith("v")){
                     IVoluntario v = model.getVolMap().get(value);
+                    v.not_available();
+
+                    // works, cant do s*
+                    make_it_run(l.f_time() * 1000);
+
+                    v.n_encomedas();
                     v.addHistorico("User: " + enc.getUserId() + " , Encomenda: " + enc.getId());
+                    v.available();
                 }
                 model.removeEncomenda(enc.getId());
-
-                make_it_run(l.f_time() * 1000000000);
-                System.out.println(l.f_time() * 1000000000);
                 l.remove_fila();
                 return;
             }
         }
     }
-    // needs remover
     public void pedir_recolha(ITransportadora t, String value){
+        if(!t.check_available()){
+            view.alert("Atingiu-se o máximo", "A transportadora não consegue transportar mais encomendas.");
+        }
         if(!model.getEncMap().containsKey(value)){
             view.alert("Encomenda Fantasma", "OOPS! Parece que alguém fez mal o inventário da semana passada!");
-            // needs a remover
             return;
         }
         String userid = model.getEncMap().get(value).getUserId();
@@ -142,9 +156,11 @@ public class Controler implements IControler {
         } else view.alert("Encomenda fora de alcance", "O range da sua transportadora não permite realizar esta recolha.");
     }
     public void pedir_recolha(IVoluntario v, String value){
+        if(!v.check_available()){
+            view.alert("Atingiu-se o máximo", "A transportadora não consegue transportar mais encomendas.");
+        }
         if(!model.getEncMap().containsKey(value)){
             view.alert("Encomenda Fantasma", "OOPS! Parece que alguém fez mal o inventário da semana passada!");
-            // needs a remover
             return;
         }
         String userid = model.getEncMap().get(value).getUserId();
@@ -167,9 +183,9 @@ public class Controler implements IControler {
         view.make_window("Encomendas Ativas", view.print_list(encomendas_ativas()));
     }
     public void listar_top_users(){
-        view.make_window("Top 10 Utilizadores", view.print_list(top10Acessos()));
+        view.make_window("Top 10 Utilizadores", view.print_list(model.top10Acessos()));
     }
-    public void listar_top_transportadoras(){ view.make_window("Top 10 Transportadoras", view.print_list(top10Distancias()));}
+    public void listar_top_transportadoras(){ view.make_window("Top 10 Transportadoras", view.print_list(model.top10Distancias()));}
 
     // REGISTO
     public void registaTransportadora(String id, String nome, String email, String pwd, String nif, double range, double preco) throws IOException {
@@ -420,33 +436,6 @@ public class Controler implements IControler {
         return s;
     }
 
-    public  List<String> top10Acessos() {
-        List<String> lista = new ArrayList<>();
-
-        List<IUtilizador> l = new ArrayList<>(model.getUserMap().values());
-
-        l.stream().sorted().limit(10).collect(Collectors.toList());
-
-        for(IUtilizador u : l){
-            lista.add("Utilizador: " + u.getNome() + " |  Compras: " + u.getAcessos());
-        }
-        return lista;
-    }
-    public  List<String> top10Distancias() {
-        List<String> lista = new ArrayList<>();
-        List<ITransportadora> l = new ArrayList<>();
-
-        l.addAll(model.getTransMap().values());
-
-        l.stream().sorted().limit(10).collect(Collectors.toList());
-
-        for(ITransportadora t:l){
-            lista.add("Transportadora: " + t.getNome() + "| Distancia percorrida: " + t.getDistancia());
-        }
-        Collections.reverse(lista);
-        return lista;
-    }
-
     void make_it_run(int tempo){
         boolean enough = false;
         int aux = 0;
@@ -467,6 +456,7 @@ public class Controler implements IControler {
                 s = 0;
             }
             aux++;
+            System.out.println(s);
         }
     }
 

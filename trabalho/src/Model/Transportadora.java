@@ -3,7 +3,7 @@ package Model;
 import java.io.Serializable;
 import java.util.*;
 
-public class Transportadora implements Serializable, ITransportadora, Comparable<ITransportadora> {
+public class Transportadora implements Serializable, ITransportadora{
     private String id;
     private ArrayList<Integer> rating;
     private int n_encomendas;
@@ -23,6 +23,7 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
     private double preco_km;
     private double preco_transporte;
     private int n_max;
+    private int n_ativo;
 
     private List<String> historico;
     private List<Double> faturacao;
@@ -66,7 +67,9 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
         this.nif = null;
         this.tipo= null;
         this.preco_km = 0;
-        this.n_max = 0;
+        Random r = new Random();
+        this.n_max = r.nextInt((10 - 3) + 1) + 3;;
+        this.n_ativo = 0;
         this.nome = null;
         this.localizacaoX = 0;
         this.localizacaoY = 0;
@@ -77,7 +80,7 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
         this.preco_transporte = 0;
     }
 
-    public  Transportadora (String id, ArrayList<Integer> rating, double distancia, int n_encomendas, int range, double localizacaoX, double localizacaoY, String nif, boolean disponivel, String tipo, String nome, double preco_km, int n_max, List<String> historico, List<Double> faturacao){
+    public  Transportadora (int n_ativo, String id, ArrayList<Integer> rating, double distancia, int n_encomendas, int range, double localizacaoX, double localizacaoY, String nif, boolean disponivel, String tipo, String nome, double preco_km, int n_max, List<String> historico, List<Double> faturacao){
         this.id = id;
         this.disponivel = disponivel;
         this.localizacaoX = localizacaoX;
@@ -91,12 +94,9 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
         this.nif = nif;
         this.preco_km = preco_km;
         this.n_max = n_max;
+        this.n_ativo = n_ativo;
         this.faturacao = faturacao;
         this.historico = historico;
-    }
-
-    public String getNif() {
-        return nif;
     }
 
     public String getNome() {
@@ -143,15 +143,6 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
         return preco_km;
     }
 
-    @Override
-    public int compareTo(ITransportadora t){
-        return (int) (this.distancia - t.getDistancia());
-    }
-
-    public int getN_max() {
-        return n_max;
-    }
-
     public List<String> getHistorico() {
         return historico;
     }
@@ -172,28 +163,12 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
         this.preco_transporte = preco_transporte;
     }
 
-    public void setRating(ArrayList<Integer> rating) {
-        this.rating = rating;
-    }
-
     public void setRange(double range) {
         this.range = range;
     }
 
-    public void setN_encomendas(int n_encomendas) {
-        this.n_encomendas = n_encomendas;
-    }
-
     public void setId(String id) {
         this.id = id;
-    }
-
-    public void setDisponivel(boolean disponivel) {
-        this.disponivel = disponivel;
-    }
-
-    public void setFaturacao(List<Double> faturacao) {
-        this.faturacao = faturacao;
     }
 
     public void setN_max(int n_max) {
@@ -212,12 +187,20 @@ public class Transportadora implements Serializable, ITransportadora, Comparable
         this.nome = nome;
     }
 
-    public boolean valida(String cod){
-        return cod.startsWith("t");
+    public boolean check_available() {
+        if(n_ativo == n_max) {
+            disponivel = false;
+        }
+        else {
+            n_ativo++;
+            disponivel = true;
+        }
+
+        return disponivel;
     }
 
-    public void setHistorico(List<String> historico) {
-        this.historico = historico;
+    public void available() {
+        disponivel = true;
     }
 
     @Override
