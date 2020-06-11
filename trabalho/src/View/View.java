@@ -3,31 +3,24 @@ package View;
 import Model.*;
 import Controler.*;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class View implements IView{
 
     private IControler c;
-    private Stage window;
     private TextField usertxt, txt, txt2, txt3, txt4;
     private PasswordField passwordtxt;
     private ListView<String> listView;
-    private int rating;
+    private int rating = 10;
 
     public View(IControler c){
         this.c = c;
@@ -56,7 +49,7 @@ public class View implements IView{
         Scene scene = new Scene(layout);
         w.setScene(scene);
         w.showAndWait();
-    } // done
+    }
 
     public int rating(String titulo, String mensagem){
         Stage w = new Stage();
@@ -89,8 +82,6 @@ public class View implements IView{
 
     private int pick_rating(){
         String s = String.valueOf(listView.getSelectionModel().getSelectedItems());
-        if(s.equals("[0]"))
-            return 0;
         if(s.equals("[1]"))
             return 1;
         if(s.equals("[2]"))
@@ -112,6 +103,7 @@ public class View implements IView{
         if(s.equals("[10]"))
             return 10;
         alert("Erro", "É necessário dar um rating.");
+        System.out.println("didnt rate");
         return rating("Introduza o rating", "Por favor, avalie a sua satisfação perante a encomenda realizada. [0 muito mau] [10 muito bom]");
     }
 
@@ -145,7 +137,7 @@ public class View implements IView{
         });
         layout.getChildren().addAll(listView,b1,b2,b3);
         return new Scene(layout, 400, 400);
-    } // done
+    }
 
     @Override
     public Scene registar_user() {
@@ -178,7 +170,7 @@ public class View implements IView{
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, lblNome, txt, b);
         return new Scene(layout, 500, 400);
-    } // done
+    }
 
     @Override
     // not done
@@ -227,7 +219,7 @@ public class View implements IView{
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, lblNome, txt, lblNif, txt2, lblRange, txt3, lblPreco, txt4, b);
         return new Scene(layout, 500, 450);
-    } // done
+    }
 
     @Override
     // not done
@@ -266,7 +258,7 @@ public class View implements IView{
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, lblNome, txt, lblRange, txt3, b);
         return new Scene(layout, 500, 400);
-    } // done
+    }
 
     @Override
     //not done
@@ -300,7 +292,7 @@ public class View implements IView{
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, lblNome, txt, b);
         return new Scene(layout, 500, 400);
-    } // done
+    }
 
     @Override
     public Scene login_user() {
@@ -324,7 +316,7 @@ public class View implements IView{
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, b);
         return new Scene(layout, 400, 300);
-    } // done
+    }
 
     @Override
     public Scene login_voluntario() {
@@ -348,7 +340,7 @@ public class View implements IView{
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, b);
         return new Scene(layout, 400, 300);
-    } // done
+    }
 
     @Override
     public Scene login_transportadora() {
@@ -372,7 +364,7 @@ public class View implements IView{
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, b);
         return new Scene(layout, 400, 300);
-    } // done
+    }
 
     @Override
     public Scene login_loja() {
@@ -396,7 +388,7 @@ public class View implements IView{
 
         layout.getChildren().addAll(lblUser, usertxt, lblPassword, passwordtxt, b);
         return new Scene(layout, 400, 300);
-    } // done
+    }
 
     @Override
     public Scene menu_user(IUtilizador u, List<String> lojas, List<String> historico, IEncomenda encomenda) {
@@ -468,7 +460,7 @@ public class View implements IView{
     }
 
     @Override
-    public Scene menu_voluntario(IVoluntario v, List<String> lojas) {
+    public Scene menu_voluntario(IVoluntario v, List<String> lojas, List<String> historico) {
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
 
@@ -479,18 +471,22 @@ public class View implements IView{
             c.loja_selecionada(v, cb.getValue());
         });
 
+        ComboBox<String> cb2 = new ComboBox<>();
+        cb2.getItems().addAll(historico);
+        cb2.setPromptText("Ver histórico de Voluntário:");
+
         Button update = new Button("Update");
         update.setOnAction(e -> {
             c.update_voluntario(v);
             c.end_scene(e);
         });
 
-        layout.getChildren().addAll(cb, update);
+        layout.getChildren().addAll(cb, cb2, update);
         return new Scene(layout, 400, 300);
     }
 
     @Override
-    public Scene menu_loja(ILoja l) {
+    public Scene menu_loja(ILoja l, List<String> encomendas) {
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
 
@@ -664,5 +660,9 @@ public class View implements IView{
         if(s.equals("[TOP Transportadoras]")){
             c.listar_top_transportadoras();
         }
-    } // done
+    }
+
+    public void tempo(String s){
+        System.out.println(s);
+    }
 }

@@ -97,14 +97,14 @@ public interface IView {
      * @param lojas
      * @return Scene repesentativa do Menu de Voluntário
      * */
-    Scene menu_voluntario(IVoluntario v, List<String> lojas);
+    Scene menu_voluntario(IVoluntario v, List<String> lojas, List<String> historico);
 
     /**
      * Função que gera a Scene JavaFX representativa do Menu de Loja
      * @param l
      * @return Scene repesentativa do Menu de Loja
      * */
-    Scene menu_loja(ILoja l);
+    Scene menu_loja(ILoja l, List<String> encomendas);
 
     /**
      * Função que gera a Scene JavaFX representativa da Seleção de Produtos por parte do Utilizador
@@ -146,4 +146,6 @@ public interface IView {
     Scene print_list(List<String> encomendas);
 
     int rating(String s, String s1);
+
+    void tempo(String s);
 }

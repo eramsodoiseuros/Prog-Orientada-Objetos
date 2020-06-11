@@ -88,7 +88,7 @@ public interface ILoja extends Serializable {
     /**
      *
      * */
-    void add_fila();
+    boolean check_fila();
 
     /**
      *
@@ -110,5 +110,6 @@ public interface ILoja extends Serializable {
      * */
     List<String> precisa_recolha(ILoja l);
 
+    List<String> get_encomendas_fila();
     int f_time();
 }

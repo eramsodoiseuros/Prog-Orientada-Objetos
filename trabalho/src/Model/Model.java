@@ -312,6 +312,12 @@ public class Model implements Serializable, IModel {
         List<IUtilizador> users = new ArrayList<IUtilizador>(userMap.values());
         return users.stream().sorted(Comparator.comparing(IUtilizador::getAcessos).reversed()).collect(Collectors.toList());
     }
+    private List<ITransportadora> get_all_trans(){
+        List<ITransportadora> transportadoras = new ArrayList<ITransportadora>(transMap.values());
+        return transportadoras.stream().sorted(Comparator.comparing(ITransportadora::getDistancia).reversed()).collect(Collectors.toList());
+    }
+
+    // listas
     public List<String> top10Acessos() {
         List<String> lista = new ArrayList<>();
         List<IUtilizador> l = get_all_users();
@@ -320,18 +326,27 @@ public class Model implements Serializable, IModel {
         }
         return lista.stream().limit(10).collect(Collectors.toList());
     }
-
-    private List<ITransportadora> get_all_trans(){
-        List<ITransportadora> transportadoras = new ArrayList<ITransportadora>(transMap.values());
-        return transportadoras.stream().sorted(Comparator.comparing(ITransportadora::getDistancia).reversed()).collect(Collectors.toList());
-    }
-    public  List<String> top10Distancias() {
+    public List<String> top10Distancias() {
         List<String> lista = new ArrayList<>();
         List<ITransportadora> l = get_all_trans();
         for(ITransportadora t:l){
             lista.add("Transportadora: " + t.getNome() + "| Distancia percorrida: " + t.getDistancia());
         }
         return lista.stream().limit(10).collect(Collectors.toList());
+    }
+    public List<String> encomendas_ativas(){
+        List<String> s = new ArrayList<>();
+        for(IEncomenda enc : encMap.values()){
+            s.add("U: " + user(enc.getUserId()).getNome() + " encomendou " + enc.getId() + " com os produtos : " + enc.getProdutos());
+        }
+        return s;
+    }
+    public List<String> lojas(){
+        List<String> s = new ArrayList<>();
+        for (ILoja loja: lojaMap.values()) {
+            s.add(loja.getNome());
+        }
+        return s;
     }
 
     // load from file

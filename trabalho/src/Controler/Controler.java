@@ -5,12 +5,8 @@ import View.*;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static jdk.nashorn.internal.objects.NativeMath.round;
 
 /*
 *       NEED FIX
@@ -20,9 +16,11 @@ import static jdk.nashorn.internal.objects.NativeMath.round;
 *
 * ADICIONAR HISTORICO NO MENU VOLUNTARIO
 *
+* ADICIONAR TOTAL FATURADO NA FATURACAO
+*
 * ADD MEDICO TYPE
 *
-* TIME
+* carregar dados para a entrega final
 *
 * gerar JDOC
 *
@@ -31,6 +29,7 @@ import static jdk.nashorn.internal.objects.NativeMath.round;
 public class Controler implements IControler {
     private IModel model;
     private IView view;
+    private Timer timer = new Timer();
 
     public Controler() {
         model = new Model();
@@ -67,16 +66,16 @@ public class Controler implements IControler {
 
     // DONE
     public void update_user(IUtilizador u){
-        view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, lojas(), historico(u), model.encomendas_u(u)));
+        view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, model.lojas(), historico(u), model.encomendas_u(u)));
     }
     public void update_transportadora(ITransportadora t){
-        view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, lojas(), t.getHistorico()));
+        view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, model.lojas(), t.getHistorico()));
     }
     public void update_voluntario(IVoluntario v){
-        view.make_window("Menu de Voluntário " + v.getNome(), view.menu_voluntario(v,lojas()));
+        view.make_window("Menu de Voluntário " + v.getNome(), view.menu_voluntario(v,model.lojas(), v.getHistorico()));
     }
     public void update_loja(ILoja l){
-        view.make_window("Menu de Loja " + l.getNome(), view.menu_loja(l));
+        view.make_window("Menu de Loja " + l.getNome(), view.menu_loja(l, l.get_encomendas_fila()));
     }
 
     // DONE
@@ -106,36 +105,21 @@ public class Controler implements IControler {
                 u.setAcessos(u.getAcessos()+1);
 
                 ILoja l = model.loja(enc.getLoja());
-                l.add_fila();
+                if(!l.check_fila())
+                    view.alert("Fila cheia", "A Loja de momento está cheia, o pedido vai ser processado, mas primeiro aguarda que alguém saia da fila.");
                 l.addHistorico(enc);
                 l.removeLista(enc.getId());
                 u.getHistorico().add(enc);
 
                 if(value.startsWith("t")){
                     ITransportadora t = model.getTransMap().get(value);
-
-                    // works, cant do s*
-                    make_it_run(l.f_time() * 1000);
-
-                    double t1 = t.getPreco_transporte();
-                    t.setDistancia(distancia(u.getId(), l.getId(), enc.getId()));
-                    t.getHistorico().add("Encomenda: " + enc.getId() + " | Preço: " + t1);
-                    t.getFaturacao().add(t1);
-                    t.available();
+                    timer.schedule( new Finalizar_rt(t, enc, u, l) , (long) (l.f_time() * 100 * distancia(u.getId(), l.getId(), t.getId())));
                 }
                 if(value.startsWith("v")){
                     IVoluntario v = model.getVolMap().get(value);
                     v.not_available();
-
-                    // works, cant do s*
-                    make_it_run(l.f_time() * 1000);
-
-                    v.n_encomedas();
-                    v.addHistorico("User: " + enc.getUserId() + " , Encomenda: " + enc.getId());
-                    v.available();
+                    timer.schedule(new Finalizar_rv(v, enc, u, l), (long) (l.f_time() * 100 * distancia(u.getId(), l.getId(), v.getId())));
                 }
-                model.removeEncomenda(enc.getId());
-                l.remove_fila();
                 return;
             }
         }
@@ -157,7 +141,7 @@ public class Controler implements IControler {
     }
     public void pedir_recolha(IVoluntario v, String value){
         if(!v.check_available()){
-            view.alert("Atingiu-se o máximo", "A transportadora não consegue transportar mais encomendas.");
+            view.alert("Atingiu-se o máximo", "Este voluntário já se encontra a transportar uma encomenda.");
         }
         if(!model.getEncMap().containsKey(value)){
             view.alert("Encomenda Fantasma", "OOPS! Parece que alguém fez mal o inventário da semana passada!");
@@ -170,7 +154,6 @@ public class Controler implements IControler {
         } else view.alert("Encomenda fora de alcance", "O seu range não permite realizar esta recolha.");
     }
 
-    // HELP
     public void rating(IUtilizador u, String s, char type){
         if(type == 't'){
             model.getTransMap().get(s).getRating().add(view.rating("Introduza o rating", "Por favor, avalie a sua satisfação perante a encomenda realizada. [0 muito mau] [10 muito bom]"));
@@ -180,7 +163,7 @@ public class Controler implements IControler {
         }
     }
     public void listar_on_going(){
-        view.make_window("Encomendas Ativas", view.print_list(encomendas_ativas()));
+        view.make_window("Encomendas Ativas", view.print_list(model.encomendas_ativas()));
     }
     public void listar_top_users(){
         view.make_window("Top 10 Utilizadores", view.print_list(model.top10Acessos()));
@@ -327,17 +310,16 @@ public class Controler implements IControler {
             view.alert("Erro.", "Programa falhou a registar uma loja.");
         }
     }
-
     public void validaLogInUser(String email, String pwd) {
         if (model.validaLogInUser(email, pwd)) {
             IUtilizador u = model.getUser(email);
-            view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, lojas(), historico(u), model.encomendas_u(u)));
+            view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, model.lojas(), historico(u), model.encomendas_u(u)));
         } else view.alert("Erro no login.","Credenciais erradas ou não existentes.");
     }
     public void validaLogInTrans(String email, String pwd) {
         if (model.validaLogInTrans(email, pwd)){
             ITransportadora t = model.getTrans(email);
-            view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, lojas(), faturacao(t)));
+            view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, model.lojas(), faturacao(t)));
             return;
         }
         view.alert("Erro no login.","Credenciais erradas ou não existentes.");
@@ -345,7 +327,7 @@ public class Controler implements IControler {
     public void validaLogInVol(String email, String pwd) {
         if (model.validaLogInVol(email, pwd)) {
             IVoluntario v = model.getVol(email);
-            view.make_window("Menu de Voluntário " + v.getNome(), view.menu_voluntario(v, lojas()));
+            view.make_window("Menu de Voluntário " + v.getNome(), view.menu_voluntario(v, model.lojas(), v.getHistorico()));
             return;
         }
         view.alert("Erro no login.","Credenciais erradas ou não existentes.");
@@ -353,7 +335,7 @@ public class Controler implements IControler {
     public void validaLogInLoja(String email, String pwd) {
         if(model.validaLogInLoja(email, pwd)){
             ILoja l = model.getLoja(email);
-            view.make_window("Menu de Loja " + l.getNome(), view.menu_loja(l));
+            view.make_window("Menu de Loja " + l.getNome(), view.menu_loja(l, l.get_encomendas_fila()));
             return;
         }
         view.alert("Erro no login.","Credenciais erradas ou não existentes.");
@@ -372,7 +354,7 @@ public class Controler implements IControler {
         encomenda.setPreco(produto.getPreco());
 
         model.addEncomenda(encomenda);
-        model.getLojaMap().get(idLoja).addLista(encomenda);
+        model.loja(idLoja).addLista(encomenda);
         return encomenda;
     }
     public boolean dentro_range_t(IUtilizador user, ILoja loja, ITransportadora t) {
@@ -382,8 +364,8 @@ public class Controler implements IControler {
         return Math.sqrt(Math.pow((loja.getLocalizacaoX() - v.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - v.getLocalizacaoY()), 2)) < v.getRange() && Math.sqrt(Math.pow((user.getLocalizacaoX() - v.getLocalizacaoX()), 2) + Math.pow((user.getLocalizacaoY() - v.getLocalizacaoY()), 2)) < v.getRange();
     }
     public double distancia(String userid, String lojaid, String transid) {
-        IUtilizador user = this.model.getUserMap().get(userid);
-        ILoja loja = this.model.getLojaMap().get(lojaid);
+        IUtilizador user = this.model.user(userid);
+        ILoja loja = this.model.loja(lojaid);
         return Math.sqrt(Math.pow(Math.abs(loja.getLocalizacaoX() - user.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - user.getLocalizacaoY()), 2));
     }
     public Double[] localizacao (){
@@ -400,22 +382,16 @@ public class Controler implements IControler {
         return loc;
     }
 
-    public List<String> lojas() {
-        List<String> s = new Vector<>();
-        for (ILoja loja: model.getLojaMap().values()) {
-            s.add(loja.getNome());
-        }
-        return s;
-    }
+    // LISTAS
     private List<String> historico(IUtilizador u) {
-        List<String> s = new Vector<>();
+        List<String> s = new ArrayList<>();
         for (IEncomenda e: u.getHistorico()) {
             s.add(e.getId());
         }
         return s;
     }
     public List<String> produtos(ILoja loja) {
-        List<String> s = new Vector<>();
+        List<String> s = new ArrayList<>();
         for (LinhaEncomenda e : loja.getInventario()) {
             s.add(e.getDescricao());
         }
@@ -425,40 +401,61 @@ public class Controler implements IControler {
         List<String> s = new ArrayList<>();
         for (Double d: t.getFaturacao()) {
             s.add("" + d.toString());
-        };
-        return s;
-    }
-    private List<String> encomendas_ativas(){
-        List<String> s = new Vector<>();
-        for(IEncomenda enc : model.getEncMap().values()){
-            s.add("Utilizador " + model.getUserMap().get(enc.getUserId()).getNome() + " encomendou " + enc.getId() + " com os produtos : " + enc.getProdutos());
         }
         return s;
     }
 
-    void make_it_run(int tempo){
-        boolean enough = false;
-        int aux = 0;
-        int s = 0, m = 0, h = 0;
-        while(aux < tempo) {
-            s += 1;
-            if (s > 59){
-                m += 1;
-                s = 0;
-            }
-            if (m > 59){
-                h += 1;
-                m = 0;
-            }
-            if (h > 12){
-                h = 1;
-                m = 0;
-                s = 0;
-            }
-            aux++;
-            System.out.println(s);
+    class Finalizar_rt extends TimerTask{
+        ITransportadora t;
+        IEncomenda enc;
+        IUtilizador u;
+        ILoja l;
+
+        public Finalizar_rt(ITransportadora t, IEncomenda enc, IUtilizador u, ILoja l){
+            this.t = t;
+            this.enc = enc;
+            this.u = u;
+            this.l = l;
+        }
+
+        @Override
+        public void run() {
+            double t1 = t.getPreco_transporte();
+            t.setDistancia(distancia(u.getId(), l.getId(), enc.getId()));
+            t.getHistorico().add("Encomenda: " + enc.getId() + " | Preço: " + t1);
+            t.getFaturacao().add(t1);
+            t.available();
+
+            model.removeEncomenda(enc.getId());
+            l.remove_fila();
         }
     }
+
+    class Finalizar_rv extends TimerTask{
+        IVoluntario v;
+        IEncomenda enc;
+        IUtilizador u;
+        ILoja l;
+
+        public Finalizar_rv(IVoluntario v, IEncomenda enc, IUtilizador u, ILoja l){
+            this.v = v;
+            this.enc = enc;
+            this.u = u;
+            this.l = l;
+        }
+
+        @Override
+        public void run() {
+            v.n_encomedas();
+            v.addHistorico("User: " + enc.getUserId() + " , Encomenda: " + enc.getId());
+            v.available();
+
+            model.removeEncomenda(enc.getId());
+            l.remove_fila();
+        }
+    }
+
+
 
     // not to be used ever again, emergencies only
     public void escreveMail() {

@@ -32,8 +32,12 @@ public class Loja implements Serializable, ILoja {
         return inventario;
     }
 
-    public void setInventario(Set<LinhaEncomenda> inventario) {
-        this.inventario = inventario;
+    public List<String> get_encomendas_fila(){
+        List<String> lista = new ArrayList<>();
+        for(IEncomenda e : lista_encomendas.values()){
+            lista.add("E: " + e.getId() + " | U: " + e.getUserId() + " | Produtos: " + e.getProdutos());
+        }
+        return lista;
     }
 
     public Loja(String id, String nome, String email, String pwd, double localizacaoX, double localizacaoY, Fila fila, HashMap<String, IEncomenda> lista_encomendas, HashSet<IEncomenda> historico, Set<LinhaEncomenda> inventario) {
@@ -98,10 +102,6 @@ public class Loja implements Serializable, ILoja {
         return localizacaoX;
     }
 
-    public Fila getFila() {
-        return fila;
-    }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -112,10 +112,6 @@ public class Loja implements Serializable, ILoja {
 
     public void setLocalizacaoY(double localizacaoY) {
         this.localizacaoY = localizacaoY;
-    }
-
-    public void setFila(Fila fila) {
-        this.fila = fila;
     }
 
     @Override
@@ -159,6 +155,10 @@ public class Loja implements Serializable, ILoja {
         lista_encomendas.remove(e);
     }
 
+    public boolean check_fila(){
+        return fila.is_full();
+    }
+
     public void addHistorico (IEncomenda e){
         historico.add(e);
     }
@@ -180,11 +180,9 @@ public class Loja implements Serializable, ILoja {
     public String fila() {
         return fila.toString();
     }
-    public void add_fila(){
-        fila.setEm_fila(fila.getEm_fila()+1);
-    }
+
     public void remove_fila(){
-        fila.setEm_fila(fila.getEm_fila()-1);
+        fila.remove();
     }
 }
 
@@ -210,36 +208,26 @@ class Fila implements Serializable{
         this.disponivel = true;
     }
 
-    public int getN_max() {
-        return n_max;
+    public boolean is_full(){
+        if(em_fila < n_max){
+            em_fila++;
+            return true;
+        } else {
+            em_fila++;
+            return false;
+        }
     }
 
-    public int getEm_fila() {
-        return em_fila;
+    public void remove(){
+        em_fila--;
     }
 
     public int getTempo_medio() {
         return tempo_medio;
     }
 
-    public boolean isDisponivel() {
-        return disponivel;
-    }
-
-    public void setN_max(int n_max) {
-        this.n_max = n_max;
-    }
-
     public void setEm_fila(int em_fila) {
         this.em_fila = em_fila;
-    }
-
-    public void setTempo_medio(int tempo_medio) {
-        this.tempo_medio = tempo_medio;
-    }
-
-    public void setDisponivel(boolean disponivel) {
-        this.disponivel = disponivel;
     }
 
     @Override

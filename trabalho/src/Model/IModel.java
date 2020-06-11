@@ -233,4 +233,14 @@ public interface IModel {
      *
      * */
     List<String> top10Distancias();
+
+    /**
+     *
+     * */
+    List<String> encomendas_ativas();
+
+    /**
+     *
+     * */
+    List<String> lojas();
 }
