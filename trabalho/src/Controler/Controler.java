@@ -451,7 +451,6 @@ public class Controler implements IControler {
         model.filetoLoja();
         model.fileToUser();
         model.fileToVol();
-        model.fileToEnc();
         model.loadInventLoja();
         escreveMail();
         model.guardaEstado();
