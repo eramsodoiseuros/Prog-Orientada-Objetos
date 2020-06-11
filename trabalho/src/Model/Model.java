@@ -191,6 +191,11 @@ public class Model implements Serializable, IModel {
             return volMap.get(id);
         else return new Voluntario();
     }
+    public IEncomenda encomenda(String id){
+        if(encMap.containsKey(id))
+            return encMap.get(id);
+        else return new Encomenda();
+    }
 
     public IEncomenda encomendas_u(IUtilizador u) {
         IEncomenda e = new Encomenda();

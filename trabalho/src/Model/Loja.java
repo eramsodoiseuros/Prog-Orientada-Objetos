@@ -170,6 +170,13 @@ public class Loja implements Serializable, ILoja {
         }
         return s;
     }
+    public List<String> produtos() {
+        List<String> s = new ArrayList<>();
+        for (LinhaEncomenda e : inventario) {
+            s.add(e.getDescricao());
+        }
+        return s;
+    }
 
     @Override
     public int f_time() {

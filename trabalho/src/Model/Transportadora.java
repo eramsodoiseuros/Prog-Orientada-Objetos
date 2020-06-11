@@ -187,6 +187,14 @@ public class Transportadora implements Serializable, ITransportadora{
         this.nome = nome;
     }
 
+    public List<String> faturacao() {
+        List<String> s = new ArrayList<>();
+        for (Double d: faturacao) {
+            s.add("" + d.toString());
+        }
+        return s;
+    }
+
     public boolean check_available() {
         if(n_ativo == n_max) {
             disponivel = false;

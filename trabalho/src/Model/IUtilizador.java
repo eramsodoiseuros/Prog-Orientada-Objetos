@@ -1,5 +1,7 @@
 package Model;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -49,12 +51,6 @@ public interface IUtilizador extends Serializable{
 
     /**
      *
-     *  Set de encomendas realizadas pelo Utilizador
-     * */
-    void setHistorico(Set<IEncomenda> historico);
-
-    /**
-     *
      *  Numero de encomendas realizadas do Utilizador
      * */
     void setAcessos(int acessos);
@@ -88,13 +84,7 @@ public interface IUtilizador extends Serializable{
      *
      * @return Set de encomendas realizadas pelo Utilizador
      * */
-    Set<IEncomenda> getHistorico();
-
-    /**
-     *
-     * @return Set de encomendas realizadas pelo Utilizador
-     * */
-    void setHistorico(TreeSet<IEncomenda> historico);
+    public List<String> historico();
 
     /**
      *
@@ -119,4 +109,6 @@ public interface IUtilizador extends Serializable{
      * @return String email do Utilizador
      * */
     void setEmail(String s);
+
+    void addHistorico(IEncomenda enc);
 }

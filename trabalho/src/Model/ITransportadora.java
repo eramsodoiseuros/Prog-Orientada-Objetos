@@ -166,4 +166,6 @@ public interface ITransportadora extends Serializable{
      * Double com o total percorrido pela transportadora da Transportadora
      * */
     void setDistancia(Double d);
+
+    List<String> faturacao();
 }

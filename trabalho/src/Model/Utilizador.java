@@ -98,10 +98,6 @@ public class Utilizador implements Serializable, IUtilizador{
         this.estado = estado;
     }
 
-    public void setHistorico(Set<IEncomenda> historico) {
-        this.historico = historico;
-    }
-
     public void setAcessos(int acessos) {
         this.acessos = acessos;
     }
@@ -114,7 +110,6 @@ public class Utilizador implements Serializable, IUtilizador{
         return localizacaoY;
     }
 
-
     public void setLocalizacaoX(double localizacaoX) {
         this.localizacaoX = localizacaoX;
     }
@@ -123,9 +118,16 @@ public class Utilizador implements Serializable, IUtilizador{
         this.localizacaoY = localizacaoY;
     }
 
+    public void addHistorico(IEncomenda e){
+        historico.add(e);
+    }
 
-    public Set<IEncomenda> getHistorico() {
-        return historico;
+    public List<String> historico() {
+        List<String> s = new ArrayList<>();
+        for (IEncomenda e: historico) {
+            s.add(e.getId());
+        }
+        return s;
     }
 
     public void setHistorico(TreeSet<IEncomenda> historico) {

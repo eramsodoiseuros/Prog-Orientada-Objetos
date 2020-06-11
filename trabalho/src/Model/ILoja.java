@@ -119,4 +119,6 @@ public interface ILoja extends Serializable {
      * @return O tempo medio de espera na loja
      * */
     int f_time();
+
+    List<String> produtos();
 }

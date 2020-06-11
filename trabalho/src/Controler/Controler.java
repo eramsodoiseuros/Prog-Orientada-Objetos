@@ -66,7 +66,7 @@ public class Controler implements IControler {
 
     // DONE
     public void update_user(IUtilizador u){
-        view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, model.lojas(), historico(u), model.encomendas_u(u)));
+        view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, model.lojas(), u.historico(), model.encomendas_u(u)));
     }
     public void update_transportadora(ITransportadora t){
         view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, model.lojas(), t.getHistorico()));
@@ -81,7 +81,7 @@ public class Controler implements IControler {
     // DONE
     public void loja_selecionada(IUtilizador u, String nome) {
         ILoja loja = model.loja_nome(nome);
-        view.make_window("Lista de produtos da Loja '" + loja.getNome() + "'", view.select_produtos(u, loja,produtos(loja)));
+        view.make_window("Lista de produtos da Loja '" + loja.getNome() + "'", view.select_produtos(u, loja,loja.produtos()));
     }
     public void loja_selecionada(ITransportadora t, String nome) {
         ILoja loja = model.loja_nome(nome);
@@ -101,7 +101,7 @@ public class Controler implements IControler {
     public void finalizar_encomenda(IUtilizador u, String estafeta, String value){
         for(IEncomenda enc : model.getEncMap().values()){
             if(enc.getEstafeta().contains(estafeta)){
-                u.getHistorico().add(enc);
+                u.addHistorico(enc);
                 u.setAcessos(u.getAcessos()+1);
 
                 ILoja l = model.loja(enc.getLoja());
@@ -109,7 +109,6 @@ public class Controler implements IControler {
                     view.alert("Fila cheia", "A Loja de momento está cheia, o pedido vai ser processado, mas primeiro aguarda que alguém saia da fila.");
                 l.addHistorico(enc);
                 l.removeLista(enc.getId());
-                u.getHistorico().add(enc);
 
                 if(value.startsWith("t")){
                     ITransportadora t = model.transportadora(value);
@@ -132,11 +131,11 @@ public class Controler implements IControler {
             view.alert("Encomenda Fantasma", "OOPS! Parece que alguém fez mal o inventário da semana passada!");
             return;
         }
-        String userid = model.getEncMap().get(value).getUserId();
-        String lojaid = model.getEncMap().get(value).getLoja();
-        if(dentro_range_t(model.getUserMap().get(userid), model.getLojaMap().get(lojaid), t)){
+        String userid = model.encomenda(value).getUserId();
+        String lojaid = model.encomenda(value).getLoja();
+        if(dentro_range_t(model.user(userid), model.loja(lojaid), t)){
             t.setPreco_transporte(t.getPreco_km()*distancia(userid, lojaid, value));
-            model.getEncMap().get(value).getEstafeta().add("Transportadora: " + t.getId() + " - Nome: " + t.getNome() + " - " + t.getPreco_transporte() + "€ - Rating: " + t.estrela());
+            model.encomenda(value).getEstafeta().add("Transportadora: " + t.getId() + " - Nome: " + t.getNome() + " - " + t.getPreco_transporte() + "€ - Rating: " + t.estrela());
         } else view.alert("Encomenda fora de alcance", "O range da sua transportadora não permite realizar esta recolha.");
     }
     public void pedir_recolha(IVoluntario v, String value){
@@ -147,19 +146,19 @@ public class Controler implements IControler {
             view.alert("Encomenda Fantasma", "OOPS! Parece que alguém fez mal o inventário da semana passada!");
             return;
         }
-        String userid = model.getEncMap().get(value).getUserId();
-        String lojaid = model.getEncMap().get(value).getLoja();
-        if(dentro_range_v(model.getUserMap().get(userid), model.getLojaMap().get(lojaid), v)){
-            model.getEncMap().get(value).getEstafeta().add("Voluntário: " + v.getId() + " - Nome: " + v.getNome() + " - Rating: " + v.estrela());
+        String userid = model.encomenda(value).getUserId();
+        String lojaid = model.encomenda(value).getLoja();
+        if(dentro_range_v(model.user(userid), model.loja(lojaid), v)){
+            model.encomenda(value).getEstafeta().add("Voluntário: " + v.getId() + " - Nome: " + v.getNome() + " - Rating: " + v.estrela());
         } else view.alert("Encomenda fora de alcance", "O seu range não permite realizar esta recolha.");
     }
 
     public void rating(IUtilizador u, String s, char type){
         if(type == 't'){
-            model.getTransMap().get(s).getRating().add(view.rating("Introduza o rating", "Por favor, avalie a sua satisfação perante a encomenda realizada. [0 muito mau] [10 muito bom]"));
+            model.transportadora(s).getRating().add(view.rating("Introduza o rating", "Por favor, avalie a sua satisfação perante a encomenda realizada. [0 muito mau] [10 muito bom]"));
         }
         if(type == 'v'){
-            model.getVolMap().get(s).getRating().add(view.rating("Introduza o rating", "Por favor, avalie a sua satisfação perante a encomenda realizada. [0 muito mau] [10 muito bom]"));
+            model.voluntario(s).getRating().add(view.rating("Introduza o rating", "Por favor, avalie a sua satisfação perante a encomenda realizada. [0 muito mau] [10 muito bom]"));
         }
     }
     public void listar_on_going(){
@@ -313,13 +312,13 @@ public class Controler implements IControler {
     public void validaLogInUser(String email, String pwd) {
         if (model.validaLogInUser(email, pwd)) {
             IUtilizador u = model.getUser(email);
-            view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, model.lojas(), historico(u), model.encomendas_u(u)));
+            view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, model.lojas(), u.historico(), model.encomendas_u(u)));
         } else view.alert("Erro no login.","Credenciais erradas ou não existentes.");
     }
     public void validaLogInTrans(String email, String pwd) {
         if (model.validaLogInTrans(email, pwd)){
             ITransportadora t = model.getTrans(email);
-            view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, model.lojas(), faturacao(t)));
+            view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, model.lojas(), t.faturacao()));
             return;
         }
         view.alert("Erro no login.","Credenciais erradas ou não existentes.");
@@ -380,29 +379,6 @@ public class Controler implements IControler {
         loc[1] = low + (resultY * (high - low));
 
         return loc;
-    }
-
-    // LISTAS
-    private List<String> historico(IUtilizador u) {
-        List<String> s = new ArrayList<>();
-        for (IEncomenda e: u.getHistorico()) {
-            s.add(e.getId());
-        }
-        return s;
-    }
-    public List<String> produtos(ILoja loja) {
-        List<String> s = new ArrayList<>();
-        for (LinhaEncomenda e : loja.getInventario()) {
-            s.add(e.getDescricao());
-        }
-        return s;
-    }
-    private List<String> faturacao(ITransportadora t) {
-        List<String> s = new ArrayList<>();
-        for (Double d: t.getFaturacao()) {
-            s.add("" + d.toString());
-        }
-        return s;
     }
 
     class Finalizar_rt extends TimerTask{

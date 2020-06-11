@@ -223,6 +223,11 @@ public interface IModel {
     /**
      *
      * */
+    IEncomenda encomenda(String value);
+
+    /**
+     *
+     * */
     boolean validaRegistoUser(String email);
 
     /**
