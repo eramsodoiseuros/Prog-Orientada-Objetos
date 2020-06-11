@@ -103,16 +103,17 @@ public interface IView {
 
     /**
      * Função que gera a Scene JavaFX representativa do Menu de Loja
-     * @param l encomendas em Loja
+     * @param l Loja
+     * @param encomendas  encomendas em loja
      * @return Scene repesentativa do Menu de Loja
      * */
     Scene menu_loja(ILoja l, List<String> encomendas);
 
     /**
      * Função que gera a Scene JavaFX representativa da Seleção de Produtos por parte do Utilizador
-     * @param u
-     * @param l
-     * @param produtos
+     * @param u Uilizador
+     * @param l Loja
+     * @param produtos Produtos
      * @return Scene repesentativa da Seleção de Produtos por parte do Utilizador
      * */
     Scene select_produtos(IUtilizador u, ILoja l, List<String> produtos);
@@ -126,23 +127,23 @@ public interface IView {
 
     /**
      * Função que gera a Scene JavaFX representativa da Lista de Encomendas Ativas a ler pela Transportadora
-     * @param t
-     * @param recolha
+     * @param t Transportadora
+     * @param recolha Lista de encomendas para recolha
      * @return Scene repesentativa do Menu Principal
      * */
     Scene encomendas_ativas(ITransportadora t, List<String> recolha);
 
     /**
      * Função que gera a Scene JavaFX representativa da Lista de Encomendas Ativas a ler pelo Voluntário
-     * @param v
-     * @param recolha
+     * @param v Voluntário
+     * @param recolha Lista de encomendas para recolha
      * @return Scene repesentativa do Menu Principal
      * */
     Scene encomendas_ativas(IVoluntario v, List<String> recolha);
 
     /**
      * Função que gera a Scene JavaFX representativa da Lista de Encomendas Ativas
-     * @param encomendas
+     * @param encomendas lista
      * @return Scene repesentativa do Menu Principal
      * */
     Scene print_list(List<String> encomendas);
