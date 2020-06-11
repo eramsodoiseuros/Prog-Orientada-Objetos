@@ -78,7 +78,7 @@ public interface IModel {
      *
      * @return Mapa dos utilizadores
      * */
-    HashMap<String, IUtilizador> getUserMap();
+    TreeMap<String, IUtilizador> getUserMap();
 
     /**
      *

@@ -112,11 +112,11 @@ public class Controler implements IControler {
                 u.getHistorico().add(enc);
 
                 if(value.startsWith("t")){
-                    ITransportadora t = model.getTransMap().get(value);
+                    ITransportadora t = model.transportadora(value);
                     timer.schedule( new Finalizar_rt(t, enc, u, l) , (long) (l.f_time() * 100 * distancia(u.getId(), l.getId(), t.getId())));
                 }
                 if(value.startsWith("v")){
-                    IVoluntario v = model.getVolMap().get(value);
+                    IVoluntario v = model.voluntario(value);
                     v.not_available();
                     timer.schedule(new Finalizar_rv(v, enc, u, l), (long) (l.f_time() * 100 * distancia(u.getId(), l.getId(), v.getId())));
                 }
@@ -454,8 +454,6 @@ public class Controler implements IControler {
             l.remove_fila();
         }
     }
-
-
 
     // not to be used ever again, emergencies only
     public void escreveMail() {

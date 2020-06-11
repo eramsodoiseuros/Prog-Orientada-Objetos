@@ -44,18 +44,10 @@ public interface IVoluntario extends Serializable {
      * */
     String getNome();
 
-
     /**
      * @return List com as avaliações do Voluntario
      * */
     ArrayList<Integer> getRating();
-
-
-    /**
-     * @return Set com os registos das encomendas realizadas pelo Voluntario
-     * */
-    Set<IEncomenda> getRegistos();
-
 
     /**
      *  String com o ID do Voluntario
@@ -127,4 +119,8 @@ public interface IVoluntario extends Serializable {
      * Numero de encomendas realizadas pelo Voluntario
      * */
     void n_encomedas();
+
+    List<String> getHistorico();
+
+    void addHistorico(String s);
 }
