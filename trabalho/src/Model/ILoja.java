@@ -86,29 +86,32 @@ public interface ILoja extends Serializable {
     String fila();
 
     /**
-     *
+     * Adiciona um ao numero de encomendas na fila
      * */
     void add_fila();
 
     /**
-     *
+     * Remove um ao numero de encomendas da fila
      * */
     void remove_fila();
 
     /**
-     *
+     * Adiciona uma encomenda as encomendas ativas da loja
      * */
     void addLista(IEncomenda e);
 
     /**
-     *
+     * Remove uma encomenda as encomendas ativas da loja
      * */
     void removeLista(String e);
 
     /**
-     *
+     * Cria uma lista com os IDs das encomendas que estão ativas
      * */
     List<String> precisa_recolha(ILoja l);
 
+    /**
+     * @return O tempo medio de espera na loja
+     * */
     int f_time();
 }
