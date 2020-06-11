@@ -1,6 +1,5 @@
 package Model;
 
-import javax.xml.stream.Location;
 import java.io.Serializable;
 import java.util.*;
 
@@ -13,8 +12,9 @@ public class Encomenda implements Serializable, IEncomenda {
     private double preco;
     private ArrayList<LinhaEncomenda> produtos;
     private String tipo;
+    private int tempo;
 
-    public Encomenda(String id, String loja, String userId, String tipo, double preco, double peso, Set<String> estafeta, ArrayList<LinhaEncomenda> produtos) {
+    public Encomenda(String id, String loja, String userId, String tipo, double preco, double peso, Set<String> estafeta, ArrayList<LinhaEncomenda> produtos, int tempo) {
         this.id = id;
         this.loja = loja;
         this.userId = userId;
@@ -23,7 +23,7 @@ public class Encomenda implements Serializable, IEncomenda {
         this.produtos = produtos;
         this.preco = preco;
         this.tipo = tipo;
-
+        this.tempo = tempo;
     }
 
     public Encomenda() {
@@ -35,8 +35,17 @@ public class Encomenda implements Serializable, IEncomenda {
         this.tipo = null;
         this.produtos = new ArrayList<>();
         this.preco = 0;
-
+        this.tempo = 0;
     }
+
+    public int getTempo() {
+        return tempo;
+    }
+
+    public void setTempo(int tempo) {
+        this.tempo = tempo;
+    }
+
     public double getPreco() {
         return preco;
     }

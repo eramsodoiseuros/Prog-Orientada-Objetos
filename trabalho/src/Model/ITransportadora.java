@@ -56,17 +56,9 @@ public interface ITransportadora extends Serializable{
      * */
     String getId();
 
-    /**
-     *
-     * @return List com o historico da Transportadora
-     * */
-    List<String> getHistorico();
+    void addHistorico(String s);
 
-    /**
-     *
-     * @return List com a faturação da Transportadora
-     * */
-    List<Double> getFaturacao();
+    void addFaturacao(Double d);
 
     /**
      *
@@ -167,5 +159,7 @@ public interface ITransportadora extends Serializable{
      * */
     void setDistancia(Double d);
 
-    List<String> faturacao();
+    List<String> getHistorico();
+
+    Double fat();
 }

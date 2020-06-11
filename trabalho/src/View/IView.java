@@ -89,7 +89,7 @@ public interface IView {
      * @param faturacao
      * @return Scene repesentativa do Menu de Transportadora
      * */
-    Scene menu_transportadora(ITransportadora t, List<String> lojas, List<String> faturacao  );
+    Scene menu_transportadora(ITransportadora t, List<String> lojas, List<String> faturacao , Double fat);
 
     /**
      * Função que gera a Scene JavaFX representativa do Menu de Voluntário
@@ -146,6 +146,4 @@ public interface IView {
     Scene print_list(List<String> encomendas);
 
     int rating(String s, String s1);
-
-    void tempo(String s);
 }

@@ -6,25 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.*;
 
-/*
-*       NEED FIX
-*
-* PEDIR PREÇOS NO MENU LOJA
-*       DAR POSSIBILIDADE DE ADD PRODUTOS
-*
-* ADICIONAR HISTORICO NO MENU VOLUNTARIO
-*
-* ADICIONAR TOTAL FATURADO NA FATURACAO
-*
-* ADD MEDICO TYPE
-*
-* carregar dados para a entrega final
-*
-* gerar JDOC
-*
-* */
 
 public class Controler implements IControler {
     private IModel model;
@@ -34,7 +18,7 @@ public class Controler implements IControler {
     public Controler() {
         model = new Model();
         try {
-            inicia(); // TO BE RUNNED IF S* HITS THE FAN
+            //inicia(); // TO BE RUNNED IF S* HITS THE FAN
             this.model = model.loadEstado();
         } catch (IOException | ClassNotFoundException e) {
             view.alert("Erro", "O controler falhou a dar load do estado.");
@@ -69,7 +53,7 @@ public class Controler implements IControler {
         view.make_window("Menu de Utilizador " + u.getNome(), view.menu_user(u, model.lojas(), u.historico(), model.encomendas_u(u)));
     }
     public void update_transportadora(ITransportadora t){
-        view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, model.lojas(), t.getHistorico()));
+        view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, model.lojas(), t.getHistorico(), t.fat()));
     }
     public void update_voluntario(IVoluntario v){
         view.make_window("Menu de Voluntário " + v.getNome(), view.menu_voluntario(v,model.lojas(), v.getHistorico()));
@@ -112,12 +96,16 @@ public class Controler implements IControler {
 
                 if(value.startsWith("t")){
                     ITransportadora t = model.transportadora(value);
-                    timer.schedule( new Finalizar_rt(t, enc, u, l) , (long) (l.f_time() * 100 * distancia(u.getId(), l.getId(), t.getId())));
+                    long tempo = (long) (l.f_time() * 100 * distancia(u.getId(), l.getId(), t.getId()));
+                    enc.setTempo((int) tempo );
+                    timer.schedule( new Finalizar_rt(t, enc, u, l) , tempo);
                 }
                 if(value.startsWith("v")){
                     IVoluntario v = model.voluntario(value);
                     v.not_available();
-                    timer.schedule(new Finalizar_rv(v, enc, u, l), (long) (l.f_time() * 100 * distancia(u.getId(), l.getId(), v.getId())));
+                    long tempo = (long) (l.f_time() * 100 * distancia(u.getId(), l.getId(), v.getId()));
+                    enc.setTempo((int) tempo );
+                    timer.schedule(new Finalizar_rv(v, enc, u, l), tempo);
                 }
                 return;
             }
@@ -134,8 +122,9 @@ public class Controler implements IControler {
         String userid = model.encomenda(value).getUserId();
         String lojaid = model.encomenda(value).getLoja();
         if(dentro_range_t(model.user(userid), model.loja(lojaid), t)){
+            DecimalFormat df = new DecimalFormat("####0.00");
             t.setPreco_transporte(t.getPreco_km()*distancia(userid, lojaid, value));
-            model.encomenda(value).getEstafeta().add("Transportadora: " + t.getId() + " - Nome: " + t.getNome() + " - " + t.getPreco_transporte() + "€ - Rating: " + t.estrela());
+            model.encomenda(value).getEstafeta().add("Transportadora: " + t.getId() + " - Nome: " + t.getNome() + " - " + df.format(t.getPreco_transporte()) + "€ - Rating: " + t.estrela());
         } else view.alert("Encomenda fora de alcance", "O range da sua transportadora não permite realizar esta recolha.");
     }
     public void pedir_recolha(IVoluntario v, String value){
@@ -318,7 +307,7 @@ public class Controler implements IControler {
     public void validaLogInTrans(String email, String pwd) {
         if (model.validaLogInTrans(email, pwd)){
             ITransportadora t = model.getTrans(email);
-            view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, model.lojas(), t.faturacao()));
+            view.make_window("Menu de Transportadora " + t.getNome(), view.menu_transportadora(t, model.lojas(), t.getHistorico(), t.fat()));
             return;
         }
         view.alert("Erro no login.","Credenciais erradas ou não existentes.");
@@ -398,8 +387,9 @@ public class Controler implements IControler {
         public void run() {
             double t1 = t.getPreco_transporte();
             t.setDistancia(distancia(u.getId(), l.getId(), enc.getId()));
-            t.getHistorico().add("Encomenda: " + enc.getId() + " | Preço: " + t1);
-            t.getFaturacao().add(t1);
+            DecimalFormat df = new DecimalFormat("####0.00");
+            t.addHistorico("User: " + enc.getUserId() + " | Encomenda: " + enc.getId() + " | Preço: " + df.format(t1) + " | Tempo: " + (enc.getTempo()/600) + "minutos." );
+            t.addFaturacao(t1);
             t.available();
 
             model.removeEncomenda(enc.getId());
@@ -423,7 +413,7 @@ public class Controler implements IControler {
         @Override
         public void run() {
             v.n_encomedas();
-            v.addHistorico("User: " + enc.getUserId() + " , Encomenda: " + enc.getId());
+            v.addHistorico("User: " + enc.getUserId() + " , Encomenda: " + enc.getId() + " , Tempo: " + enc.getTempo() + (enc.getTempo()/600) + "minutos.");
             v.available();
 
             model.removeEncomenda(enc.getId());

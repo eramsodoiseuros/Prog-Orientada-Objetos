@@ -1,8 +1,6 @@
 package Model;
-import javax.xml.stream.Location;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -81,4 +79,6 @@ public interface IEncomenda extends Serializable {
      * */
     void addProdutos(LinhaEncomenda p);
 
+    void setTempo(int tempo);
+    int getTempo();
 }

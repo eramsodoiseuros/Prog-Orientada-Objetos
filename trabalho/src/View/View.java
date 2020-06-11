@@ -12,6 +12,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class View implements IView{
@@ -434,7 +435,7 @@ public class View implements IView{
     }
 
     @Override
-    public Scene menu_transportadora(ITransportadora t, List<String> lojas, List<String> faturacao ) {
+    public Scene menu_transportadora(ITransportadora t, List<String> lojas, List<String> faturacao , Double fat) {
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
 
@@ -449,13 +450,17 @@ public class View implements IView{
         cb2.getItems().addAll(faturacao);
         cb2.setPromptText("Ver histórico de faturacao:");
 
+        DecimalFormat df = new DecimalFormat("####0.00");
+
+        Label lbl = new Label("Faturação total: " + df.format(fat) + " €");
+
         Button update = new Button("Update");
         update.setOnAction(e -> {
             c.update_transportadora(t);
             c.end_scene(e);
         });
 
-        layout.getChildren().addAll(cb, cb2, update);
+        layout.getChildren().addAll(cb, cb2, lbl, update);
         return new Scene(layout, 400, 300);
     }
 
@@ -660,9 +665,5 @@ public class View implements IView{
         if(s.equals("[TOP Transportadoras]")){
             c.listar_top_transportadoras();
         }
-    }
-
-    public void tempo(String s){
-        System.out.println(s);
     }
 }

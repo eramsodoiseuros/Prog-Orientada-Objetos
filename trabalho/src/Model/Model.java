@@ -161,14 +161,6 @@ public class Model implements Serializable, IModel {
         }
         return lista;
     }
-    public ILoja loja_nome(String nome){
-        ILoja loja = new Loja();
-        for (ILoja l: lojaMap.values()) {
-            if(l.getNome().equals(nome))
-                return l;
-        }
-        return loja;
-    }
 
     // get entidade by ID
     public ILoja loja(String id){
@@ -205,6 +197,14 @@ public class Model implements Serializable, IModel {
             }
         }
         return e;
+    }
+    public ILoja loja_nome(String nome){
+        ILoja loja = new Loja();
+        for (ILoja l: lojaMap.values()) {
+            if(l.getNome().equals(nome))
+                return l;
+        }
+        return loja;
     }
 
     // valida log in
@@ -314,11 +314,11 @@ public class Model implements Serializable, IModel {
     }
 
     private List<IUtilizador> get_all_users(){
-        List<IUtilizador> users = new ArrayList<IUtilizador>(userMap.values());
+        List<IUtilizador> users = new ArrayList<>(userMap.values());
         return users.stream().sorted(Comparator.comparing(IUtilizador::getAcessos).reversed()).collect(Collectors.toList());
     }
     private List<ITransportadora> get_all_trans(){
-        List<ITransportadora> transportadoras = new ArrayList<ITransportadora>(transMap.values());
+        List<ITransportadora> transportadoras = new ArrayList<>(transMap.values());
         return transportadoras.stream().sorted(Comparator.comparing(ITransportadora::getDistancia).reversed()).collect(Collectors.toList());
     }
 
@@ -335,7 +335,7 @@ public class Model implements Serializable, IModel {
         List<String> lista = new ArrayList<>();
         List<ITransportadora> l = get_all_trans();
         for(ITransportadora t:l){
-            lista.add("Transportadora: " + t.getNome() + "| Distancia percorrida: " + t.getDistancia());
+            lista.add("Transportadora: " + t.getNome() + " | Distancia percorrida: " + t.getDistancia());
         }
         return lista.stream().limit(10).collect(Collectors.toList());
     }

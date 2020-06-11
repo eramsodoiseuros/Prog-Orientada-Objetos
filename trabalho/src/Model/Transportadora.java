@@ -1,6 +1,7 @@
 package Model;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class Transportadora implements Serializable, ITransportadora{
@@ -143,14 +144,6 @@ public class Transportadora implements Serializable, ITransportadora{
         return preco_km;
     }
 
-    public List<String> getHistorico() {
-        return historico;
-    }
-
-    public List<Double> getFaturacao() {
-        return faturacao;
-    }
-
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
@@ -187,12 +180,25 @@ public class Transportadora implements Serializable, ITransportadora{
         this.nome = nome;
     }
 
-    public List<String> faturacao() {
-        List<String> s = new ArrayList<>();
-        for (Double d: faturacao) {
-            s.add("" + d.toString());
+    public List<String> getHistorico() {
+        return new ArrayList<>(historico);
+    }
+
+    public void addHistorico(String s){
+        historico.add(s);
+    }
+
+    public void addFaturacao(Double d){
+        faturacao.add(d);
+    }
+
+    @Override
+    public Double fat() {
+        Double total = 0.0;
+        for(Double d : faturacao){
+            total+=d;
         }
-        return s;
+        return total;
     }
 
     public boolean check_available() {
