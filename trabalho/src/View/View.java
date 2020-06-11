@@ -498,11 +498,9 @@ public class View implements IView{
         Label lblnumero = new Label("Número de pessoas em fila:");
         Label lbl = new Label(l.fila());
 
-        /*
-        *
-        * add produto pls implement
-        *
-        * */
+        ComboBox<String> cb = new ComboBox<>();
+        cb.getItems().addAll(encomendas);
+        cb.setPromptText("Encomendas em Loja:");
 
         Button update = new Button("Update");
         update.setOnAction(e -> {
@@ -510,7 +508,7 @@ public class View implements IView{
             c.end_scene(e);
         });
 
-        layout.getChildren().addAll(lblnumero, lbl, update);
+        layout.getChildren().addAll(lblnumero, lbl, cb, update);
         return new Scene(layout, 400, 300);
     }
 

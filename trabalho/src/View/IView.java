@@ -74,34 +74,36 @@ public interface IView {
 
     /**
      * Função que gera a Scene JavaFX representativa do Menu de Utilizador
-     * @param u
-     * @param lojas
-     * @param historico
-     * @param encomenda
+     * @param u Utilizador
+     * @param lojas Lista de Lojas
+     * @param historico Histórico do Utilizador
+     * @param encomenda Encomendas que precisam de ser processadas
      * @return Scene repesentativa do Menu de Utilizador
      * */
     Scene menu_user(IUtilizador u, List<String> lojas, List<String> historico, IEncomenda encomenda);
 
     /**
      * Função que gera a Scene JavaFX representativa do Menu de Transportadora
-     * @param t
-     * @param lojas
-     * @param faturacao
+     * @param t Transportadora
+     * @param lojas Lista de Lojas
+     * @param faturacao Historico de faturação
+     * @param fat Faturação Total
      * @return Scene repesentativa do Menu de Transportadora
      * */
     Scene menu_transportadora(ITransportadora t, List<String> lojas, List<String> faturacao , Double fat);
 
     /**
      * Função que gera a Scene JavaFX representativa do Menu de Voluntário
-     * @param v
-     * @param lojas
+     * @param v Voluntário
+     * @param lojas Lista de Lojas
+     * @param historico Histórico de Voluntário
      * @return Scene repesentativa do Menu de Voluntário
      * */
     Scene menu_voluntario(IVoluntario v, List<String> lojas, List<String> historico);
 
     /**
      * Função que gera a Scene JavaFX representativa do Menu de Loja
-     * @param l
+     * @param l encomendas em Loja
      * @return Scene repesentativa do Menu de Loja
      * */
     Scene menu_loja(ILoja l, List<String> encomendas);

@@ -8,68 +8,61 @@ import java.util.Set;
  * */
 public interface IEncomenda extends Serializable {
     /**
-     *
-     * @return Double com um preço
+     * @param preco Double com um preço
      * */
     void setPreco(double preco);
 
     /**
-     *
      * @return String com o Id de Encomenda
      * */
     String getId();
 
     /**
-     *
      * @return String com o Id de Loja
      * */
     String getLoja();
 
     /**
-     *
      * @return String com o Id de Utilizador
      * */
     String getUserId();
 
     /**
-     *
-     * @return Double com um peso
+     * @param peso Double com um peso
      * */
     void setPeso(double peso);
 
     /**
-     *
      * @return Set com os Ids dos Estafetas que aceitaram a encomenda
      * */
     Set<String> getEstafeta();
 
     /**
-     *
      * @return List com os Produtos
      * */
     ArrayList<LinhaEncomenda> getProdutos();
 
     /**
      *
-     * @return String com o ID da encomenda
+     * @param id String com o ID da encomenda
      * */
     void setId(String id);
 
     /**
      *
-     * @return String com o ID da loja
+     * @param loja  String com o ID da loja
      * */
     void setLoja(String loja);
 
     /**
      *
-     * @return String com o ID do Utilizador
+     * @param userId  String com o ID do Utilizador
      * */
     void setUserId(String userId);
 
     /**
      *
-     * @return List com os produtos
+     * @param produtos  List com os produtos
      * */
     void setProdutos(ArrayList<LinhaEncomenda> produtos);
 
@@ -79,6 +72,13 @@ public interface IEncomenda extends Serializable {
      * */
     void addProdutos(LinhaEncomenda p);
 
+    /**
+     *
+     * */
     void setTempo(int tempo);
+
+    /**
+     *
+     * */
     int getTempo();
 }

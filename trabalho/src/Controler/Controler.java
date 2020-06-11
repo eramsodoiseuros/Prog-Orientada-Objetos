@@ -36,9 +36,6 @@ public class Controler implements IControler {
             view.alert("Erro", "O controller falhou a guardar o estado.");
         }
     }
-    public IView getView(){
-        return view;
-    }
     public IModel getModel(){
         return model;
     }
@@ -92,7 +89,6 @@ public class Controler implements IControler {
                 if(!l.check_fila())
                     view.alert("Fila cheia", "A Loja de momento está cheia, o pedido vai ser processado, mas primeiro aguarda que alguém saia da fila.");
                 l.addHistorico(enc);
-                l.removeLista(enc.getId());
 
                 if(value.startsWith("t")){
                     ITransportadora t = model.transportadora(value);
@@ -330,7 +326,7 @@ public class Controler implements IControler {
     }
 
     // done
-    public IEncomenda pedidoUser(LinhaEncomenda produto, String idLoja, String userId) throws IOException {
+    public void pedidoUser(LinhaEncomenda produto, String idLoja, String userId) throws IOException {
         IEncomenda encomenda = new Encomenda();
         String id = "e" + model.contaNCodEnc();
 
@@ -343,7 +339,6 @@ public class Controler implements IControler {
 
         model.addEncomenda(encomenda);
         model.loja(idLoja).addLista(encomenda);
-        return encomenda;
     }
     public boolean dentro_range_t(IUtilizador user, ILoja loja, ITransportadora t) {
         return Math.sqrt(Math.pow((loja.getLocalizacaoX() - t.getLocalizacaoX()), 2) + Math.pow((loja.getLocalizacaoY() - t.getLocalizacaoY()), 2)) < t.getRange() && Math.sqrt(Math.pow((user.getLocalizacaoX() - t.getLocalizacaoX()), 2) + Math.pow((user.getLocalizacaoY() - t.getLocalizacaoY()), 2)) < t.getRange();
@@ -394,6 +389,7 @@ public class Controler implements IControler {
 
             model.removeEncomenda(enc.getId());
             l.remove_fila();
+            l.removeLista(enc.getId());
         }
     }
 
@@ -418,6 +414,7 @@ public class Controler implements IControler {
 
             model.removeEncomenda(enc.getId());
             l.remove_fila();
+            l.removeLista(enc.getId());
         }
     }
 

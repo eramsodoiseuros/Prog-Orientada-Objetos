@@ -10,105 +10,101 @@ import java.util.TreeSet;
  * */
 public interface IUtilizador extends Serializable{
     /**
-     *
+     * Função que devolve
      * @return String com o ID do Utilizador
      * */
     String getId();
 
     /**
      *
-     * String com o nome do Utilizador
+     * @param nome String com o nome do Utilizador
      * */
     void setNome(String nome);
 
     /**
-     *
+     * Função que devolve
      * @return String com o nome do Utilizador
      * */
     String getNome();
 
     /**
      *
-     *  String com o ID do Utilizador
+     * @param id  String com o ID do Utilizador
      * */
     void setId(String id);
 
     /**
-     *
+     * Função que devolve numero de encomendas realizadas do Utilizador
      * @return Numero de encomendas realizadas do Utilizador
      * */
     int getAcessos();
 
     /**
-     *
-     * */
-    int getEstado();
-
-    /**
-     *
+     * @param estado estado a dar Set
      * */
     void setEstado(int estado);
 
     /**
      *
-     *  Numero de encomendas realizadas do Utilizador
+     * @param acessos Numero de encomendas realizadas do Utilizador
      * */
     void setAcessos(int acessos);
 
     /**
-     *
+     * Função que devolve Localização X do Utilizador
      * @return Localização X do Utilizador
      * */
     double getLocalizacaoX();
 
     /**
-     *
+     * Função que devolve Localização Y do Utilizador
      * @return Localização Y do Utilizador
      * */
     double getLocalizacaoY();
 
     /**
-     *
-     * Localização X do Utilizador
+     * Função que dá Set na coordenada X
+     * @param localizacaoX  Localização X do Utilizador
      * */
     void setLocalizacaoX(double localizacaoX);
 
     /**
-     *
-     * Localização Y do Utilizador
+     * Função que dá Set na coordenada Y
+     * @param localizacaoY Localização Y do Utilizador
      * */
     void setLocalizacaoY(double localizacaoY);
 
     /**
-     *
-     *
+     * Função que devolve
      * @return Set de encomendas realizadas pelo Utilizador
      * */
-    public List<String> historico();
+    List<String> historico();
 
     /**
-     *
+     * Função que devolve
      * @return String email do Utilizador
      * */
     String getEmail();
 
     /**
-     *
+     * Função que devolve
      * @return String password do Utilizador
      * */
     String getPwd();
 
     /**
-     *
-     * @return String password do Utilizador
+     * @param s String password do Utilizador
      * */
     void setPwd(String s);
 
     /**
-     *
-     * @return String email do Utilizador
+     * @param s String email do Utilizador
      * */
     void setEmail(String s);
 
+    /**
+     * Função que acrescenta ao Histórico do Utilizador
+     * @param enc valor a acrescentar
+     * */
     void addHistorico(IEncomenda enc);
 }

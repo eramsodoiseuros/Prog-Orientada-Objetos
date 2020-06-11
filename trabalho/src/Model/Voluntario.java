@@ -14,7 +14,6 @@ public class Voluntario implements Serializable, IVoluntario {
     private double localizacaoY;
     private boolean disponivel;
 
-
     private String tipo;
     private String nome;
     private List<String> historico;
